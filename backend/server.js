@@ -12,9 +12,12 @@ const crypto = require('crypto');
 const PORT = process.env.PORT || 3000;
 // DB_PATH: sur Render utilise /var/data/ (disque persistant), sinon dossier local
 const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'data', 'members_database.json');
-const STATIC_DIR = fs.existsSync(path.join(__dirname, 'public')) 
-    ? path.join(__dirname, 'public') 
+// STATIC_DIR: cherche d'abord public/, puis remonte au simulateur
+const STATIC_DIR = fs.existsSync(path.join(__dirname, 'public', 'index.html'))
+    ? path.join(__dirname, 'public')
     : path.resolve(__dirname, '..', 'simulator');
+
+console.log(`[MRC] Static dir: ${STATIC_DIR} (exists: ${fs.existsSync(STATIC_DIR)})`);
 
 const MIME_TYPES = {
     '.html': 'text/html; charset=utf-8',
@@ -252,6 +255,12 @@ const server = http.createServer((req, res) => {
 
     fs.stat(filePath, (err, stats) => {
         if (err || !stats.isFile()) {
+            // Fallback: serve index.html for SPA-style routing
+            const indexPath = path.join(STATIC_DIR, 'index.html');
+            if (pathname !== '/' && fs.existsSync(indexPath)) {
+                res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+                return fs.createReadStream(indexPath).pipe(res);
+            }
             res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
             return res.end('Page ou ressource introuvable');
         }

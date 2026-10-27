@@ -7,8 +7,7 @@ import java.util.UUID
 class MrcRepository {
 
     companion object {
-        // URL du backend en production — mettez à jour avec votre URL Render après déploiement
-        // Exemple : "https://mrc-backend.onrender.com"
+        // URL du backend en production — Render.com
         const val BACKEND_URL = "https://mrc-backend.onrender.com"
     }
 
