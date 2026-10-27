@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.MRCRenaissance" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/mrc_blue_primary</item>
+        <item name="colorPrimaryDark">@color/mrc_blue_dark</item>
+        <item name="colorSecondary">@color/mrc_red</item>
+        <item name="colorTertiary">@color/mrc_green</item>
+        <item name="android:statusBarColor">@color/mrc_blue_dark</item>
+        <item name="android:navigationBarColor">@color/surface_card</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:windowBackground">@color/surface_light</item>
+    </style>
+
+    <style name="CardElevation">
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardBackgroundColor">@color/surface_card</item>
+    </style>
+</resources>

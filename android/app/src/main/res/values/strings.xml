@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MRC Cameroon</string>
+    <string name="app_full_name">Cameroon Renaissance Movement (MRC - CRM)</string>
+    <string name="party_motto">Let\'s change the future in peace and through the ballot box</string>
+    <string name="party_legal_auth">Authorization MINATD N°000221 of 25 July 2008 / Letter MINATD N°0002249/L/MINATD/DAP/SDE/STP of 02 August 2012</string>
+    <string name="national_president_title">The National President</string>
+    <string name="national_president_name">Pr Maurice Kamto</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_card">My Card</string>
+    <string name="nav_register">Register</string>
+    <string name="nav_news">News &amp; Speeches</string>
+    <string name="nav_sentinel">Sentinel 2025</string>
+    <string name="nav_donate">Contribute</string>
+
+    <!-- Card Fields -->
+    <string name="card_title">MEMBERSHIP CARD</string>
+    <string name="card_surname">SURNAME :</string>
+    <string name="card_name">NAME :</string>
+    <string name="card_phone">TEL :</string>
+    <string name="card_agreement_date">MEMBERSHIP AGREEMENT DATE :</string>
+    <string name="card_number_prefix">N° :</string>
+    <string name="card_price">PRICE : 1.000 F CFA</string>
+    <string name="card_headquarters">Headquarters: Centre Médical d\'Odza - Yaoundé | Tel: (+237) 674 27 05 49 / 671 08 14 44 | Web: www.mrcparty.org</string>
+
+    <!-- Card Actions -->
+    <string name="card_flip_hint">Tap card to flip (Front / Back)</string>
+    <string name="action_download_card">Download Card (PNG/PDF)</string>
+    <string name="action_share_card">Share My Digital Card</string>
+    <string name="action_verify_qr">Verify Authenticity (QR)</string>
+    <string name="action_add_wallet">Save to Wallet / NFC</string>
+
+    <!-- Registration -->
+    <string name="reg_title">Join the CRM</string>
+    <string name="reg_subtitle">Become a member of the Cameroon Renaissance Movement and build the change</string>
+    <string name="reg_step_identity">1. Identity</string>
+    <string name="reg_step_territory">2. Federation</string>
+    <string name="reg_step_contact">3. Contact &amp; Photo</string>
+    <string name="reg_step_payment">4. Membership Dues</string>
+    <string name="reg_first_name">First Name / Surname</string>
+    <string name="reg_last_name">Last Name</string>
+    <string name="reg_cni">National ID / Passport No.</string>
+    <string name="reg_birthdate">Date of Birth</string>
+    <string name="reg_phone">Phone / WhatsApp (+237)</string>
+    <string name="reg_email">Email Address</string>
+    <string name="reg_region">Region / Diaspora</string>
+    <string name="reg_division">Division / Department</string>
+    <string name="reg_subdivision">Sub-Division / Commune</string>
+    <string name="reg_federation">Local CRM Federation</string>
+    <string name="reg_submit">Complete Registration &amp; Issue Card</string>
+    <string name="reg_fee_notice">Official card fee: 1,000 FCFA</string>
+
+    <!-- Payment -->
+    <string name="pay_title">Membership Fee Payment</string>
+    <string name="pay_momo">MTN Mobile Money</string>
+    <string name="pay_om">Orange Money</string>
+    <string name="pay_eu">Express Union Mobile</string>
+    <string name="pay_card">Bank Card / Visa / Mastercard</string>
+    <string name="pay_cta">Pay 1.000 F CFA</string>
+
+    <!-- Sentinel 2025 -->
+    <string name="sentinel_title">Electoral Sentinel 2025</string>
+    <string name="sentinel_desc">Protect citizen votes and report electoral irregularities in real time</string>
+    <string name="sentinel_report_incident">Report Polling Station Incident</string>
+    <string name="sentinel_elecam_check">Verify My ELECAM Registration</string>
+    <string name="sentinel_upload_pv">Submit Polling Station Report (PV)</string>
+
+    <!-- SOS / Legal -->
+    <string name="sos_title">SOS Militant</string>
+    <string name="sos_desc">Emergency legal assistance for activists in case of arbitrary detention</string>
+</resources>

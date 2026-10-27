@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Couleurs Majeures Officielles MRC : Blanc et Vert Dominants -->
+    <color name="papier_blanc">#FFFFFF</color>
+    <color name="vert_mrc">#0A8A4A</color>
+    <color name="vert_mrc_fonce">#06602F</color>
+    <color name="vert_mrc_clair">#E8F5ED</color>
+    <color name="encre_sombre">#1D2A22</color>
+    <color name="gris_texte">#5B6B61</color>
+    <color name="gris_bordure">#CFD6D1</color>
+
+    <!-- Accents Officiels -->
+    <color name="rouge_mrc_sceau">#D32F2F</color>
+    <color name="bleu_mrc_encre">#0033AA</color>
+    <color name="jaune_mrc_etoile">#F59E0B</color>
+
+    <!-- Aliases pour compatibilité theme Material3 -->
+    <color name="mrc_green">#0A8A4A</color>
+    <color name="mrc_blue_primary">#0A8A4A</color>
+    <color name="mrc_blue_dark">#06602F</color>
+    <color name="mrc_red">#D32F2F</color>
+    <color name="surface_card">#FFFFFF</color>
+    <color name="surface_light">#F4FAF6</color>
+
+    <!-- Compatibilité Thème -->
+    <color name="colorPrimary">@color/vert_mrc</color>
+    <color name="colorPrimaryDark">@color/vert_mrc_fonce</color>
+    <color name="colorAccent">@color/vert_mrc_clair</color>
+</resources>

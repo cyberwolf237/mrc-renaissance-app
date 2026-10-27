@@ -1,0 +1,24 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="40dp"
+    android:viewportWidth="64"
+    android:viewportHeight="40">
+    <!-- Circular Seal Border -->
+    <path
+        android:strokeColor="#DC2626"
+        android:strokeWidth="1.5"
+        android:pathData="M 32,4 A 16,16 0 1 0 32,36 A 16,16 0 1 0 32,4 Z" />
+    <path
+        android:strokeColor="#DC2626"
+        android:strokeWidth="0.8"
+        android:pathData="M 32,7 A 13,13 0 1 0 32,33 A 13,13 0 1 0 32,7 Z" />
+    <!-- Star & Logo inside Seal -->
+    <path
+        android:fillColor="#DC2626"
+        android:pathData="M 32,14 L 33.5,17.5 L 37,17.5 L 34,20 L 35,23.5 L 32,21.5 L 29,23.5 L 30,20 L 27,17.5 L 30.5,17.5 Z" />
+    <!-- Signature Line in Blue Ink -->
+    <path
+        android:strokeColor="#1D4ED8"
+        android:strokeWidth="1.8"
+        android:pathData="M 12,28 C 18,22 24,34 32,25 C 38,18 45,30 54,26" />
+</vector>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MRC Cameroun</string>
+    <string name="app_full_name">Mouvement pour la Renaissance du Cameroun (MRC - CRM)</string>
+    <string name="party_motto">Changeons l\'avenir dans la paix et par les urnes</string>
+    <string name="party_legal_auth">Autorisation MINATD N°000221 du 25 Juillet 2008 / Lettre MINATD N°0002249/L/MINATD/DAP/SDE/STP du 02 Août 2012</string>
+    <string name="national_president_title">Le Président National</string>
+    <string name="national_president_name">Pr Maurice Kamto</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Accueil</string>
+    <string name="nav_card">Ma Carte</string>
+    <string name="nav_register">Adhésion</string>
+    <string name="nav_news">Actualités</string>
+    <string name="nav_sentinel">Sentinelle 2025</string>
+    <string name="nav_donate">Cotisations &amp; Dons</string>
+
+    <!-- Card Fields -->
+    <string name="card_title">CARTE DE MEMBRE</string>
+    <string name="card_surname">PRENOM :</string>
+    <string name="card_name">NOM :</string>
+    <string name="card_phone">TEL :</string>
+    <string name="card_agreement_date">DATE D\'ADHESION :</string>
+    <string name="card_number_prefix">N° :</string>
+    <string name="card_price">PRIX : 1.000 F CFA</string>
+    <string name="card_headquarters">Siège: Centre Médical d\'Odza - Yaoundé | Tél: (+237) 674 27 05 49 / 671 08 14 44 | Web: www.mrcparty.org</string>
+
+    <!-- Card Actions -->
+    <string name="card_flip_hint">Touchez la carte pour la retourner (Recto / Verso)</string>
+    <string name="action_download_card">Télécharger la Carte (PNG/PDF)</string>
+    <string name="action_share_card">Partager ma Carte Numérique</string>
+    <string name="action_verify_qr">Vérifier l\'Authenticité (QR)</string>
+    <string name="action_add_wallet">Ajouter au Wallet / NFC</string>
+
+    <!-- Registration -->
+    <string name="reg_title">Adhérer au MRC</string>
+    <string name="reg_subtitle">Devenez membre du Mouvement pour la Renaissance du Cameroun et portez l\'alternance</string>
+    <string name="reg_step_identity">1. Identité</string>
+    <string name="reg_step_territory">2. Fédération</string>
+    <string name="reg_step_contact">3. Contact &amp; Photo</string>
+    <string name="reg_step_payment">4. Cotisation Adhésion</string>
+    <string name="reg_first_name">Prénom(s)</string>
+    <string name="reg_last_name">Nom(s)</string>
+    <string name="reg_cni">N° CNI ou Passeport</string>
+    <string name="reg_birthdate">Date de Naissance</string>
+    <string name="reg_phone">Téléphone / WhatsApp (+237)</string>
+    <string name="reg_email">Adresse Email</string>
+    <string name="reg_region">Région / Diaspora</string>
+    <string name="reg_division">Département</string>
+    <string name="reg_subdivision">Arrondissement / Commune</string>
+    <string name="reg_federation">Fédération MRC Locale</string>
+    <string name="reg_submit">Valider l\'Adhésion &amp; Générer ma Carte</string>
+    <string name="reg_fee_notice">Frais statutaires de carte de membre: 1.000 FCFA</string>
+
+    <!-- Payment -->
+    <string name="pay_title">Règlement de la Carte de Membre</string>
+    <string name="pay_momo">MTN Mobile Money</string>
+    <string name="pay_om">Orange Money</string>
+    <string name="pay_eu">Express Union Mobile</string>
+    <string name="pay_card">Carte Bancaire / Visa / Mastercard</string>
+    <string name="pay_cta">Payer 1.000 F CFA</string>
+
+    <!-- Sentinel 2025 -->
+    <string name="sentinel_title">Sentinelle Électorale 2025</string>
+    <string name="sentinel_desc">Sécurisation des votes citoyens et remontée des anomalies électorales en temps réel</string>
+    <string name="sentinel_report_incident">Signaler une anomalie / fraude</string>
+    <string name="sentinel_elecam_check">Vérifier mon inscription ELECAM</string>
+    <string name="sentinel_upload_pv">Transmettre la photo du Procès-Verbal (PV)</string>
+
+    <!-- SOS / Legal -->
+    <string name="sos_title">SOS Militant</string>
+    <string name="sos_desc">Assistance juridique d\'urgence aux militants et sympathisants face aux abus</string>
+</resources>

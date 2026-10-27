@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/surface_light"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Status & Badge Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Carte Officielle Militant"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/badge_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_status_active"
+                android:paddingStart="10dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="4dp"
+                android:text="ACTIF / VÉRIFIÉ"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 3D Flip Card Container -->
+        <FrameLayout
+            android:id="@+id/card_flip_container"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <!-- Card Front (Exact replica of the physical CRM card) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_front"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <!-- Top Green Border -->
+                    <View
+                        android:id="@+id/card_top_stripe"
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:background="@color/mrc_green" />
+
+                    <!-- Header Row -->
+                    <LinearLayout
+                        android:id="@+id/card_header_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/card_top_stripe"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingTop="6dp"
+                        android:paddingEnd="12dp">
+
+                        <ImageView
+                            android:id="@+id/card_logo"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="MOUVEMENT POUR LA RENAISSANCE DU CAMEROUN - MRC"
+                                android:textColor="@color/mrc_blue_dark"
+                                android:textSize="8sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CAMEROON RENAISSANCE MOVEMENT - CRM"
+                                android:textColor="@color/mrc_blue_dark"
+                                android:textSize="7sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Autorisation MINATD N°000221 du 25 Juillet 2008 / Lettre MINATD N°0002249 du 02 Août 2012"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="6sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Title -->
+                    <TextView
+                        android:id="@+id/card_main_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/card_header_row"
+                        android:gravity="center"
+                        android:text="CARTE DE MEMBRE / MEMBERSHIP CARD"
+                        android:textColor="@color/mrc_blue_dark"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <!-- Federation -->
+                    <TextView
+                        android:id="@+id/tv_card_federation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/card_main_title"
+                        android:gravity="center"
+                        android:text="FD COM SANGMELIMA OWONO MIMBO\'O"
+                        android:textColor="@color/mrc_blue_primary"
+                        android:textSize="9sp"
+                        android:textStyle="bold" />
+
+                    <!-- Body Content Grid -->
+                    <LinearLayout
+                        android:id="@+id/card_body_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_card_federation"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="12dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="PRENOM / Surname :"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="7sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_card_surname"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CYRILLE"
+                                android:textColor="@color/text_primary"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="NOM / Name :"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="7sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_card_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="EDOU"
+                                android:textColor="@color/text_primary"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_card_phone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="Tel : 659452898"
+                                android:textColor="@color/text_primary"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Seal & President Signature -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Le Président National"
+                                android:textColor="@color/mrc_blue_dark"
+                                android:textSize="7sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Pr Maurice Kamto"
+                                android:textColor="@color/mrc_blue_dark"
+                                android:textSize="8sp"
+                                android:textStyle="italic" />
+
+                            <ImageView
+                                android:id="@+id/card_signature_seal"
+                                android:layout_width="60dp"
+                                android:layout_height="35dp"
+                                android:src="@drawable/ic_mrc_stamp_seal" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Adhesion Date, Number & Price -->
+                    <LinearLayout
+                        android:id="@+id/card_meta_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/card_body_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="12dp">
+
+                        <TextView
+                            android:id="@+id/tv_card_date"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="DATE D\'ADHESION : 19/02/2024"
+                            android:textColor="@color/text_primary"
+                            android:textSize="7sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_card_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="N° : SU00062551"
+                            android:textColor="@color/mrc_blue_dark"
+                            android:textSize="8sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Prix : 1.000 F CFA"
+                            android:textColor="@color/mrc_green"
+                            android:textSize="7sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Green Bottom Banner with HQ Info -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/mrc_green"
+                        android:gravity="center"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="Siège: Centre Médical d\'Odza - Yaoundé | Tel: (+237) 674 27 05 49 | www.mrcparty.org"
+                            android:textColor="#FFFFFF"
+                            android:textSize="6sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Card Back (QR Code, Barcode, Statutes & Security) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_back"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="#0F1360">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="RÉPUBLIQUE DU CAMEROUN - PAIX - TRAVAIL - PATRIE"
+                        android:textColor="#93C5FD"
+                        android:textSize="7sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Statuts du MRC : La carte de membre atteste de l\'engagement républicain et pacifique du militant pour l\'avènement d\'une société de liberté, de justice et de solidarité."
+                        android:textColor="#E0E7FF"
+                        android:textSize="7sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv_qr_code"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:background="#FFFFFF"
+                            android:padding="4dp"
+                            android:src="@android:drawable/ic_menu_camera" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_card_sig"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Signature Numérique : SHA256-VALID"
+                                android:textColor="#A7F3D0"
+                                android:textSize="8sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Ligne d\'Urgence Militant :\n(+237) 674 27 05 49 / 671 08 14 44"
+                                android:textColor="#FCA5A5"
+                                android:textSize="8sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="Badge Congrès &amp; Scrutin 2025"
+                                android:textColor="#FDE047"
+                                android:textSize="8sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/card_flip_hint"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <!-- Actions Grid -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:columnCount="2"
+            android:rowCount="2">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_download_card"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:backgroundTint="@color/mrc_blue_primary"
+                android:text="Télécharger HD"
+                android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_share_card"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:text="Partager"
+                android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_verify_authenticity"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:text="Vérifier QR"
+                android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_wallet_export"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:text="Google Wallet"
+                android:textSize="12sp" />
+        </GridLayout>
+
+        <!-- Rights & Duties from Official MRC Statutes -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="3dp"
+            app:cardBackgroundColor="@color/surface_card">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Droits &amp; Devoirs du Membre du MRC"
+                    android:textColor="@color/mrc_blue_dark"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="• Droit de participer aux débats et votes des conventions et assemblées générales.\n• Droit d\'être électeur et éligible aux instances dirigeantes du parti.\n• Devoir de loyauté aux idéaux républicains et de non-violence.\n• Acquittement régulier de la cotisation statutaire (1.000 F CFA/mois).\n• Devoir de vigilance citoyenne pour la protection des suffrages aux urnes."
+                    android:textColor="@color/text_primary"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="3dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>
