@@ -1,0 +1,128 @@
+[
+  {
+    "numero": "SU00062552",
+    "prenom": "ALAIN",
+    "nom": "FOTSO",
+    "structure": "FÉDÉRATION DE L OUEST 1 - BAFOUSSAM",
+    "tel": "674112233",
+    "email": "alain.fotso@example.com",
+    "date": "2026-10-27",
+    "cotisation": "5 000 F CFA",
+    "status": "ACTIF / VALIDE",
+    "signatureHash": "MRC-59097B155D02",
+    "certifications": {
+      "nonAppartenance": true,
+      "plafondLegal": true,
+      "rgpd": true
+    },
+    "registeredAt": "2026-10-27T13:39:16.759Z"
+  },
+  {
+    "numero": "SU00062551",
+    "prenom": "CYRILLE",
+    "nom": "EDOU",
+    "structure": "FD COM SANGMELIMA OWONO MIMBO'O",
+    "tel": "659452898",
+    "email": "cyrille.edou@militant-mrc.org",
+    "date": "2024-02-19",
+    "cotisation": "1.000 F CFA",
+    "status": "ACTIF / VALIDE",
+    "signatureHash": "MRC-9A74E82F10BC",
+    "certifications": {
+      "nonAppartenance": true,
+      "plafondLegal": true,
+      "rgpd": true
+    },
+    "registeredAt": "2024-02-19T10:14:22.000Z"
+  },
+  {
+    "numero": "SU00000001",
+    "prenom": "MAURICE",
+    "nom": "KAMTO",
+    "structure": "DIRECTOIRE NATIONAL - HAUT COMMANDEMENT",
+    "tel": "674270549",
+    "email": "maurice.kamto@mrcparty.net",
+    "date": "2012-08-13",
+    "cotisation": "100 000 F CFA",
+    "status": "PRÉSIDENT FONDATEUR",
+    "signatureHash": "MRC-F001KAMTO2012",
+    "certifications": {
+      "nonAppartenance": true,
+      "plafondLegal": true,
+      "rgpd": true
+    },
+    "registeredAt": "2012-08-13T09:00:00.000Z"
+  },
+  {
+    "numero": "SU00000002",
+    "prenom": "TIRIANE BALBINE",
+    "nom": "NOAH",
+    "structure": "DIRECTOIRE NATIONAL - PRÉSIDENCE",
+    "tel": "671081444",
+    "email": "tiriane.noah@mrcparty.net",
+    "date": "2012-08-13",
+    "cotisation": "100 000 F CFA",
+    "status": "PRÉSIDENTE NATIONALE (96,89%)",
+    "signatureHash": "MRC-T002NOAH2026",
+    "certifications": {
+      "nonAppartenance": true,
+      "plafondLegal": true,
+      "rgpd": true
+    },
+    "registeredAt": "2012-08-13T09:15:00.000Z"
+  },
+  {
+    "numero": "SU00000003",
+    "prenom": "EMMANUEL",
+    "nom": "SIMH",
+    "structure": "FÉDÉRATION DU CENTRE 1 - YAOUNDÉ",
+    "tel": "677000001",
+    "email": "emmanuel.simh@mrcparty.net",
+    "date": "2012-08-14",
+    "cotisation": "25 000 F CFA",
+    "status": "VICE-PRÉSIDENT NATIONAL",
+    "signatureHash": "MRC-S003SIMH2026",
+    "certifications": {
+      "nonAppartenance": true,
+      "plafondLegal": true,
+      "rgpd": true
+    },
+    "registeredAt": "2012-08-14T11:00:00.000Z"
+  },
+  {
+    "numero": "SU00000004",
+    "prenom": "CHRISTOPHER NVEH",
+    "nom": "NDONG",
+    "structure": "FÉDÉRATION DU NORD-OUEST - BAMENDA",
+    "tel": "677000002",
+    "email": "christopher.ndong@mrcparty.net",
+    "date": "2012-08-14",
+    "cotisation": "25 000 F CFA",
+    "status": "SECRÉTAIRE GÉNÉRAL",
+    "signatureHash": "MRC-N004NDONG2026",
+    "certifications": {
+      "nonAppartenance": true,
+      "plafondLegal": true,
+      "rgpd": true
+    },
+    "registeredAt": "2012-08-14T12:00:00.000Z"
+  },
+  {
+    "numero": "SU00000005",
+    "prenom": "OKO APPOLINAIRE",
+    "nom": "LEGRAND",
+    "structure": "FÉDÉRATION DU LITTORAL 1 - DOUALA",
+    "tel": "677000003",
+    "email": "oko.legrand@mrcparty.net",
+    "date": "2012-08-15",
+    "cotisation": "25 000 F CFA",
+    "status": "TRÉSORIER NATIONAL",
+    "signatureHash": "MRC-O005LEGRAND2026",
+    "certifications": {
+      "nonAppartenance": true,
+      "plafondLegal": true,
+      "rgpd": true
+    },
+    "registeredAt": "2012-08-15T14:30:00.000Z"
+  }
+]

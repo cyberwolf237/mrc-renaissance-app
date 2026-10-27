@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: mrc-cameroun-app
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: ""
+    startCommand: node server.js
+    envVars:
+      - key: NODE_VERSION
+        value: 20
