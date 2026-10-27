@@ -22,6 +22,13 @@
     <color name="surface_card">#FFFFFF</color>
     <color name="surface_light">#F4FAF6</color>
 
+    <!-- Texte -->
+    <color name="text_primary">#1D2A22</color>
+    <color name="text_secondary">#5B6B61</color>
+    <color name="text_muted">#9EB3A5</color>
+    <color name="text_on_green">#FFFFFF</color>
+    <color name="text_hint">#9EB3A5</color>
+
     <!-- Compatibilité Thème -->
     <color name="colorPrimary">@color/vert_mrc</color>
     <color name="colorPrimaryDark">@color/vert_mrc_fonce</color>
