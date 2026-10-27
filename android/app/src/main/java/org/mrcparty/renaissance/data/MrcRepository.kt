@@ -6,6 +6,12 @@ import java.util.UUID
 
 class MrcRepository {
 
+    companion object {
+        // URL du backend en production — mettez à jour avec votre URL Render après déploiement
+        // Exemple : "https://mrc-backend.onrender.com"
+        const val BACKEND_URL = "https://mrc-backend.onrender.com"
+    }
+
     private var currentMember: Member? = Member.sampleMember()
     private val memberList = mutableListOf<Member>().apply {
         add(Member.sampleMember())
