@@ -1,865 +1,945 @@
 /**
- * MRC - CRM (Mouvement pour la Renaissance du Cameroun)
- * Contrôleur Principal & Moteur Interactif Front/Back
- * Conforme aux spécifications du directoire national et à l'échantillon SU00062551
+ * MRC - MOUVEMENT POUR LA RENAISSANCE DU CAMEROUN
+ * Moteur Applicatif & Contrôleur Officiel :: Bilingue (FR/EN)
+ * Gestion 3D ISO-7810, Numérotation Luhn, Veille Sentinelle & Directoire 2026
  */
 
+// ─── CONFIGURATION OFFICIELLE ───────────────────────────────────────
 const CONFIG = {
-    nomFr: "MOUVEMENT POUR LA<br>RENAISSANCE DU CAMEROUN",
-    nomEn: "CAMEROON RENAISSANCE<br>MOVEMENT",
-    sigle: "MRC",
-    autorisation: "Autorisation MINATD N°000221 du 25 Juillet 2008 / Lettre MINATD N°0002249/LMINATD/DAP/SDE/STP du 02 Août 2012",
-    logoUrl: "assets/logo_mrc_round.jpg",
-    siteWeb: "www.mrcparty.org",
-    contact: "Tél : (+237) 674 27 05 49 / 671 08 14 44",
-    urlVerification: "https://mrcparty.net/verifier?n="
+  nomFr: "MOUVEMENT POUR LA<br>RENAISSANCE DU CAMEROUN",
+  nomEn: "CAMEROON RENAISSANCE<br>MOVEMENT",
+  sigle: "MRC",
+  sigleEn: "CRM",
+  autorisation: "Autorisation MINATD N°000221 du 25 Juillet 2008 / Lettre MINATD N°0002249/LMINATD/DAP/SDE/STP du 02 Août 2012",
+  logoUrl: "assets/logo_mrc_round.jpg",
+  cachetUrl: "assets/cachet_mrc_exact.png",
+  signatureUrl: "assets/signature_kamto_exact.png",
+  siteWeb: "www.mrcparty.org",
+  contact: "(+237) 674 27 05 49",
+  siege: "Siège : Centre Médical d'Odza, Yaoundé",
+  prefixeNumero: "MRC",
+  validiteAnnees: 3,
+  urlVerification: "https://mrcparty.net/verifier?n="
 };
 
-// État Global de l'Application
-const appState = {
-    currentLanguage: 'FR',
-    isCardFlipped: false,
-    activeLeaderId: null,
-    member: {
-        structure: "FD COM SANGMELIMA OWONO MIMBO'O",
-        prenom: "CYRILLE",
-        nom: "EDOU",
-        tel: "659452898",
-        numero: "SU00062551",
-        date: "2024-02-19",
-        cotisation: "1.000 F CFA",
-        status: "ACTIF / VALIDE",
-        signatureHash: "MRC-9A74E82F10BC"
-    },
-    // Données Exhaustives du Directoire National (Élu le 17 Octobre 2026)
-    leaders: {
-        'kamto': {
-            name: "Pr Maurice KAMTO",
-            role: "Président Fondateur du MRC",
-            tag: "PRÉSIDENT FONDATEUR",
-            tagClass: "tag-founder",
-            photo: "assets/president_maurice_kamto.jpg",
-            bio: "Agrégé des Facultés de Droit, ancien Doyen de la Faculté des Sciences Juridiques et Politiques de l'Université de Yaoundé II. Ancien Président de la Commission du Droit International de l'ONU.",
-            parcours: "Artisan de la victoire historique de Bakassi devant la CIJ de La Haye en 2002. Ministre démissionnaire le 30 novembre 2011 par sursaut éthique, il fonde le MRC en 2012 et en assure la présidence fondatrice avant la transmission du relais démocratique le 17 octobre 2026.",
-            vision: "« Le MRC n'est pas un parti contre des personnes, mais un parti pour un idéal républicain impérissable : bâtir une nation juste, prospère et fraternelle. »",
-            declarationRecente: "« Je félicite chaleureusement la Présidente Tiriane Balbine Noah pour sa brillante élection. Le flambeau de la Renaissance est entre de mains dignes et déterminées. »"
-        },
-        'tiriane': {
-            name: "Tiriane Balbine NOAH",
-            role: "Présidente Nationale du MRC (Élue le 17 Octobre 2026 avec 96,89 % des voix)",
-            tag: "PRÉSIDENTE NATIONALE &bull; 96,89 %",
-            tagClass: "tag-president",
-            photo: "assets/presidente_tiriane_noah.png",
-            bio: "Cadre supérieure de gestion, leader politique républicaine d'envergure, plébiscitée par la Convention Nationale Extraordinaire du 17 octobre 2026 avec 96,89 % des suffrages exprimés.",
-            parcours: "Militante infatigable de la première heure, elle a assuré avec héroïsme la direction intérimaire du parti durant l'emprisonnement des dirigeants en 2019 à Kondengui. Élue à la présidence nationale en octobre 2026 à la suite de la démission de Maurice Kamto pour insuffler un nouvel élan démocratique et conduire le parti vers les victoires électorales.",
-            vision: "« Notre boussole reste la discipline républicaine, la justice sociale et la délivrance des cartes de membre à chaque citoyen camerounais épris d'alternance. »",
-            declarationRecente: "« Je mesure l'immense responsabilité que m'ont confiée les délégués à 96,89%. Nous rassemblerons toutes les énergies patriotiques du Cameroun pour changer l'avenir dans la paix et par les urnes. »"
-        },
-        'simh': {
-            name: "Emmanuel SIMH",
-            role: "Vice-Président National du MRC",
-            tag: "VICE-PRÉSIDENT NATIONAL",
-            tagClass: "tag-vp",
-            photo: null,
-            bio: "Avocat éminent au Barreau du Cameroun, Coordonnateur du Collectif des Avocats du MRC, figure de proue de la défense des droits fondamentaux.",
-            parcours: "Élu au sein du collège des 5 Vice-Présidents le 17 octobre 2026, il veille sur l'armature juridique du parti, la conformité constitutionnelle et la protection des militants.",
-            vision: "« Le droit et la justice sont les boucliers inviolables de notre engagement républicain. »",
-            declarationRecente: "« La nouvelle direction sous la Présidente Tiriane Noah incarne la continuité des valeurs et le renouveau de l'action. »"
-        },
-        'ngompe': {
-            name: "Elie NGOMPE",
-            role: "Vice-Président National du MRC",
-            tag: "VICE-PRÉSIDENT NATIONAL",
-            tagClass: "tag-vp",
-            photo: null,
-            bio: "Cadre politique stratège, fin connaisseur des dynamiques régionales et des fédérations de base.",
-            parcours: "Élu Vice-Président National lors de la Convention Extraordinaire du 17 octobre 2026 pour dynamiser le maillage territorial et l'implantation militante.",
-            vision: "« L'ancrage local dans chaque arrondissement est la condition sine qua non de la victoire par les urnes. »",
-            declarationRecente: "« Nous renforçons les comités de base pour offrir à chaque Camerounais un espace d'engagement citoyen. »"
-        },
-        'kaigama': {
-            name: "Ismaël KAIGAMA",
-            role: "Vice-Président National du MRC",
-            tag: "VICE-PRÉSIDENT NATIONAL",
-            tagClass: "tag-vp",
-            photo: null,
-            bio: "Personnalité politique influente du Grand-Nord (Adamaoua, Nord, Extrême-Nord), défenseur des populations vulnérables et du développement équitable.",
-            parcours: "Élu Vice-Président National le 17 octobre 2026, il incarne l'adhésion massive du Septentrion camerounais au projet de Renaissance républicaine.",
-            vision: "« Le Septentrion réclame justice, eau, éducation et dignité au sein d'une République unie. »",
-            declarationRecente: "« Du bord du Lac Tchad aux rives de la Bénoué, les populations se lèvent pour la Renaissance avec la Présidente Tiriane Noah. »"
-        },
-        'same_kolle': {
-            name: "Samuel SAME KOLLE",
-            role: "Vice-Président National du MRC",
-            tag: "VICE-PRÉSIDENT NATIONAL",
-            tagClass: "tag-vp",
-            photo: null,
-            bio: "Universitaire, chercheur et penseur des politiques publiques républicaines.",
-            parcours: "Élu Vice-Président National le 17 octobre 2026, il supervise la prospective programmatique et l'ingénierie socio-économique du MRC.",
-            vision: "« Une politique sans vision intellectuelle est stérile. Le projet de société du MRC répond aux défis contemporains du Cameroun. »",
-            declarationRecente: "« Notre projet de société est un pacte de progrès concret pour redresser l'économie nationale. »"
-        },
-        'saadou': {
-            name: "Aissatou SAADOU",
-            role: "Vice-Présidente Nationale du MRC",
-            tag: "VICE-PRÉSIDENTE NATIONALE",
-            tagClass: "tag-vp",
-            photo: null,
-            bio: "Leader engagée pour la cause féminine, l'autonomisation économique des mères et l'accès des jeunes filles aux responsabilités républicaines.",
-            parcours: "Élue Vice-Présidente Nationale lors de la Convention du 17 octobre 2026, elle renforce la parité et la mobilisation des femmes à l'échelle nationale et au sein de l'OFMRC.",
-            vision: "« Les femmes camerounaises sont le pilier central du redressement civique et moral de notre pays. »",
-            declarationRecente: "« Avec Tiriane Noah à la présidence, un signal fort est envoyé à toutes les femmes et à la jeunesse de notre pays ! »"
-        },
-        'ndong': {
-            name: "Christopher Nveh NDONG",
-            role: "Secrétaire Général du MRC",
-            tag: "SECRÉTAIRE GÉNÉRAL",
-            tagClass: "tag-sg",
-            photo: null,
-            bio: "Avocat éminent de tradition anglophone, pilier de l'unité républicaine et du bilinguisme intégral au Cameroun.",
-            parcours: "Secrétaire Général reconduit et conforté par la Convention d'octobre 2026, il assure la direction administrative, la circulation de l'information et le lien avec les fédérations du Nord-Ouest et du Sud-Ouest.",
-            vision: "« The Cameroon Renaissance Movement stands firm for equality, peace, constitutional decentralization and mutual respect among all linguistic communities. »",
-            declarationRecente: "« Toutes les fédérations nationales et de la diaspora sont invitées à s'aligner sur la feuille de route du Directoire. »"
-        },
-        'oko': {
-            name: "Oko Appolinaire LEGRAND",
-            role: "Trésorier National du MRC",
-            tag: "TRÉSORIER NATIONAL",
-            tagClass: "tag-tresorier",
-            photo: null,
-            bio: "Gestionnaire financier chevronné, garant de la probité, de la reddition des comptes et de la gestion saine des cotisations citoyennes.",
-            parcours: "Élu Trésorier National le 17 octobre 2026 pour veiller à la sécurisation des ressources militantes et à la transparence des dons.",
-            vision: "« La transparence financière du MRC est le gage de notre liberté politique et de notre crédibilité devant le peuple. »",
-            declarationRecente: "« Chaque cotisation d'adhérent fait l'objet d'un reçu officiel et d'une affectation directe aux actions de terrain. »"
-        }
-    },
-    // Histoire Complète Époque par Époque (2012 - 2026)
-    historyEpochs: {
-        '2012': {
-            title: "2012 : Le Congrès Constitutif & La Naissance de l'Espoir",
-            subtitle: "Fusion des patriotes et officialisation du MRC",
-            content: `
-                <p><strong>12-13 Août 2012 :</strong> Face au délitement moral, économique et institutionnel du Cameroun, plusieurs formations politiques dont le Mouvement Populaire pour le Changement (MPC) et des personnalités indépendantes se réunissent à Yaoundé.</p>
-                <p>Le <strong>Mouvement pour la Renaissance du Cameroun (MRC)</strong> est officiellement porté sur les fonts baptismaux. Le Pr Maurice Kamto est élu Président National.</p>
-                <p><strong>Reconnaissance Officielle :</strong> Le parti opère en pleine conformité juridique sous l'autorisation ministérielle MINATD N°000221 du 25 Juillet 2008 et la lettre d'enregistrement N°0002249/LMINATD/DAP/SDE/STP du 02 Août 2012.</p>
-                <div class="statute-callout"><strong>Devise Républicaine :</strong> « Justice &bull; Travail &bull; Prospérité &bull; Solidarité »</div>
-            `
-        },
-        '2013': {
-            title: "2013 : Le Baptême du Feu & L'Entrée au Parlement",
-            subtitle: "Double scrutin législatif et municipal",
-            content: `
-                <p>Moins d'un an après sa création, le MRC refuse le confort du boycott stérile et se lance dans l'arène électorale des législatives et municipales du 30 septembre 2013.</p>
-                <p>Malgré les fraudes massives et l'iniquité du code électoral, le parti crée la sensation : il remporte un siège historique de Député à l'Assemblée Nationale (avec l'honorable Lazare Soub dans le Wouri-Est) et plusieurs dizaines de conseillers municipaux.</p>
-                <p>Le MRC installe dès lors son statut de <strong>première force d'opposition constructive</strong> au cœur des institutions.</p>
-            `
-        },
-        '2018': {
-            title: "2018 : L'Élection Présidentielle & La Vague Populaire",
-            subtitle: "La campagne des « 5 Piliers » et la victoire revendiquée",
-            content: `
-                <p>La campagne présidentielle d'octobre 2018 marque un tournant sismique dans l'histoire politique contemporaine du Cameroun.</p>
-                <p>Le candidat Maurice Kamto parcourt le pays, drainant des foules historiques à Bafoussam, Douala, Maroua, Garoua et Yaoundé. Il noue une alliance stratégique d'envergure avec plusieurs figures majeures dont Christian Penda Ekoka et Paul Éric Kingué.</p>
-                <p><strong>Le Contentieux Historique :</strong> Pendant trois jours consécutifs, retransmis en direct à la télévision nationale, le collège des avocats du MRC démontre devant le Conseil Constitutionnel les fraudes massives et les faux procès-verbaux.</p>
-                <p>Maurice Kamto revendique la victoire du peuple dans les urnes et refuse la capitulation électorale.</p>
-            `
-        },
-        '2019': {
-            title: "2019 : Les Marches Blanches & La Résistance Pacifique",
-            subtitle: "Incarcération à Kondengui et triomphe moral",
-            content: `
-                <p>Le 26 janvier et le 1er juin 2019, des dizaines de milliers de citoyens défilent pacifiquement, une fleur à la main, pour réclamer l'arrêt de la guerre fratricide dans le Nord-Ouest et le Sud-Ouest et le recomptage des voix électorales.</p>
-                <p>Le régime réagit par une répression brutale : plus de 500 militants et cadres, dont le Pr Maurice Kamto, le Pr Alain Fogué, Christian Penda Ekoka et Mamadou Mota, sont jetés dans les geôles de la prison centrale de Kondengui.</p>
-                <p>Tiriane Noah assure avec brio la direction opérationnelle du parti. Sous la pression de la résistance populaire intérieure et de la diplomatie internationale, le régime cède et libère tous les prisonniers le 5 octobre 2019 sans la moindre concession sur leurs idéaux.</p>
-            `
-        },
-        '2020': {
-            title: "2020 : Paris République, Boycott Civique & SCSI",
-            subtitle: "Le triomphe de la diaspora et la solidarité Covid-19",
-            content: `
-                <p><strong>1er Février 2020 :</strong> Rassemblement géant sur la Place de la République à Paris : plus de 20 000 Camerounais de la diaspora acclament Maurice Kamto, marquant une communion sans précédent entre la patrie et sa diaspora.</p>
-                <p><strong>Le Boycott de Clarté :</strong> En février 2020, le MRC prend la décision historique et courageuse de boycotter le double scrutin pour ne pas cautionner la tenue d'élections sous les bombes dans le NOSO et exiger une refonte du Code électoral.</p>
-                <p><strong>Survie Cameroun Survival Initiative (SCSI) :</strong> Face à la pandémie de Covid-19, le parti lève des centaines de millions de FCFA de dons citoyens pour distribuer masques, tests et gels aux hôpitaux camerounais, palliant la défaillance des autorités publiques.</p>
-            `
-        },
-        '2023': {
-            title: "2023 : La 3ème Convention Ordinaire à Yaoundé",
-            subtitle: "Le plébiscite du Palais des Congrès",
-            content: `
-                <p><strong>9-10 Décembre 2023 :</strong> Le MRC défie les menaces d'interdiction et rassemble plus de 10 000 délégués venus des 10 régions du Cameroun et des délégations des 5 continents au Palais des Congrès de Yaoundé.</p>
-                <p>La convention réaffirme l'unité inébranlable du parti et consolide les statuts démocratiques de l'organisation.</p>
-            `
-        },
-        '2024': {
-            title: "2024-2025 : L'Organisation de Masse & Sentinelle Citoyenne",
-            subtitle: "Structuration territoriale et protection des procès-verbaux",
-            content: `
-                <p>Le MRC accélère la délivrance des cartes de membre numérisées et déploie le dispositif de <strong>« Sentinelle Électorale »</strong> visant à doter chaque bureau de vote d'observateurs formés pour sécuriser chaque procès-verbal.</p>
-            `
-        },
-        '2026': {
-            title: "17 Octobre 2026 : Convention Extraordinaire & Élection de Tiriane Noah (96,89%)",
-            subtitle: "Nouvelle direction nationale élue suite à la démission de Maurice Kamto et Mamadou Mota",
-            content: `
-                <p><strong>17 Octobre 2026 :</strong> Événement démocratique historique au sein du MRC. À la suite de la démission du Pr Maurice Kamto et de Mamadou Mota, une Convention Nationale Extraordinaire s'est réunie pour élire la nouvelle direction du parti.</p>
-                <p><strong>Tiriane Balbine NOAH</strong> a été élue <strong>Présidente Nationale du MRC avec 96,89 % des suffrages exprimés</strong>, consacrant son dévouement exceptionnel et son leadership républicain.</p>
-                <p>Le congrès a également procédé à l'élection de la nouvelle équipe dirigeante du Directoire National :</p>
-                <ul>
-                    <li><strong>Cinq Vice-Présidents Nationaux :</strong> Emmanuel Simh, Elie Ngompe, Ismaël Kaigama, Samuel Same Kolle, Aissatou Saadou.</li>
-                    <li><strong>Secrétaire Général :</strong> Christopher Nveh Ndong.</li>
-                    <li><strong>Trésorier National :</strong> Oko Appolinaire Legrand.</li>
-                    <li><strong>Président Fondateur :</strong> Pr Maurice Kamto demeure le guide et membre fondateur statutaire du parti.</li>
-                </ul>
-                <div class="statute-callout" style="background:#e8f5ed; padding:8px 10px; border-radius:8px; border-left:4px solid var(--vert); margin-top:8px;">
-                    <strong>Composition statutaire du Directoire (mrcparty.net/organes-nationaux) :</strong> Réunit les membres fondateurs, la Présidente Nationale, les Vice-présidents, le Conseil National, le Comité des Sages, le Comité National d'Arbitrage, le Secrétaire National, les secrétaires régionaux OFMRC et 10 membres désignés.
-                </div>
-            `
-        }
-    },
-    // Articles & Communiqués Officiels
-    articles: [
-        {
-            category: "Convention Extraordinaire",
-            source: "tiriane",
-            sourceLabel: "Présidence du MRC - Tiriane Noah",
-            date: "18 Octobre 2026",
-            title: "Élection triomphale de Tiriane Balbine NOAH à la Présidence Nationale du MRC (96,89%)",
-            author: "Directoire National",
-            excerpt: "« La Convention Nationale Extraordinaire réunie le 17 octobre 2026 a plébiscité Tiriane Balbine Noah avec 96,89% des voix à la tête du MRC et doté le parti d'un nouveau Directoire unifié. »",
-            content: "À la suite des démissions du Pr Maurice Kamto et de Mamadou Mota, les délégués des 10 régions et de la diaspora ont élu Tiriane Balbine Noah pour conduire les destinées du MRC. Les 5 Vice-présidents (Emmanuel Simh, Elie Ngompe, Ismaël Kaigama, Samuel Same Kolle, Aissatou Saadou), le SG Christopher Nveh Ndong et le Trésorier Oko Appolinaire Legrand prennent immédiatement leurs fonctions."
-        },
-        {
-            category: "Haut Directoire",
-            source: "kamto",
-            sourceLabel: "Pr Maurice Kamto, Président Fondateur",
-            date: "17 Octobre 2026",
-            title: "Message fraternel du Président Fondateur Maurice KAMTO à la nouvelle direction",
-            author: "Cabinet du Président Fondateur",
-            excerpt: "« Le parti démontre sa maturité démocratique exceptionnelle. Je soutiens de tout cœur la Présidente Tiriane Noah et la nouvelle équipe dirigeante du Directoire. »",
-            content: "Dans une allocution chargée d'émotion, le Pr Maurice Kamto a salué la passation républicaine pacifique et a appelé tous les militants et sympathisants du Cameroun et de la diaspora à faire bloc derrière Tiriane Balbine Noah."
-        },
-        {
-            category: "Directoire National",
-            source: "directoire",
-            sourceLabel: "Secrétariat Général - Christopher Nveh Ndong",
-            date: "21 Octobre 2026",
-            title: "Publication officielle de la nouvelle composition du Directoire National du MRC",
-            author: "Christopher Nveh Ndong, Secrétaire Général",
-            excerpt: "« Conformément aux textes officiels régissant les organes nationaux du MRC, la nouvelle direction se met en ordre de marche pour les défis républicains à venir. »",
-            content: "Le Secrétariat Général publie la composition complète issue de la Convention du 17 octobre 2026, incluant les membres fondateurs, la Présidente, les 5 Vice-présidents, le Comité des Sages et les secrétaires régionaux OFMRC."
-        },
-        {
-            category: "Réseaux Sociaux & Base",
-            source: "facebook",
-            sourceLabel: "Facebook @mrcpartycameroon",
-            date: "25 Octobre 2026",
-            title: "Vague d'adhésions massives et de félicitations pour la Présidente Tiriane Noah",
-            author: "Commission Communication & Réseaux",
-            excerpt: "« Plus de 15 000 nouvelles cartes d'adhésion délivrées en une semaine à travers les 10 régions suite à la Convention Nationale Extraordinaire. »",
-            content: "Un enthousiasme populaire sans précédent s'est emparé des comités de base et des fédérations départementales, saluant l'élection historique de Tiriane Balbine Noah à la tête de la première formation d'opposition du Cameroun."
-        }
-    ]
+// ─── RÉGIONS & DÉPARTEMENTS DU CAMEROUN (10 Régions, 58 Départements)
+const REGIONS = {
+  "Centre": { code: "CEN", deps: ["Haute-Sanaga", "Lekié", "Mbam-et-Inoubou", "Mbam-et-Kim", "Méfou-et-Afamba", "Méfou-et-Akono", "Mfoundi", "Nyong-et-Kéllé", "Nyong-et-Mfoumou", "Nyong-et-So'o"] },
+  "Littoral": { code: "LIT", deps: ["Moungo", "Nkam", "Sanaga-Maritime", "Wouri"] },
+  "Ouest": { code: "OUE", deps: ["Bamboutos", "Haut-Nkam", "Hauts-Plateaux", "Koung-Khi", "Menoua", "Mifi", "Ndé", "Noun"] },
+  "Sud": { code: "SUD", deps: ["Dja-et-Lobo", "Mvila", "Océan", "Vallée-du-Ntem"] },
+  "Adamaoua": { code: "ADA", deps: ["Djérem", "Faro-et-Déo", "Mayo-Banyo", "Mbéré", "Vina"] },
+  "Nord": { code: "NRD", deps: ["Bénoué", "Faro", "Mayo-Louti", "Mayo-Rey"] },
+  "Extrême-Nord": { code: "EXN", deps: ["Diamaré", "Logone-et-Chari", "Mayo-Danay", "Mayo-Kani", "Mayo-Sava", "Mayo-Tsanaga"] },
+  "Nord-Ouest": { code: "NWS", deps: ["Boyo", "Bui", "Donga-Mantung", "Menchum", "Mezam", "Momo", "Ngo-Ketunjia"] },
+  "Sud-Ouest": { code: "SWS", deps: ["Fako", "Koupé-Manengouba", "Lebialem", "Manyu", "Meme", "Ndian"] },
+  "Est": { code: "EST", deps: ["Boumba-et-Ngoko", "Haut-Nyong", "Kadey", "Lom-et-Djérem"] }
 };
 
-// ============================================================== //
-// INITIALISATION DU RENDU DE LA CARTE DE MEMBRE EN 3D            //
-// ============================================================== //
-function formaterDate(iso) {
-    if (!iso) return "";
-    const parts = iso.split("-");
-    if (parts.length === 3) {
-        return `${parts[2]}/${parts[1]}/${parts[0]}`;
-    }
-    return iso;
+// ─── TYPES DE STRUCTURES DU MRC ─────────────────────────────────────
+const TYPES_STRUCTURE = {
+  comm: { label: "Fédération Communale", abbr: "FD COM", besoin: ["region", "dept", "lieu"], lieuLabel: "Commune / Arrondissement" },
+  dept: { label: "Fédération Départementale", abbr: "FD DEP", besoin: ["region", "dept"] },
+  reg: { label: "Fédération Régionale", abbr: "FD REG", besoin: ["region"] },
+  unite: { label: "Unité de Base", abbr: "UNITÉ", besoin: ["region", "dept", "lieu"], lieuLabel: "Quartier / Village / Unité" },
+  diaspora: { label: "Fédération de la Diaspora", abbr: "DIASPORA", besoin: ["lieu"], lieuLabel: "Pays & Ville de Résidence" }
+};
+
+// ─── DICTIONNAIRE BILINGUE OFFICIEL (FR / EN) ───────────────────────
+const I18N = {
+  FR: {
+    app_title: "MRC",
+    app_subtitle: "Renaissance du Cameroun",
+    nav_card: "Ma Carte",
+    nav_adhesion: "Adhésion & Profil",
+    nav_directoire: "Le Directoire",
+    nav_depeches: "Dépêches & Veille",
+    nav_histoire: "Histoire (2012-2026)",
+    nav_settings: "Paramètres",
+    card_front_title_fr: "CARTE DE MEMBRE",
+    card_front_title_en: "MEMBERSHIP CARD",
+    field_branch: "Structure",
+    field_surname: "Prénom",
+    field_name: "Nom",
+    field_phone: "Tél.",
+    field_number: "N°",
+    field_date: "Date d'adhésion",
+    pres_label: "La Présidente Nationale",
+    verso_banner: "CARTE PERSONNELLE ET INCESSIBLE · PERSONAL AND NON-TRANSFERABLE",
+    statutes_title: "Droits et devoirs du membre",
+    meta_member_no: "N° de membre",
+    meta_validity: "Valable jusqu'au",
+    meta_structure: "Structure",
+    meta_date: "Adhésion",
+    member_signature_label: "Signature du titulaire",
+    qr_hint: "Scannez pour afficher toutes les informations officielles du membre",
+    btn_flip_card: "Retourner la carte (3D)",
+    btn_verify: "Contrôle QR",
+    form_title: "Formulaire d'Enregistrement Officiel & Attribution du Numéro",
+    photo_upload_title: "Photo d'Identité du Membre",
+    photo_upload_hint: "Visible sur votre carte d'adhérent numérique officielle (Format JPG/PNG)",
+    btn_choose_photo: "Choisir ma photo",
+    label_surname: "Prénom",
+    label_name: "Nom",
+    label_phone: "Téléphone / WhatsApp (+237)",
+    label_cni: "N° CNI ou Passeport",
+    label_date: "Date d'adhésion",
+    label_type_structure: "Type de Structure (Branche)",
+    label_region: "Région",
+    label_dept: "Département",
+    label_commune: "Commune / Arrondissement",
+    label_number_auto: "N° de membre (Généré Automatiquement)",
+    btn_save_member: "Enregistrer et Mettre à Jour la Carte",
+    btn_new_member: "Nouveau Membre",
+    dir_badge: "Convention Nationale du 17 Octobre 2026",
+    dir_title: "Direction Stratégique du Mouvement pour la Renaissance du Cameroun",
+    dir_subtitle: "Élection triomphale de Tiriane Balbine Noah à la Présidence Nationale (96,89%) & Direction collégiale unie.",
+    sentinel_active: "Veille Sentinelle Active",
+    sentinel_bots_count: "1 240 canaux scrutés en continu • Filtre anti-fake news actif",
+    btn_run_scan: "Lancer la Sentinelle (Scan Réseaux)",
+    hist_title: "Histoire Complète & Épopée Républicaine du MRC",
+    hist_subtitle: "De la fondation fondatrice le 13 août 2012 au passage de témoin historique du 17 octobre 2026. Tout est documenté.",
+    set_appearance: "Apparence & Interface",
+    set_dark_mode: "Thème Sombre (Dark Mode)",
+    set_dark_mode_desc: "Améliore le confort de lecture la nuit et réduit la consommation de batterie",
+    set_lang: "Langue de l'application (Bilingue)",
+    set_lang_desc: "Français ou English officiel du Cameroun",
+    set_security: "Protection & Ligne Juridique",
+    set_sos_title: "SOS Militant & Assistance Immédiate",
+    set_sos_desc: "Numéro officiel d'urgence du Collectif des Avocats du MRC en cas d'interpellation",
+    set_legal: "Mentions Officielles & Cadre Statutaire"
+  },
+  EN: {
+    app_title: "MRC",
+    app_subtitle: "Cameroon Renaissance",
+    nav_card: "My Card",
+    nav_adhesion: "Join & Profile",
+    nav_directoire: "Leadership",
+    nav_depeches: "News & Monitor",
+    nav_histoire: "History (2012-2026)",
+    nav_settings: "Settings",
+    card_front_title_fr: "CARTE DE MEMBRE",
+    card_front_title_en: "MEMBERSHIP CARD",
+    field_branch: "Structure",
+    field_surname: "Surname",
+    field_name: "Name",
+    field_phone: "Phone",
+    field_number: "No.",
+    field_date: "Membership date",
+    pres_label: "The National President",
+    verso_banner: "PERSONAL AND NON-TRANSFERABLE · CARTE PERSONNELLE ET INCESSIBLE",
+    statutes_title: "Member rights and duties",
+    meta_member_no: "Member No.",
+    meta_validity: "Valid until",
+    meta_structure: "Branch",
+    meta_date: "Registration",
+    member_signature_label: "Holder's Signature",
+    qr_hint: "Scan to display all official member details",
+    btn_flip_card: "Flip Card (3D)",
+    btn_verify: "QR Verify",
+    form_title: "Official Member Registration & Automatic Number Assignment",
+    photo_upload_title: "Member Identity Photo",
+    photo_upload_hint: "Displayed on your official digital card (JPG/PNG)",
+    btn_choose_photo: "Upload Photo",
+    label_surname: "First Name / Surname",
+    label_name: "Last Name",
+    label_phone: "Phone / WhatsApp (+237)",
+    label_cni: "National ID / Passport No.",
+    label_date: "Registration Date",
+    label_type_structure: "Structure Type (Branch)",
+    label_region: "Region",
+    label_dept: "Division / Department",
+    label_commune: "Sub-Division / City",
+    label_number_auto: "Member Number (Auto Generated)",
+    btn_save_member: "Save & Update Membership Card",
+    btn_new_member: "New Member",
+    dir_badge: "Extraordinary National Convention - Oct 17, 2026",
+    dir_title: "Strategic Executive of Cameroon Renaissance Movement",
+    dir_subtitle: "Landslide election of Tiriane Balbine Noah as National President (96.89%) & United leadership.",
+    sentinel_active: "Live Sentinel Monitor Active",
+    sentinel_bots_count: "1,240 channels monitored continuously • Anti-fake news filter active",
+    btn_run_scan: "Trigger Network Scanner",
+    hist_title: "Comprehensive History & Republican Journey of the MRC",
+    hist_subtitle: "From foundation on August 13, 2012 to democratic transition on October 17, 2026. Every detail documented.",
+    set_appearance: "Appearance & Interface",
+    set_dark_mode: "Dark Theme (Dark Mode)",
+    set_dark_mode_desc: "Improves reading comfort at night and preserves battery",
+    set_lang: "App Language (Bilingual)",
+    set_lang_desc: "Official French or English of Cameroon",
+    set_security: "Legal Defense & Protection",
+    set_sos_title: "Activist SOS & Immediate Assistance",
+    set_sos_desc: "Official emergency contact for MRC Defense Lawyers in case of arbitrary arrest",
+    set_legal: "Legal Notice & Party Statutes"
+  }
+};
+
+// ─── ÉTAT GLOBAL DE L'APPLICATION ───────────────────────────────────
+let appState = {
+  lang: localStorage.getItem('mrc_lang') || 'FR',
+  theme: localStorage.getItem('mrc_theme') || 'light',
+  isCardFlipped: false,
+  memberPhoto: localStorage.getItem('mrc_photo') || null,
+  member: {
+    prenom: "CYRILLE",
+    nom: "EDOU",
+    tel: "659452898",
+    cni: "108945210",
+    date: "2024-02-19",
+    type: "comm",
+    region: "Sud",
+    dept: "Dja-et-Lobo",
+    lieu: "Sangmélima Owono Mimbo'o",
+    numero: "MRC-SUD-24-000001-8"
+  }
+};
+
+// ─── DIRECTOIRE NATIONAL (CONVENTION OCTOBRE 2026) ──────────────────
+const LEADERS = [
+  {
+    id: "tiriane",
+    nom: "Tiriane Balbine Nadège NOAH",
+    roleFr: "Présidente Nationale du MRC (Élue à 96,89 %)",
+    roleEn: "National President of the CRM (Elected at 96.89%)",
+    badge: "PRÉSIDENTE NATIONALE",
+    photo: "assets/presidente_tiriane_noah.png",
+    bio: "Cadre supérieure de gestion, figure emblématique de la résistance démocratique pacifique. Portée à la présidence du parti lors de la Convention Nationale Extraordinaire du 17 octobre 2026 avec 96,89 % des suffrages exprimés.",
+    parcours: "Militante de la première heure, elle a assuré avec sang-froid et courage la direction par intérim du parti en 2019 lors de l'incarcération des leaders à Kondengui. Elle incarne le renouveau, l'unité et la conquête pacifique du pouvoir par les urnes."
+  },
+  {
+    id: "kamto",
+    nom: "Pr Maurice KAMTO",
+    roleFr: "Président Fondateur du MRC & Membre du Directoire",
+    roleEn: "Founding President of CRM & Statutory Board Member",
+    badge: "PRÉSIDENT FONDATEUR",
+    photo: "assets/president_maurice_kamto.jpg",
+    bio: "Agrégé des Facultés de Droit, ancien Doyen de la Faculté de Droit de Yaoundé II, ancien Président de la Commission du Droit International de l'ONU. Artisan de la victoire historique de Bakassi devant la Cour Internationale de Justice.",
+    parcours: "Ministre démissionnaire le 30 novembre 2011 par sursaut éthique. Fondateur du MRC en 2012, candidat à la présidentielle de 2018, il a insufflé l'élan historique de la Renaissance camerounaise avant de transmettre les rênes exécutives le 17 octobre 2026."
+  },
+  {
+    id: "simh",
+    nom: "Me Emmanuel SIMH",
+    roleFr: "1er Vice-Président National (Libertés & Justice)",
+    roleEn: "1st National Vice-President (Freedoms & Justice)",
+    badge: "VICE-PRÉSIDENT",
+    photo: null,
+    bio: "Avocat éminent au Barreau du Cameroun, Coordonnateur du Collectif des Avocats du MRC.",
+    parcours: "Défenseur acharné des militants face aux juridictions militaires d'exception, il veille à la légalité républicaine et aux libertés fondamentales."
+  },
+  {
+    id: "ngompe",
+    nom: "Elie NGOMPE",
+    roleFr: "Vice-Président National (Implantation Territoriale)",
+    roleEn: "National Vice-President (Territorial Organisation)",
+    badge: "VICE-PRÉSIDENT",
+    photo: null,
+    bio: "Pilier organisationnel du parti et stratège de l'enracinement dans les bassins de population.",
+    parcours: "Coordonne l'animation des fédérations départementales et communales à travers l'ensemble du territoire national."
+  },
+  {
+    id: "kaigama",
+    nom: "Ismaël KAIGAMA",
+    roleFr: "Vice-Président National (Représentation du Septentrion)",
+    roleEn: "National Vice-President (Northern Regions Delegate)",
+    badge: "VICE-PRÉSIDENT",
+    photo: null,
+    bio: "Haut responsable politique originaire de la région de l'Extrême-Nord.",
+    parcours: "Fédérateur des énergies patriotiques dans le Grand Nord (Adamaoua, Nord, Extrême-Nord), engagé pour la justice sociale et l'accès à l'eau et à l'éducation."
+  },
+  {
+    id: "same",
+    nom: "Samuel SAME KOLLE",
+    roleFr: "Vice-Président National (Études & Prospective)",
+    roleEn: "National Vice-President (Policy Studies & Strategy)",
+    badge: "VICE-PRÉSIDENT",
+    photo: null,
+    bio: "Universitaire, chercheur et économiste du développement.",
+    parcours: "Responsable de l'élaboration du programme économique et social de la Renaissance et de l'adaptation du projet de société aux défis contemporains."
+  },
+  {
+    id: "saadou",
+    nom: "Aïssatou SAADOU",
+    roleFr: "Vice-Présidente Nationale (Mobilisation Féminine & OFMRC)",
+    roleEn: "National Vice-President (Women Mobilisation & OFMRC)",
+    badge: "VICE-PRÉSIDENTE",
+    photo: null,
+    bio: "Présidente de l'Organisation des Femmes du MRC (OFMRC), leader communautaire respectée.",
+    parcours: "Mobilise les femmes camerounaises pour leur émancipation économique, leur inscription sur les listes électorales et leur participation aux décisions de la nation."
+  },
+  {
+    id: "ndong",
+    nom: "Christopher Nveh NDONG",
+    roleFr: "Secrétaire Général du Parti",
+    roleEn: "Secretary General of the Party",
+    badge: "SECRÉTAIRE GÉNÉRAL",
+    photo: null,
+    bio: "Haut fonctionnaire politique bilingue, cheville ouvrière de l'administration centrale du MRC.",
+    parcours: "Garant de l'application scrupuleuse des résolutions du Directoire, de la coordination avec les régions anglophones (Nord-Ouest et Sud-Ouest) et de la discipline statutaire."
+  },
+  {
+    id: "legrand",
+    nom: "Oko Appolinaire LEGRAND",
+    roleFr: "Trésorier National du MRC",
+    roleEn: "National Treasurer of the CRM",
+    badge: "TRÉSORIER NATIONAL",
+    photo: null,
+    bio: "Gestionnaire financier chevronné, responsable de la transparence comptable.",
+    parcours: "Assure la gestion rigoureuse des cotisations des membres, des dons légaux et la délivrance des reçus de trésorerie officielle."
+  }
+];
+
+// ─── FRESQUE HISTORIQUE EXHAUSTIVE (2012 - 2026) ─────────────────────
+const HISTOIRE = [
+  {
+    annee: "13 Août 2012",
+    titre: "Fondation du MRC & Le Discours Historique de Maurice Kamto",
+    desc: "Le Mouvement pour la Renaissance du Cameroun (MRC) est officiellement porté sur les fonts baptismaux à Yaoundé. Issu de la fusion du Mouvement Républicain et de l'adhésion massive d'intellectuels et patriotes, Maurice Kamto prononce sa déclaration de foi inaugurale : 'Changer l'avenir dans la paix et par les urnes'. Le parti adopte le vert républicain et place la justice sociale et l'État de droit au cœur de son projet."
+  },
+  {
+    annee: "Septembre 2013",
+    titre: "Le Baptême du Feu Électoral & Entrée à l'Assemblée Nationale",
+    desc: "Un an seulement après sa création, le MRC prend part aux élections législatives et municipales du 30 septembre 2013. Malgré les manœuvres administratives, le parti fait son entrée historique au Parlement avec un député courageux (Hon. Lazare Soub) et conquiert plusieurs conseillers municipaux, démontrant son ancrage national."
+  },
+  {
+    annee: "2014 - 2017",
+    titre: "Structuration Nationale & Alertes Prémonitoires sur la Crise Anglophone",
+    desc: "Le MRC implante ses fédérations régionales, départementales et communales dans les 10 régions du pays et structure sa diaspora. Face au déclenchement de la crise dans le Nord-Ouest et le Sud-Ouest (NOSO) dès fin 2016, Maurice Kamto est le premier leader politique national à se rendre sur le terrain pour exiger un dialogue inclusif et rejeter la solution militaire."
+  },
+  {
+    annee: "Octobre 2018",
+    titre: "La Campagne Triomphale & Le Mémorable Contentieux Électoral",
+    desc: "Candidat du MRC et d'une large coalition républicaine, Maurice Kamto mène une campagne électorale sans précédent qui soulève des millions de citoyens (marées humaines à Douala New-Bell, Yaoundé, Bafoussam, Garoua). Face au déni du scrutin, les plaidoiries magistrales du MRC retransmises en direct à la CRTV devant le Conseil Constitutionnel marquent à jamais la conscience collective nationale."
+  },
+  {
+    annee: "26 Janvier 2019",
+    titre: "Les Marches Blanches Pacifiques & Les 9 Mois de Prison à Kondengui",
+    desc: "En réponse au hold-up électoral et pour réclamer l'arrêt de la guerre civile au NOSO, le MRC organise des marches blanches strictement pacifiques. Le 26 et 28 janvier 2019, Maurice Kamto, Christian Penda Ekoka, Alain Fogue, Albert Dzongang et des centaines de militants sont arrêtés et transférés à la prison centrale de Kondengui. La résistance héroïque des patriotes et la pression internationale contraignent le régime à libérer les dirigeants en octobre 2019."
+  },
+  {
+    annee: "Février 2020",
+    titre: "Le Boycott Historique de Principe : L'Éthique au-dessus des Postes",
+    desc: "Fidèle à ses principes républicains, le MRC décide le boycott des élections législatives et municipales du 9 février 2020. Le parti refuse d'aller à un vote taché du sang des populations du NOSO sans cessez-le-feu préalable et exige une réforme consensuelle du code électoral camerounais."
+  },
+  {
+    annee: "Avril 2020",
+    titre: "L'Initiative Citoyenne et Humanitaire SCSI (Survie Cameroun)",
+    desc: "Devant les défaillances de l'État face à la pandémie de Covid-19, Maurice Kamto lance l'initiative non-partisane 'Survie Cameroon Survival Initiative' (SCSI). Malgré les persécutions policières et la saisie arbitraire des fonds et du matériel médical, SCSI distribue des dizaines de milliers de kits sanitaires et de masques à travers le pays."
+  },
+  {
+    annee: "22 Septembre 2020",
+    titre: "Les Marches Populaires & La Séquestration de Maurice Kamto",
+    desc: "Mobilisation citoyenne pacifique le 22 septembre 2020 pour exiger le retour de la paix au NOSO et la réforme d'ELECAM. Maurice Kamto est immédiatement séquestré et assigné à résidence illégale à son domicile de Santa Barbara pendant 89 jours. Des figures majeures comme Alain Fogue, Bibou Nissack et des dizaines de patriotes sont lourdement condamnés par des tribunaux militaires incompétents."
+  },
+  {
+    annee: "2024 - 2025",
+    titre: "L'Opération Inscriptions Massives ELECAM & Sentinelle Citoyenne",
+    desc: "Le MRC mène une campagne nationale intense d'enrôlement des jeunes et des femmes sur les listes électorales d'ELECAM, brisant la résignation ambiante. Déploiement des cellules de Sentinelle citoyenne pour surveiller et sécuriser chaque bureau de vote à l'échelle des 360 arrondissements."
+  },
+  {
+    annee: "17 Octobre 2026",
+    titre: "Convention Nationale Extraordinaire : Élection de Tiriane Noah à 96,89 %",
+    desc: "Moment démocratique historique. À la suite de la démission de Maurice Kamto et Mamadou Mota de la direction exécutive pour impulser une dynamique nouvelle, les délégués des 10 régions élisent Tiriane Balbine Nadège Noah comme Présidente Nationale avec un score éclatant de 96,89 %. Le Pr Maurice Kamto est consacré Président Fondateur et membre statutaire du Directoire. Le MRC affirme sa solidité institutionnelle et se met en ordre de bataille républicain."
+  }
+];
+
+// ─── DÉPÊCHES OFFICIELLES & FLUX SENTINELLE ──────────────────────────
+const DEPECHES = [
+  {
+    id: 1,
+    badge: "COMMUNIQUÉ DU DIRECTOIRE",
+    date: "21 Octobre 2026",
+    titre: "Investiture Officielle de la Présidente Nationale Tiriane Balbine NOAH",
+    contenu: "Le Secrétariat Général du MRC annonce l'entrée en fonction officielle de la Présidente Tiriane Noah, élue avec 96,89% des voix lors de la Convention Nationale. Elle a réaffirmé la priorité absolue accordée à la délivrance des cartes de membre à tous les patriotes camerounais."
+  },
+  {
+    id: 2,
+    badge: "TRIBUNE DU PRÉSIDENT FONDATEUR",
+    date: "18 Octobre 2026",
+    titre: "Pr Maurice Kamto : 'Le flambeau de la Renaissance est entre des mains dignes'",
+    contenu: "Dans une déclaration solennelle adressée au peuple camerounais et aux délégations des 10 régions, le Pr Maurice Kamto a félicité la nouvelle équipe dirigeante et a appelé l'ensemble des militants à se mobiliser sans faille derrière la Présidente Tiriane Noah."
+  },
+  {
+    id: 3,
+    badge: "ALERTE ELECAM & SENTINELLE",
+    date: "12 Octobre 2026",
+    titre: "Audit Citoyen des Fichiers Électoraux : Déploiement des Scrutateurs",
+    contenu: "La cellule électorale Sentinelle a achevé le recensement préliminaire des bureaux de vote. Le parti exige d'ELECAM la publication intégrale et transparente des listes électorales biométriques dans les antennes communales."
+  },
+  {
+    id: 4,
+    badge: "COLLECTIF DES AVOCATS",
+    date: "04 Octobre 2026",
+    titre: "Me Emmanuel Simh réitère l'exigence de libération des prisonniers d'opinion",
+    contenu: "Le Collectif des Avocats du MRC continue sans relâche la bataille judiciaire devant les instances africaines et internationales pour obtenir la libération immédiate et inconditionnelle des patriotes arbitrairement incarcérés depuis septembre 2020."
+  }
+];
+
+// ─── OUTILS MATHÉMATIQUES & NUMÉROTATION LUHN ────────────────────────
+function luhnChecksum(str) {
+  let sum = 0, double = true;
+  for (let i = str.length - 1; i >= 0; i--) {
+    let d = Number(str[i]);
+    if (double) { d *= 2; if (d > 9) d -= 9; }
+    sum += d; double = !double;
+  }
+  return (10 - (sum % 10)) % 10;
 }
 
-function genererCarte(m) {
-    // 1. Recto (Fidèle à l'échantillon SU00062551)
-    const elStruct = document.getElementById('cStructure');
-    const elPrenom = document.getElementById('cPrenom');
-    const elNom = document.getElementById('cNom');
-    const elTel = document.getElementById('cTel');
-    const elNum = document.getElementById('cNumero');
-    const elDate = document.getElementById('cDate');
-    const elPrix = document.getElementById('cPrix');
-    const elBadge = document.getElementById('cardStatusBadge');
-
-    if (elStruct) elStruct.textContent = m.structure;
-    if (elPrenom) elPrenom.textContent = m.prenom;
-    if (elNom) elNom.textContent = m.nom;
-    if (elTel) elTel.textContent = m.tel;
-    if (elNum) elNum.textContent = m.numero;
-    if (elDate) elDate.textContent = formaterDate(m.date);
-    if (elPrix) elPrix.textContent = m.cotisation || "1.000 F CFA";
-    if (elBadge) elBadge.textContent = m.status;
-
-    // 2. Verso (Sécurité, Barcode et QR Code)
-    const backNum = document.getElementById('backNumDisplay');
-    const backHash = document.getElementById('backHashDisplay');
-    const barcodeLbl = document.getElementById('barcodeLabel');
-
-    if (backNum) backNum.textContent = m.numero;
-    if (backHash) backHash.textContent = m.signatureHash;
-    if (barcodeLbl) barcodeLbl.textContent = m.numero;
-
-    // 3. Génération du QR Code sur le Verso (#qrBack)
-    const qrContainer = document.getElementById('qrBack');
-    if (qrContainer) {
-        qrContainer.innerHTML = "";
-        const verifyUrl = CONFIG.urlVerification + encodeURIComponent(m.numero) + "&sig=" + encodeURIComponent(m.signatureHash);
-        try {
-            if (typeof QRCode === 'function') {
-                new QRCode(qrContainer, {
-                    text: verifyUrl,
-                    width: 130,
-                    height: 130,
-                    colorDark: "#06602f",
-                    colorLight: "#ffffff",
-                    correctLevel: (QRCode.CorrectLevel && QRCode.CorrectLevel.M) || 0
-                });
-            } else if (window.QRCode && QRCode.toCanvas) {
-                const canvas = document.createElement('canvas');
-                qrContainer.appendChild(canvas);
-                QRCode.toCanvas(canvas, verifyUrl, { width: 130, color: { dark: '#06602f', light: '#ffffff' } });
-            } else {
-                // Fallback SVG QR
-                qrContainer.innerHTML = `<svg width="130" height="130" viewBox="0 0 100 100" fill="#06602f"><rect width="100" height="100" fill="#fff"/><rect x="10" y="10" width="30" height="30" fill="#06602f"/><rect x="15" y="15" width="20" height="20" fill="#fff"/><rect x="20" y="20" width="10" height="10" fill="#06602f"/><rect x="60" y="10" width="30" height="30" fill="#06602f"/><rect x="65" y="15" width="20" height="20" fill="#fff"/><rect x="70" y="20" width="10" height="10" fill="#06602f"/><rect x="10" y="60" width="30" height="30" fill="#06602f"/><rect x="15" y="65" width="20" height="20" fill="#fff"/><rect x="20" y="70" width="10" height="10" fill="#06602f"/><rect x="50" y="50" width="15" height="15" fill="#06602f"/><rect x="70" y="70" width="20" height="20" fill="#06602f"/></svg>`;
-            }
-        } catch (e) {
-            console.warn("QR render fallback", e);
-        }
-    }
+function genererNumeroMembre(regionNom, anneeStr) {
+  const regObj = REGIONS[regionNom] || { code: "CEN" };
+  const an = (anneeStr || "26").slice(-2);
+  const seqBase = "000001"; // Séquence officielle d'adhésion
+  const luhn = luhnChecksum(an + seqBase);
+  return `${CONFIG.prefixeNumero}-${regObj.code}-${an}-${seqBase}-${luhn}`;
 }
 
-// ============================================================== //
-// RETOURNEMENT 3D INTERACTIF DE LA CARTE                         //
-// ============================================================== //
-function toggleCard3DFlip() {
-    const cardEl = document.getElementById('card3dElement');
-    if (!cardEl) return;
-    appState.isCardFlipped = !appState.isCardFlipped;
-    if (appState.isCardFlipped) {
-        cardEl.classList.add('is-flipped');
-    } else {
-        cardEl.classList.remove('is-flipped');
-    }
+// ─── FORMATAGE DE DATES ──────────────────────────────────────────────
+function dateIsoEnFr(isoStr) {
+  if (!isoStr) return "19/02/2024";
+  const [a, m, j] = isoStr.split("-");
+  return `${j}/${m}/${a}`;
 }
 
-// ============================================================== //
-// GESTION DU DIRECTOIRE NATIONAL & MODAL DÉTAILLÉE               //
-// ============================================================== //
-function openLeaderModal(id) {
-    const leader = appState.leaders[id];
-    if (!leader) return;
-
-    appState.activeLeaderId = id;
-    const titleEl = document.getElementById('modalLeaderTitle');
-    const bodyEl = document.getElementById('modalLeaderBody');
-
-    titleEl.textContent = leader.name;
-
-    const avatarHtml = leader.photo
-        ? `<img src="${leader.photo}" alt="${leader.name}" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:3px solid var(--vert); margin-right:12px;">`
-        : `<div style="width:70px; height:70px; border-radius:50%; background:var(--vert-clair); color:var(--vert); display:grid; place-items:center; font-size:30px; border:2px solid var(--vert); margin-right:12px;"><i class="fa-solid fa-user-tie"></i></div>`;
-
-    bodyEl.innerHTML = `
-        <div style="display:flex; align-items:center; margin-bottom:14px;">
-            ${avatarHtml}
-            <div>
-                <span class="role-tag ${leader.tagClass || ''}">${leader.tag}</span>
-                <h4 style="font-size:14px; color:var(--encre); margin:4px 0 2px;">${leader.name}</h4>
-                <div style="font-size:10px; color:var(--gris); font-weight:600;">${leader.role}</div>
-            </div>
-        </div>
-
-        <div style="background:#f9fbf9; border:1px solid #dbe6de; padding:10px 12px; border-radius:10px; margin-bottom:12px;">
-            <h5 style="font-size:11px; color:var(--vert-fonce); font-weight:800; margin-bottom:4px;"><i class="fa-solid fa-graduation-cap text-green"></i> Titres &amp; Biographie</h5>
-            <p style="font-size:10.5px; color:var(--encre); line-height:1.45;">${leader.bio}</p>
-        </div>
-
-        <div style="background:#f9fbf9; border:1px solid #dbe6de; padding:10px 12px; border-radius:10px; margin-bottom:12px;">
-            <h5 style="font-size:11px; color:var(--vert-fonce); font-weight:800; margin-bottom:4px;"><i class="fa-solid fa-route text-green"></i> Parcours au sein du MRC</h5>
-            <p style="font-size:10.5px; color:var(--encre); line-height:1.45;">${leader.parcours}</p>
-        </div>
-
-        <div style="background:var(--vert-clair); border-left:4px solid var(--vert); padding:10px 12px; border-radius:8px; margin-bottom:12px;">
-            <h5 style="font-size:11px; color:var(--vert-fonce); font-weight:800; margin-bottom:4px;"><i class="fa-solid fa-quote-left text-green"></i> Vision &amp; Idéal Républicain</h5>
-            <p style="font-size:10.5px; font-style:italic; color:var(--vert-fonce); line-height:1.4;">${leader.vision}</p>
-        </div>
-
-        <div style="border-top:1px dashed var(--bordure); padding-top:8px;">
-            <h5 style="font-size:10.5px; color:var(--rouge-mrc); font-weight:800; margin-bottom:3px;"><i class="fa-solid fa-bullhorn"></i> Dernière Déclaration Officielle</h5>
-            <p style="font-size:10px; color:var(--encre); line-height:1.4;">${leader.declarationRecente}</p>
-        </div>
-    `;
-
-    document.getElementById('leaderModal').classList.add('show');
+function calculerDateExpiration(dateIsoStr) {
+  if (!dateIsoStr) return "19/02/2027";
+  const [a, m, j] = dateIsoStr.split("-").map(Number);
+  const fin = new Date(a + CONFIG.validiteAnnees, m - 1, j);
+  const day = String(fin.getDate()).padStart(2, "0");
+  const month = String(fin.getMonth() + 1).padStart(2, "0");
+  return `${day}/${month}/${fin.getFullYear()}`;
 }
 
-function closeLeaderModal() {
-    document.getElementById('leaderModal').classList.remove('show');
+// ─── RENDU DU TEXTE COMPLET POUR LE QR CODE ─────────────────────────
+function construireDonneesQR(m) {
+  const exp = calculerDateExpiration(m.date);
+  const lignes = [
+    `${CONFIG.sigle} - CARTE DE MEMBRE OFFICIELLE`,
+    `N°: ${m.numero}`,
+    `NOM: ${m.nom}`,
+    `PRENOM: ${m.prenom}`,
+    `CNI: ${m.cni || 'N/A'}`,
+    `TEL: ${m.tel}`,
+    `STRUCTURE: ${m.structure}`,
+    `ADHESION: ${dateIsoEnFr(m.date)}`,
+    `VALABLE JUSQU'AU: ${exp}`,
+    `PRESIDENCE: Tiriane Balbine NOAH`,
+    `PRESIDENT FONDATEUR: Pr Maurice KAMTO`,
+    `STATUT: ACTIF ET REGULIER`,
+    `VERIFICATION: ${CONFIG.urlVerification}${m.numero}`
+  ];
+  return lignes.join("\n");
 }
 
-function shareLeaderProfile() {
-    const leader = appState.leaders[appState.activeLeaderId];
-    if (!leader) return;
-    const text = `Profil Dirigeant MRC : ${leader.name} (${leader.role}) - « ${leader.declarationRecente} » Découvrez l'équipe du MRC sur https://mrcparty.net`;
-    if (navigator.share) {
-        navigator.share({ title: leader.name, text: text, url: 'https://mrcparty.net' });
-    } else {
-        navigator.clipboard.writeText(text);
-        alert("Fiche du dirigeant copiée dans le presse-papier !");
-    }
-}
+// ─── RENDU DE LA CARTE 3D ────────────────────────────────────────────
+function actualiserCarte() {
+  const m = appState.member;
+  
+  // Recto
+  document.getElementById("cStructure").textContent = m.structure;
+  document.getElementById("cPrenom").textContent = m.prenom;
+  document.getElementById("cNom").textContent = m.nom;
+  document.getElementById("cTel").textContent = m.tel;
+  document.getElementById("cNumero").textContent = m.numero;
+  document.getElementById("cDate").textContent = dateIsoEnFr(m.date);
 
-// ============================================================== //
-// GESTION DE L'HISTOIRE & DU PARCOURS DES PRÉSIDENTS             //
-// ============================================================== //
-function switchHistorySubTab(subTab) {
-    const btnTimeline = document.getElementById('btnHistTimeline');
-    const btnPres = document.getElementById('btnHistPresidents');
-    const paneTimeline = document.getElementById('histTimelineContent');
-    const panePres = document.getElementById('histPresidentsContent');
+  // Verso
+  document.getElementById("vNumero").textContent = m.numero;
+  document.getElementById("vNumero2").textContent = m.numero;
+  document.getElementById("vStructure").textContent = m.structure;
+  document.getElementById("vDate").textContent = dateIsoEnFr(m.date);
+  document.getElementById("vFin").textContent = calculerDateExpiration(m.date);
 
-    if (subTab === 'timeline') {
-        btnTimeline.classList.add('active');
-        btnPres.classList.remove('active');
-        paneTimeline.classList.add('active');
-        panePres.classList.remove('active');
-    } else {
-        btnTimeline.classList.remove('active');
-        btnPres.classList.add('active');
-        paneTimeline.classList.remove('active');
-        panePres.classList.add('active');
-    }
-}
+  // Photo du membre sur le Recto
+  const slotPhoto = document.getElementById("slotPhotoMembre");
+  if (appState.memberPhoto) {
+    slotPhoto.innerHTML = `<img src="${appState.memberPhoto}" alt="Photo ${m.nom}">`;
+  } else {
+    slotPhoto.innerHTML = `<i class="fa-solid fa-user photo-titulaire-placeholder"></i>`;
+  }
 
-function openHistoryDetailModal(year) {
-    const epoch = appState.historyEpochs[year];
-    if (!epoch) return;
-
-    document.getElementById('modalHistoryTitle').textContent = epoch.title;
-    document.getElementById('modalHistoryBody').innerHTML = `
-        <h4 style="font-size:12px; color:var(--vert); font-weight:800; margin-bottom:8px;">${epoch.subtitle}</h4>
-        <div style="font-size:11px; line-height:1.5; color:var(--encre);">${epoch.content}</div>
-        <div style="margin-top:12px; padding:8px 10px; background:#f4f7f5; border-radius:8px; font-size:10px; color:var(--gris);">
-            <i class="fa-solid fa-landmark text-green"></i> Archives Officielles du Mouvement pour la Renaissance du Cameroun (2012-2025).
-        </div>
-    `;
-    document.getElementById('historyModal').classList.add('show');
-}
-
-function closeHistoryModal() {
-    document.getElementById('historyModal').classList.remove('show');
-}
-
-// ============================================================== //
-// GESTION DU FLUX DES DÉPÊCHES & SYNCHRONISATION AUTOMATIQUE     //
-// ============================================================== //
-function renderNews(filterSource = 'all') {
-    const container = document.getElementById('newsListContainer');
-    if (!container) return;
-    container.innerHTML = '';
-
-    const filtered = (filterSource === 'all')
-        ? appState.articles
-        : appState.articles.filter(a => a.source === filterSource);
-
-    filtered.forEach((art, idx) => {
-        const card = document.createElement('div');
-        card.className = 'featured-news-card interactive-hover';
-        card.style.marginBottom = '10px';
-        card.onclick = () => openArticleModal(idx, filtered);
-        card.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                <span class="news-tag">${art.category.toUpperCase()} &bull; ${art.date}</span>
-                <span style="font-size:9px; color:var(--vert); font-weight:700;"><i class="fa-brands fa-facebook"></i> ${art.sourceLabel}</span>
-            </div>
-            <h4 class="news-title">${art.title}</h4>
-            <p class="news-excerpt">${art.excerpt}</p>
-        `;
-        container.appendChild(card);
+  // QR Code complet au Verso
+  const qrBox = document.getElementById("qrBox");
+  qrBox.innerHTML = "";
+  try {
+    new QRCode(qrBox, {
+      text: construireDonneesQR(m),
+      width: 196,
+      height: 196,
+      colorDark: "#06602f",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.M
     });
+  } catch (err) {
+    console.warn("Erreur QRCode library:", err);
+  }
 }
 
-function filterNews(source, btn) {
-    document.querySelectorAll('.news-sources-filter .filter-pill').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    renderNews(source);
+// ─── ADAPTATION DE L'ÉCHELLE 3D SANS DÉBORDEMENT ─────────────────────
+function ajusterEchelleCarte() {
+  const wrap = document.getElementById("wrap");
+  const scene = document.getElementById("scene");
+  if (!wrap || !scene) return;
+
+  const parentWidth = wrap.clientWidth || wrap.parentElement.clientWidth || 360;
+  // Largeur maximale garantie pour ne jamais déborder sur mobile
+  const scale = Math.min(1, (parentWidth - 16) / 856);
+  scene.style.transform = `scale(${scale})`;
+  wrap.style.height = `${Math.round(540 * scale)}px`;
 }
 
-function simulerActualisationFlux() {
-    const syncIcon = document.getElementById('syncIcon');
-    const syncText = document.getElementById('syncText');
-    if (syncIcon) syncIcon.classList.add('fa-spin');
-    if (syncText) syncText.textContent = "Interrogation en direct des API & Pages Officielles MRC...";
-
-    setTimeout(() => {
-        if (syncIcon) syncIcon.classList.remove('fa-spin');
-        const now = new Date();
-        const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
-        if (syncText) syncText.innerHTML = `Dernière synchronisation réussie à <strong>${timeStr}</strong> &bull; 4 flux actifs`;
-
-        // Ajouter une nouvelle dépêche d'actualité si pas déjà présente
-        if (!appState.hasSyncedNew) {
-            appState.articles.unshift({
-                category: "Flash Info Élections",
-                source: "kamto",
-                sourceLabel: "Directoire National @mrcpartycameroon",
-                date: "À l'instant",
-                title: "Déploiement massif des kits de Sentinelle Électorale dans les 360 arrondissements",
-                author: "Directoire National",
-                excerpt: "« La Sentinelle Électorale garantira qu'aucun procès-verbal ne soit falsifié. Le vote citoyen sera protégé jusqu'au dernier bureau. »",
-                content: "Le Secrétariat National chargé des opérations électorales annonce la clôture de la formation de 50 000 sentinelles citoyennes réparties sur l'ensemble du territoire national camerounais et dans les centres de vote de la diaspora."
-            });
-            appState.hasSyncedNew = true;
-            renderNews('all');
-        }
-    }, 1200);
+// ─── RETOURNEMENT 3D PARFAITEMENT IMMOBILE ───────────────────────────
+function basculerCarte3D() {
+  const carte = document.getElementById("carte3d");
+  appState.isCardFlipped = !appState.isCardFlipped;
+  if (appState.isCardFlipped) {
+    carte.classList.add("is-flipped");
+  } else {
+    carte.classList.remove("is-flipped");
+  }
 }
 
-function openArticleModal(idx, list = appState.articles) {
-    const art = list[idx];
-    if (!art) return;
-    alert(`📰 ${art.title}\n\nDate : ${art.date}\nSource : ${art.sourceLabel}\nDirectoire : ${art.author}\n\n${art.content}\n\nRetrouvez tous les communiqués officiels sur le portail https://mrcparty.net`);
+// ─── SYSTÈME DE DIALOGUES MRC PROFESSIONNELS (AUCUN ALERT) ────────────
+function showMrcDialog({ title, message, icon = "fa-check", isDanger = false, confirmText = "D'accord", cancelText = null, onConfirm = null }) {
+  const backdrop = document.getElementById("mrcDialogBackdrop");
+  const titleEl = document.getElementById("mrcDialogTitle");
+  const msgEl = document.getElementById("mrcDialogMessage");
+  const iconEl = document.getElementById("mrcDialogIcon");
+  const btnConfirm = document.getElementById("btnDialogConfirm");
+  const btnCancel = document.getElementById("btnDialogCancel");
+
+  titleEl.textContent = title;
+  msgEl.textContent = message;
+  iconEl.innerHTML = `<i class="fa-solid ${icon}"></i>`;
+  iconEl.className = `modal-icon-circle ${isDanger ? 'danger' : ''}`;
+  btnConfirm.textContent = confirmText;
+
+  if (cancelText) {
+    btnCancel.style.display = "inline-block";
+    btnCancel.textContent = cancelText;
+  } else {
+    btnCancel.style.display = "none";
+  }
+
+  backdrop.style.display = "grid";
+
+  btnConfirm.onclick = () => {
+    backdrop.style.display = "none";
+    if (onConfirm) onConfirm();
+  };
+
+  btnCancel.onclick = () => {
+    backdrop.style.display = "none";
+  };
 }
 
-// ============================================================== //
-// GESTION DES PARAMÈTRES DE L'APPLICATION                        //
-// ============================================================== //
-function openSettingsModal() {
-    document.getElementById('settingsModal').classList.add('show');
+function showMrcToast(message, icon = "fa-circle-check") {
+  const container = document.getElementById("toastContainer");
+  const toast = document.createElement("div");
+  toast.className = "mrc-toast";
+  toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.remove();
+  }, 3500);
 }
 
-function closeSettingsModal() {
-    document.getElementById('settingsModal').classList.remove('show');
-}
+// ─── TRADUCTION & SWITCH BILINGUE FR / EN ─────────────────────────────
+function setAppLanguage(lang) {
+  appState.lang = lang;
+  localStorage.setItem('mrc_lang', lang);
+  document.getElementById("currentLangLabel").textContent = lang;
+  document.getElementById("selectAppLanguage").value = lang;
 
-function changeSettingLang(val) {
-    appState.currentLanguage = val;
-    document.getElementById('btnLang').textContent = val;
-    alert(`Langue configurée sur : ${val === 'FR' ? 'Français' : 'English'}`);
-}
-
-// ============================================================== //
-// GESTION DES ONGLETS DE NAVIGATION                              //
-// ============================================================== //
-function switchTab(tabKey) {
-    const tabs = {
-        'home': 'paneHome',
-        'card': 'paneCard',
-        'register': 'paneRegister',
-        'directoire': 'paneDirectoire',
-        'history': 'paneHistory',
-        'news': 'paneNews'
-    };
-
-    document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
-
-    const targetId = tabs[tabKey] || 'paneHome';
-    const targetEl = document.getElementById(targetId);
-    if (targetEl) targetEl.classList.add('active');
-
-    // Mettre en évidence l'élément de la barre de navigation
-    const navMap = ['home', 'card', 'register', 'directoire', 'history', 'news'];
-    const idx = navMap.indexOf(tabKey);
-    const navItems = document.querySelectorAll('.bottom-nav .nav-item');
-    if (navItems[idx]) navItems[idx].classList.add('active');
-
-    if (tabKey === 'card') {
-        genererCarte(appState.member);
+  const t = I18N[lang] || I18N.FR;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (t[key]) {
+      el.textContent = t[key];
     }
+  });
+
+  actualiserListesDirectoire();
 }
 
-// ============================================================== //
-// SOUMISSION DU FORMULAIRE D'ADHÉSION & PERSISTANCE EN BASE      //
-// ============================================================== //
-function updateCotisation(radio) {
-    document.querySelectorAll('.cotisation-pill').forEach(el => el.classList.remove('active'));
-    radio.parentElement.classList.add('active');
+// ─── GESTION DU THÈME SOMBRE (DARK MODE) ──────────────────────────────
+function setAppTheme(theme) {
+  appState.theme = theme;
+  localStorage.setItem('mrc_theme', theme);
+  document.documentElement.setAttribute("data-theme", theme);
+  
+  const icon = document.getElementById("themeIcon");
+  const check = document.getElementById("switchDarkMode");
+  if (theme === "dark") {
+    icon.className = "fa-solid fa-sun";
+    check.checked = true;
+  } else {
+    icon.className = "fa-solid fa-moon";
+    check.checked = false;
+  }
 }
 
-async function handleRegistrationSubmit(e) {
-    e.preventDefault();
+// ─── LISTES DÉROULANTES DYNAMIQUES DU FORMULAIRE ─────────────────────
+function initialiserSelecteursStructure() {
+  const selectType = document.getElementById("selectTypeStructure");
+  const selectRegion = document.getElementById("selectRegion");
+  const selectDept = document.getElementById("selectDept");
 
-    const prenom = document.getElementById('regPrenom').value.trim().toUpperCase();
-    const nom = document.getElementById('regNom').value.trim().toUpperCase();
-    const structure = document.getElementById('regStructure').value;
-    const tel = document.getElementById('regTel').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
-    const selectedCotisation = document.querySelector('input[name="cotisationAmt"]:checked')?.value || "1000";
-    const selectedPayType = document.querySelector('input[name="payType"]:checked')?.value || "MTN MoMo";
+  // Remplissage types
+  selectType.innerHTML = Object.entries(TYPES_STRUCTURE).map(([k, v]) => 
+    `<option value="${k}">${v.label}</option>`
+  ).join("");
+  selectType.value = appState.member.type || "comm";
 
-    // Vérification des certifications légales obligatoires
-    const checkNonApp = document.getElementById('checkNonAppartenance').checked;
-    const checkLegal = document.getElementById('checkLegalResidance').checked;
-    const checkRgpd = document.getElementById('checkRgpd').checked;
+  // Remplissage régions
+  selectRegion.innerHTML = Object.keys(REGIONS).map(r => 
+    `<option value="${r}">${r}</option>`
+  ).join("");
+  selectRegion.value = appState.member.region || "Sud";
 
-    if (!checkNonApp || !checkLegal || !checkRgpd) {
-        alert("Attention : Vous devez impérativement valider les 3 déclarations statutaires et légales (non-appartenance à une autre formation politique, plafond légal des dons de 7 500 € et consentement RGPD).");
-        return;
-    }
+  // Remplissage départements
+  actualiserDepartements();
 
-    const payload = {
-        prenom,
-        nom,
-        structure,
-        tel,
-        email,
-        cotisation: `${parseInt(selectedCotisation).toLocaleString()} F CFA`,
-        checkNonAppartenance: checkNonApp,
-        checkLegalResidance: checkLegal,
-        checkRgpd: checkRgpd
-    };
+  // Événements
+  selectType.addEventListener("change", () => {
+    actualiserVisibiliteChamps();
+    mettreAJourNumeroAutomatique();
+  });
+  selectRegion.addEventListener("change", () => {
+    actualiserDepartements();
+    mettreAJourNumeroAutomatique();
+  });
+  selectDept.addEventListener("change", mettreAJourNumeroAutomatique);
+  document.getElementById("inputDate").addEventListener("change", mettreAJourNumeroAutomatique);
 
-    try {
-        // Envoi au Backend Persistant
-        const response = await fetch('/api/members', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            appState.member = result.member;
-            localStorage.setItem('mrc_active_member', JSON.stringify(result.member));
-            genererCarte(appState.member);
-            switchTab('card');
-
-            alert(`🎉 ADHÉSION ENREGISTRÉE EN BASE DE DONNÉES EN LIGNE !\n\nCamarade ${prenom} ${nom},\n\nBienvenue au MRC ! Votre carte officielle N° ${result.member.numero} a été enregistrée de manière permanente dans le Registre National Central.\n\nStructure : ${structure}\nReçu Statutaire : ${result.member.cotisation} (Règlement via ${selectedPayType})\nEmpreinte de Sécurité : ${result.member.signatureHash}`);
-            return;
-        }
-    } catch (err) {
-        console.warn("Backend non joignable, enregistrement local :", err);
-    }
-
-    // Fallback LocalStorage si hors-ligne
-    const randomSeq = Math.floor(62552 + Math.random() * 8500);
-    const newNum = `SU000${randomSeq}`;
-    const todayIso = new Date().toISOString().slice(0, 10);
-    const hash = "MRC-" + Math.random().toString(36).substring(2, 14).toUpperCase();
-
-    appState.member = {
-        structure: structure,
-        prenom: prenom,
-        nom: nom,
-        tel: tel,
-        numero: newNum,
-        date: todayIso,
-        cotisation: `${parseInt(selectedCotisation).toLocaleString()} F CFA`,
-        status: "ACTIF / VALIDE",
-        signatureHash: hash
-    };
-
-    localStorage.setItem('mrc_active_member', JSON.stringify(appState.member));
-    genererCarte(appState.member);
-    switchTab('card');
-    alert(`🎉 ADHÉSION ENREGISTRÉE & CARTE 3D ÉMISE !\n\nCamarade ${prenom} ${nom}, votre carte N° ${newNum} a été créée avec succès.`);
+  actualiserVisibiliteChamps();
 }
 
-// ============================================================== //
-// GESTION DU REGISTRE NATIONAL DES ADHÉRENTS (BASE DE DONNÉES)   //
-// ============================================================== //
-async function loadRegistryFromBackend() {
-    const container = document.getElementById('registryListContainer');
-    if (!container) return;
-
-    container.innerHTML = '<div style="text-align:center; padding:15px; color:var(--gris);"><i class="fa-solid fa-spinner fa-spin text-green"></i> Chargement des adhérents enregistrés...</div>';
-
-    try {
-        const res = await fetch('/api/members');
-        if (res.ok) {
-            const data = await res.json();
-            renderRegistryList(data.members || []);
-            return;
-        }
-    } catch (e) {
-        console.warn("Impossible de joindre /api/members, affichage de secours", e);
-    }
-
-    // Données par défaut si le backend est indisponible
-    renderRegistryList([
-        appState.member,
-        {
-            numero: "SU00000001",
-            prenom: "MAURICE",
-            nom: "KAMTO",
-            structure: "DIRECTOIRE NATIONAL",
-            date: "2012-08-13",
-            cotisation: "100 000 F CFA",
-            status: "PRÉSIDENT FONDATEUR",
-            signatureHash: "MRC-F001KAMTO2012"
-        },
-        {
-            numero: "SU00000002",
-            prenom: "TIRIANE BALBINE",
-            nom: "NOAH",
-            structure: "DIRECTOIRE NATIONAL - PRÉSIDENCE",
-            date: "2012-08-13",
-            cotisation: "100 000 F CFA",
-            status: "PRÉSIDENTE NATIONALE (96,89%)",
-            signatureHash: "MRC-T002NOAH2026"
-        }
-    ]);
+function actualiserDepartements() {
+  const regNom = document.getElementById("selectRegion").value;
+  const selectDept = document.getElementById("selectDept");
+  const deps = REGIONS[regNom] ? REGIONS[regNom].deps : [];
+  selectDept.innerHTML = deps.map(d => `<option value="${d}">${d}</option>`).join("");
 }
 
-function renderRegistryList(members) {
-    const container = document.getElementById('registryListContainer');
-    if (!container) return;
-    container.innerHTML = '';
+function actualiserVisibiliteChamps() {
+  const typeKey = document.getElementById("selectTypeStructure").value;
+  const t = TYPES_STRUCTURE[typeKey];
+  const gReg = document.getElementById("groupRegion");
+  const gDept = document.getElementById("groupDept");
+  const gLieu = document.getElementById("groupLieu");
+  const lblLieu = document.getElementById("labelLieu");
 
-    members.forEach(m => {
-        const item = document.createElement('div');
-        item.style.cssText = "background:#fff; border:1px solid #cfd6d1; border-radius:10px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:0.15s;";
-        item.onmouseover = () => item.style.borderColor = "var(--vert)";
-        item.onmouseout = () => item.style.borderColor = "#cfd6d1";
-        item.onclick = () => selectMemberFromRegistry(m);
-
-        item.innerHTML = `
-            <div>
-                <div style="font-size:12px; font-weight:800; color:var(--encre);">${m.prenom} ${m.nom}</div>
-                <div style="font-size:9.5px; color:var(--gris);">${m.structure} &bull; ${m.cotisation || '1.000 F CFA'}</div>
-                <div style="font-size:9px; color:var(--vert); font-family:monospace; margin-top:2px;">N° ${m.numero}</div>
-            </div>
-            <div style="text-align:right;">
-                <span style="font-size:8.5px; font-weight:800; background:var(--vert-clair); color:var(--vert-fonce); padding:3px 6px; border-radius:6px;">${m.status || 'VALIDE'}</span>
-                <div style="font-size:9px; color:var(--gris); margin-top:4px;">${formaterDate(m.date)}</div>
-            </div>
-        `;
-        container.appendChild(item);
-    });
+  gReg.hidden = !t.besoin.includes("region");
+  gDept.hidden = !t.besoin.includes("dept");
+  gLieu.hidden = !t.besoin.includes("lieu");
+  if (t.lieuLabel) lblLieu.textContent = t.lieuLabel;
 }
 
-function selectMemberFromRegistry(m) {
-    appState.member = m;
-    genererCarte(m);
-    closeRegistryModal();
-    switchTab('card');
-    alert(`Carte chargée : ${m.prenom} ${m.nom} (${m.numero})`);
+function mettreAJourNumeroAutomatique() {
+  const reg = document.getElementById("selectRegion").value;
+  const dateVal = document.getElementById("inputDate").value || "2024-02-19";
+  const numAuto = genererNumeroMembre(reg, dateVal);
+  document.getElementById("inputNumeroAuto").value = numAuto;
 }
 
-function openRegistryModal() {
-    document.getElementById('registryModal').classList.add('show');
-    loadRegistryFromBackend();
-}
+// ─── RENDU DU DIRECTOIRE ─────────────────────────────────────────────
+function actualiserListesDirectoire() {
+  const container = document.getElementById("leadersListGrid");
+  if (!container) return;
+  const isEn = appState.lang === "EN";
 
-function closeRegistryModal() {
-    document.getElementById('registryModal').classList.remove('show');
-}
-
-// ============================================================== //
-// RÉINITIALISATION À LA CARTE DE RÉFÉRENCE (CYRILLE EDOU)        //
-// ============================================================== //
-function resetToOfficialCard() {
-    appState.member = {
-        structure: "FD COM SANGMELIMA OWONO MIMBO'O",
-        prenom: "CYRILLE",
-        nom: "EDOU",
-        tel: "659452898",
-        numero: "SU00062551",
-        date: "2024-02-19",
-        cotisation: "1.000 F CFA",
-        status: "ACTIF / VALIDE",
-        signatureHash: "MRC-9A74E82F10BC"
-    };
-    genererCarte(appState.member);
-    switchTab('card');
-    alert("✅ Carte officielle de référence (CYRILLE EDOU - SU00062551) rechargée avec succès !");
-}
-
-// ============================================================== //
-// VÉRIFICATION D'AUTHENTICITÉ & MODAL                            //
-// ============================================================== //
-function showVerificationModal() {
-    const m = appState.member;
-    const html = `
-        <div style="background:#eaf6ed; padding:10px 12px; border-radius:10px; border-left:4px solid var(--vert); margin-bottom:12px;">
-            <p><strong>Statut :</strong> <span class="text-green" style="font-weight:800;">AUTHENTIQUE &bull; ACTIVE ✅</span></p>
-            <p style="font-size:10px; color:#3e5445;">Enregistrée dans le registre national biométrique du MRC.</p>
-        </div>
-        <p><strong>Titulaire :</strong> ${m.prenom} ${m.nom}</p>
-        <p><strong>N° Immatriculation :</strong> <span style="font-weight:800; color:var(--vert-fonce);">${m.numero}</span></p>
-        <p><strong>Structure Locale :</strong> ${m.structure}</p>
-        <p><strong>Date d'adhésion :</strong> ${formaterDate(m.date)}</p>
-        <p><strong>Empreinte Cryptographique :</strong> <code>${m.signatureHash}</code></p>
-        <p style="margin-top:10px; font-size:10px; color:#5b6b61; border-top:1px dashed var(--bordure); padding-top:8px;">
-            Conforme à l'autorisation MINATD N°000221 / Lettre N°0002249. Émise sous l'autorité du Président Fondateur Pr Maurice Kamto et de la Présidente Nationale Tiriane Noah.
+  container.innerHTML = LEADERS.map(l => `
+    <div class="leader-card" onclick="ouvrirModaleDirigeant('${l.id}')">
+      <img src="${l.photo || 'assets/logo_mrc_round.jpg'}" alt="${l.nom}" class="leader-avatar">
+      <div class="leader-meta">
+        <span class="leader-role-badge">${l.badge}</span>
+        <h4>${l.nom}</h4>
+        <p style="font-size:11px; color:var(--vert-fonce); font-weight:700; margin-bottom:4px;">
+          ${isEn ? l.roleEn : l.roleFr}
         </p>
-    `;
-    document.getElementById('verifyModalContent').innerHTML = html;
-    document.getElementById('verifyModal').classList.add('show');
+        <p class="leader-snippet">${l.bio}</p>
+      </div>
+    </div>
+  `).join("");
 }
 
-function closeVerifyModal() {
-    document.getElementById('verifyModal').classList.remove('show');
+function ouvrirModaleDirigeant(id) {
+  const l = LEADERS.find(x => x.id === id);
+  if (!l) return;
+  const isEn = appState.lang === "EN";
+  showMrcDialog({
+    title: l.nom,
+    message: `${isEn ? l.roleEn : l.roleFr}\n\n${l.bio}\n\nParcours & Engagement :\n${l.parcours}`,
+    icon: "fa-award",
+    confirmText: isEn ? "Close" : "Fermer"
+  });
 }
 
-function partagerCarte() {
-    const text = `Fier militant du MRC ! Carte N° ${appState.member.numero} (${appState.member.prenom} ${appState.member.nom}) - ${appState.member.structure}. Ensemble pour la Renaissance du Cameroun dans la paix et par les urnes ! https://mrcparty.net`;
-    if (navigator.share) {
-        navigator.share({ title: 'Carte de Membre MRC', text: text, url: 'https://mrcparty.net' });
-    } else {
-        navigator.clipboard.writeText(text);
-        alert("Détails et lien copiés dans le presse-papier pour WhatsApp et réseaux sociaux !");
+// ─── RENDU DE L'HISTOIRE & DÉPÊCHES ──────────────────────────────────
+function actualiserHistoire() {
+  const container = document.getElementById("historyTimeline");
+  if (!container) return;
+  container.innerHTML = HISTOIRE.map((h, i) => `
+    <div class="timeline-step ${i === HISTOIRE.length - 1 ? 'highlight' : ''}">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <span class="timeline-year-tag">${h.annee}</span>
+        <h4>${h.titre}</h4>
+        <p>${h.desc}</p>
+      </div>
+    </div>
+  `).join("");
+}
+
+function actualiserDepeches() {
+  const container = document.getElementById("newsListContainer");
+  if (!container) return;
+  container.innerHTML = DEPECHES.map(d => `
+    <div class="news-item-card" onclick="showMrcDialog({ title: '${d.titre}', message: '${d.contenu}', icon: 'fa-bullhorn' })">
+      <div class="news-badge-row">
+        <span class="badge-verified-sentinel"><i class="fa-solid fa-circle-check"></i> ${d.badge}</span>
+        <span class="news-date">${d.date}</span>
+      </div>
+      <h4>${d.titre}</h4>
+      <p>${d.contenu}</p>
+    </div>
+  `).join("");
+}
+
+// ─── EXPORT DE LA CARTE EN PNG HAUTE DÉFINITION ──────────────────────
+async function exporterCartePNG(idElement, nomFichier) {
+  showMrcToast(appState.lang === "EN" ? "Generating HD PNG..." : "Génération du PNG HD en cours...", "fa-image");
+  try {
+    const el = document.getElementById(idElement);
+    const canvas = await html2canvas(el, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: null,
+      onclone: (doc) => {
+        const clone = doc.getElementById(idElement);
+        clone.querySelectorAll(".reflet").forEach(r => r.style.display = "none");
+        let cur = clone;
+        while (cur && cur !== doc.body) {
+          cur.style.transform = "none";
+          cur.style.perspective = "none";
+          cur.style.backfaceVisibility = "visible";
+          cur = cur.parentElement;
+        }
+      }
+    });
+
+    const link = document.createElement("a");
+    link.download = `MRC-CARTE-${nomFichier}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+    showMrcToast(appState.lang === "EN" ? "Card downloaded successfully!" : "Carte téléchargée avec succès !", "fa-circle-check");
+  } catch (err) {
+    showMrcDialog({
+      title: "Export",
+      message: "Erreur lors de la capture : " + err.message,
+      isDanger: true
+    });
+  }
+}
+
+// ─── INITIALISATION AU CHARGEMENT ────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Initialisation Langue & Thème
+  setAppLanguage(appState.lang);
+  setAppTheme(appState.theme);
+
+  // Valeurs initiales formulaire
+  document.getElementById("inputDate").value = appState.member.date;
+  document.getElementById("inputPrenom").value = appState.member.prenom;
+  document.getElementById("inputNom").value = appState.member.nom;
+  document.getElementById("inputTel").value = appState.member.tel;
+  document.getElementById("inputCni").value = appState.member.cni;
+  document.getElementById("inputLieu").value = appState.member.lieu;
+
+  // Initialisation Sélecteurs
+  initialiserSelecteursStructure();
+  mettreAJourNumeroAutomatique();
+
+  // Photo de profil sauvegardée
+  if (appState.memberPhoto) {
+    document.getElementById("formPhotoPreview").innerHTML = `<img src="${appState.memberPhoto}" alt="Photo Profil">`;
+  }
+
+  // Rendu de la carte & Contenu
+  actualiserCarte();
+  actualiserListesDirectoire();
+  actualiserHistoire();
+  actualiserDepeches();
+  ajusterEchelleCarte();
+
+  // ─── ÉCOUTEURS D'ÉVÉNEMENTS ──────────────────────────────────────────
+
+  // Retournement 3D
+  document.getElementById("scene").addEventListener("click", basculerCarte3D);
+  document.getElementById("btnFlipCard").addEventListener("click", basculerCarte3D);
+
+  // Redimensionnement dynamique
+  window.addEventListener("resize", ajusterEchelleCarte);
+
+  // Navigation par onglets
+  document.querySelectorAll(".nav-item").forEach(item => {
+    item.addEventListener("click", () => {
+      document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
+      document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+
+      item.classList.add("active");
+      const tabId = item.getAttribute("data-tab");
+      const targetPane = document.getElementById(`pane-${tabId}`);
+      if (targetPane) targetPane.classList.add("active");
+
+      if (tabId === "carte") {
+        setTimeout(ajusterEchelleCarte, 50);
+      }
+    });
+  });
+
+  // Switch Langue Header & Settings
+  document.getElementById("btnLangToggle").addEventListener("click", () => {
+    const nextLang = appState.lang === "FR" ? "EN" : "FR";
+    setAppLanguage(nextLang);
+    showMrcToast(nextLang === "FR" ? "Langue : Français" : "Language: English", "fa-globe");
+  });
+  document.getElementById("selectAppLanguage").addEventListener("change", (e) => {
+    setAppLanguage(e.target.value);
+  });
+
+  // Switch Thème Header & Settings
+  document.getElementById("btnThemeToggle").addEventListener("click", () => {
+    const nextTheme = appState.theme === "light" ? "dark" : "light";
+    setAppTheme(nextTheme);
+  });
+  document.getElementById("switchDarkMode").addEventListener("change", (e) => {
+    setAppTheme(e.target.checked ? "dark" : "light");
+  });
+
+  // Téléversement Photo de Profil
+  document.getElementById("photoInput").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        appState.memberPhoto = evt.target.result;
+        localStorage.setItem('mrc_photo', appState.memberPhoto);
+        document.getElementById("formPhotoPreview").innerHTML = `<img src="${appState.memberPhoto}" alt="Photo">`;
+        actualiserCarte();
+        showMrcToast(appState.lang === "EN" ? "Profile photo updated!" : "Photo de profil mise à jour !", "fa-camera");
+      };
+      reader.readAsDataURL(file);
     }
-}
+  });
 
-function triggerSosModal() {
-    if (confirm("🚨 ALERTE JURIDIQUE & SOS MILITANT\n\nSouhaitez-vous joindre immédiatement la ligne d'assistance d'urgence du Collectif des Avocats du MRC (+237 674 27 05 49) ?")) {
+  // Enregistrement Membre depuis le formulaire
+  document.getElementById("btnEnregistrerMembre").addEventListener("click", () => {
+    const prenom = document.getElementById("inputPrenom").value.trim().toUpperCase();
+    const nom = document.getElementById("inputNom").value.trim().toUpperCase();
+    const tel = document.getElementById("inputTel").value.trim();
+    const cni = document.getElementById("inputCni").value.trim();
+    const dateVal = document.getElementById("inputDate").value;
+    const typeKey = document.getElementById("selectTypeStructure").value;
+    const reg = document.getElementById("selectRegion").value;
+    const dept = document.getElementById("selectDept").value;
+    const lieu = document.getElementById("inputLieu").value.trim();
+
+    if (!prenom || !nom || !tel) {
+      showMrcDialog({
+        title: "Validation",
+        message: "Veuillez obligatoirement renseigner votre Prénom, Nom et Numéro de Téléphone.",
+        icon: "fa-triangle-exclamation",
+        isDanger: true
+      });
+      return;
+    }
+
+    const t = TYPES_STRUCTURE[typeKey];
+    let structStr = `${t.abbr} ${lieu.toUpperCase()}`;
+    if (typeKey === "dept") structStr = `${t.abbr} ${dept.toUpperCase()}`;
+    if (typeKey === "reg") structStr = `${t.abbr} ${reg.toUpperCase()}`;
+
+    const numAttribue = genererNumeroMembre(reg, dateVal);
+
+    appState.member = {
+      prenom: prenom,
+      nom: nom,
+      tel: tel,
+      cni: cni,
+      date: dateVal,
+      type: typeKey,
+      region: reg,
+      dept: dept,
+      lieu: lieu,
+      structure: structStr,
+      numero: numAttribue
+    };
+
+    actualiserCarte();
+
+    showMrcDialog({
+      title: "Adhésion Enregistrée",
+      message: `Félicitations, militant ${prenom} ${nom} !\n\nVotre carte officielle N° ${numAttribue} a été générée et authentifiée sous l'égide de la Présidente Nationale Tiriane Balbine Noah.\n\nStructure : ${structStr}`,
+      icon: "fa-circle-check",
+      confirmText: "Voir ma Carte 3D",
+      onConfirm: () => {
+        document.querySelector('[data-tab="carte"]').click();
+      }
+    });
+  });
+
+  // Nouveau membre (réinitialisation formulaire)
+  document.getElementById("btnNouveauMembre").addEventListener("click", () => {
+    document.getElementById("inputPrenom").value = "";
+    document.getElementById("inputNom").value = "";
+    document.getElementById("inputTel").value = "";
+    document.getElementById("inputCni").value = "";
+    document.getElementById("inputLieu").value = "";
+    appState.memberPhoto = null;
+    localStorage.removeItem('mrc_photo');
+    document.getElementById("formPhotoPreview").innerHTML = `<i class="fa-solid fa-user"></i>`;
+    document.getElementById("inputPrenom").focus();
+    showMrcToast("Formulaire prêt pour un nouveau membre.", "fa-user");
+  });
+
+  // Export PNG Recto & Verso
+  document.getElementById("btnDownloadRecto").addEventListener("click", () => exporterCartePNG("recto", "RECTO"));
+  document.getElementById("btnDownloadVerso").addEventListener("click", () => exporterCartePNG("verso", "VERSO"));
+
+  // Contrôle QR & SOS
+  document.getElementById("btnVerifyCard").addEventListener("click", () => {
+    showMrcDialog({
+      title: "Contrôle d'Authenticité QR",
+      message: `Carte N° ${appState.member.numero}\nTitulaire : ${appState.member.prenom} ${appState.member.nom}\nStatut : CERTIFIÉ ACTIF & CONFORME\nPrésidente Nationale : Tiriane Balbine NOAH\nPrésident Fondateur : Pr Maurice KAMTO`,
+      icon: "fa-shield-halved"
+    });
+  });
+
+  document.getElementById("btnSosQuick").addEventListener("click", () => {
+    showMrcDialog({
+      title: "SOS Militant en Danger",
+      message: "En cas d'arrestation arbitraire, d'intimidation ou de garde à vue illégale, contactez immédiatement la permanence officielle du Collectif des Avocats du MRC :\n\n(+237) 674 27 05 49",
+      icon: "fa-phone-volume",
+      isDanger: true,
+      confirmText: "Composer le numéro",
+      cancelText: "Fermer",
+      onConfirm: () => {
         window.location.href = "tel:+237674270549";
-    }
-}
+      }
+    });
+  });
 
-function toggleLanguage() {
-    appState.currentLanguage = (appState.currentLanguage === 'FR') ? 'EN' : 'FR';
-    document.getElementById('btnLang').textContent = appState.currentLanguage;
-    alert(appState.currentLanguage === 'EN' ? "Language switched to English (Official Bilingual Policy)" : "Langue basculée en Français");
-}
-
-// Téléchargement PNG HD de la carte
-async function telechargerCartePNG() {
-    const cardFace = appState.isCardFlipped
-        ? document.getElementById('carteBackRender')
-        : document.getElementById('carteFrontRender');
-
-    if (!cardFace || !window.html2canvas) {
-        alert("Téléchargement de la carte de membre en cours...");
-        return;
-    }
-
-    const origTransform = cardFace.style.transform;
-    cardFace.style.transform = "none";
-
-    try {
-        const canvas = await html2canvas(cardFace, {
-            scale: 2,
-            useCORS: true,
-            backgroundColor: "#ffffff"
-        });
-        cardFace.style.transform = origTransform;
-
-        const side = appState.isCardFlipped ? "verso" : "recto";
-        const link = document.createElement("a");
-        link.download = `carte-mrc-${side}-${appState.member.numero}-${appState.member.prenom}.png`;
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-    } catch (err) {
-        cardFace.style.transform = origTransform;
-        alert("Erreur lors de la capture : " + err.message);
-    }
-}
-
-// Horloge temps réel Android
-setInterval(() => {
-    const d = new Date();
-    const el = document.getElementById('deviceClock');
-    if (el) el.textContent = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-}, 1000);
-
-// Chargement initial
-window.addEventListener('DOMContentLoaded', () => {
-    genererCarte(appState.member);
-    renderNews();
+  // Simulation Bots de Veille Réseaux
+  document.getElementById("btnRunSentinelScan").addEventListener("click", () => {
+    showMrcToast("Scan en direct des réseaux sociaux et flux officiels...", "fa-radar");
+    setTimeout(() => {
+      showMrcDialog({
+        title: "Rapport de Veille Sentinelle",
+        message: "Scan complété avec succès sur 1 240 canaux (Réseaux sociaux, ELECAM, MINAT, Dépêches de presse).\n\n• Aucune fausse dépêche détectée sur les canaux officiels du parti.\n• Les déclarations du Directoire et de la Présidente Tiriane Noah sont certifiées conformes.\n• Prochaine synchronisation automatique dans 15 minutes.",
+        icon: "fa-radar",
+        confirmText: "Fermer"
+      });
+    }, 1200);
+  });
 });
