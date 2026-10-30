@@ -1,476 +1,982 @@
-<!DOCTYPE html>
-<html lang="fr" data-theme="light">
+﻿<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>MRC - Mouvement pour la Renaissance du Cameroun</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- Bibliothèques CDN fiables pour QR Code et Capture HD -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRC - CRM Cameroun :: Application Mobile Officielle</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <!-- HTML2Canvas for High-Res PNG Capture -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
 <div class="app-container">
-  
-  <!-- ─── EN-TÊTE OFFICIEL DE L'APPLICATION ────────────────────────── -->
-  <header class="app-header">
-    <div class="header-brand">
-      <img src="assets/logo_mrc_round.jpg" alt="Logo Officiel MRC" class="header-logo">
-      <div class="header-titles">
-        <h1 data-i18n="app_title">MRC</h1>
-        <p data-i18n="app_subtitle">Renaissance du Cameroun</p>
-      </div>
-    </div>
-    <div class="header-actions">
-      <!-- Sélecteur Bilingue Réparé et Fonctionnel -->
-      <button type="button" class="btn-header-action" id="btnLangToggle" title="Changer de langue">
-        <i class="fa-solid fa-globe"></i> <span id="currentLangLabel">FR</span>
-      </button>
-      <!-- Bascule Thème Sombre Rapide -->
-      <button type="button" class="btn-header-action" id="btnThemeToggle" title="Mode Sombre / Clair">
-        <i class="fa-solid fa-moon" id="themeIcon"></i>
-      </button>
-      <!-- SOS Militant -->
-      <button type="button" class="btn-sos-header" id="btnSosQuick" title="SOS Militant en Danger">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-      </button>
-    </div>
-  </header>
+    <!-- Panneau Latéral : Tableau de Bord & Contrôles Rapides -->
+    <aside class="side-panel">
+        <div class="brand-badge-white">
+            <img src="assets/logo_mrc_round.jpg" alt="Logo Officiel MRC" class="panel-mrc-logo">
+            <div>
+                <h2>MOUVEMENT POUR LA RENAISSANCE DU CAMEROUN</h2>
+                <p class="sigle-sub">MRC &bull; CRM &bull; Justice - Travail - Prospérité</p>
+            </div>
+        </div>
 
-  <!-- ─── BARRE DE NAVIGATION PRINCIPALE ───────────────────────────── -->
-  <nav class="main-nav" id="mainNav">
-    <div class="nav-item active" data-tab="carte">
-      <i class="fa-solid fa-id-card"></i>
-      <span data-i18n="nav_card">Ma Carte</span>
-    </div>
-    <div class="nav-item" data-tab="adhesion">
-      <i class="fa-solid fa-user-plus"></i>
-      <span data-i18n="nav_adhesion">Adhésion & Profil</span>
-    </div>
-    <div class="nav-item" data-tab="directoire">
-      <i class="fa-solid fa-users-gear"></i>
-      <span data-i18n="nav_directoire">Le Directoire</span>
-    </div>
-    <div class="nav-item" data-tab="depeches">
-      <i class="fa-solid fa-newspaper"></i>
-      <span data-i18n="nav_depeches">Dépêches & Veille</span>
-    </div>
-    <div class="nav-item" data-tab="histoire">
-      <i class="fa-solid fa-landmark"></i>
-      <span data-i18n="nav_histoire">Histoire (2012-2026)</span>
-    </div>
-    <div class="nav-item" data-tab="parametres">
-      <i class="fa-solid fa-sliders"></i>
-      <span data-i18n="nav_settings">Paramètres</span>
-    </div>
-  </nav>
-
-  <!-- ─── CONTENU PRINCIPAL PAR ONGLET ─────────────────────────────── -->
-  <main class="app-content">
-
-    <!-- ============================================================== -->
-    <!-- ONGLET 1 : MA CARTE DE MEMBRE 3D (STABILISÉE ET IMMOBILE)       -->
-    <!-- ============================================================== -->
-    <section class="tab-pane active" id="pane-carte">
-      
-      <div class="scene-outer">
-        <div class="scene-wrap" id="wrap">
-          <div class="scene3d" id="scene" title="Touchez la carte pour la retourner">
-            <div class="carte3d" id="carte3d">
-
-              <!-- ===== RECTO ===== -->
-              <div class="face recto" id="recto">
-                <div class="bande"><span id="bandeTexte">www.mrcparty.org &nbsp;|&nbsp; (+237) 674 27 05 49</span></div>
-                <div class="filet"></div>
-                <div class="filigrane" id="filigraneZone">
-                  <img src="assets/logo_mrc_round.jpg" alt="Filigrane MRC">
+        <!-- Section Présidence & Fondateur -->
+        <div class="dashboard-card president-spotlight">
+            <div class="pres-badge"><i class="fa-solid fa-crown text-green"></i> Haut Directoire National</div>
+            
+            <div class="pres-mini-profile clickable" onclick="openLeaderModal('kamto')">
+                <img src="assets/president_maurice_kamto.jpg" alt="Pr Maurice Kamto" class="pres-portrait-thumb">
+                <div>
+                    <h4>Pr Maurice KAMTO</h4>
+                    <span class="role-pill pill-blue">Président Fondateur &bull; Candidat 2025</span>
+                    <p class="pres-quote">« Changeons l'avenir dans la paix et par les urnes »</p>
                 </div>
+            </div>
 
-                <div class="entete">
-                  <div class="bloc" id="nomFr">
-                    MOUVEMENT POUR LA<br>RENAISSANCE DU CAMEROUN
-                    <span class="sigle">MRC</span>
-                  </div>
-                  <div class="bloc droite" id="nomEn">
-                    CAMEROON RENAISSANCE<br>MOVEMENT
-                    <span class="sigle">CRM</span>
-                  </div>
+            <div class="pres-mini-profile clickable" onclick="openLeaderModal('tiriane')" style="margin-top:10px; padding-top:8px; border-top:1px dashed #cfd6d1;">
+                <img src="assets/presidente_tiriane_noah.png" alt="Tiriane Noah" class="pres-portrait-thumb">
+                <div>
+                    <h4>Tiriane Balbine Nadège NOAH</h4>
+                    <span class="role-pill">Présidente Nationale du MRC</span>
+                    <p class="pres-quote">« Ensemble pour la renaissance du Cameroun »</p>
                 </div>
+            </div>
+        </div>
 
-                <div class="logo-zone" id="logoZone">
-                  <img src="assets/logo_mrc_round.jpg" alt="Logo Officiel MRC">
-                </div>
+        <!-- Règles Légales d'Adhésion en Ligne -->
+        <div class="dashboard-card legal-rules-card">
+            <h3><i class="fa-solid fa-scale-balanced text-green"></i> Règles Légales d'Adhésion en Ligne</h3>
+            <ul class="rule-bullets">
+                <li><strong>Démarche 100% en ligne :</strong> Formulaire d'identité et rattachement à la fédération.</li>
+                <li><strong>Non-appartenance :</strong> Déclaration obligatoire de non-appartenance à un autre parti.</li>
+                <li><strong>Tarif solidaire :</strong> Prix libre à partir de 1 € (ou 1 000 F CFA) selon les revenus.</li>
+                <li><strong>Plafond annuel :</strong> Dons et cotisations plafonnés à 7 500 € par personne.</li>
+                <li><strong>Reçu officiel :</strong> Délivré par le mandataire financier (déduction fiscale de 66%).</li>
+                <li><strong>Droits internes :</strong> Droit de vote aux congrès, investitures, résiliation libre et RGPD.</li>
+            </ul>
+        </div>
 
-                <div class="autorisation" id="autorisation">
-                  Autorisation MINATD N°000221 du 25 Juillet 2008 / Lettre MINATD N°0002249/LMINATD/DAP/SDE/STP du 02 Août 2012
-                </div>
+        <div class="dashboard-card action-box">
+            <h3><i class="fa-solid fa-sliders text-green"></i> Actions &amp; Navigation</h3>
+            <button class="btn btn-primary" onclick="resetToOfficialCard()"><i class="fa-solid fa-rotate-left"></i> Recharger Carte Cyrille EDOU (SU00062551)</button>
+            <button class="btn btn-outline" onclick="openRegistryModal()"><i class="fa-solid fa-database text-green"></i> Registre National des Adhérents</button>
+            <button class="btn btn-outline" onclick="switchTab('directoire')"><i class="fa-solid fa-users"></i> Consulter le Directoire Complet</button>
+            <button class="btn btn-outline" onclick="switchTab('history')"><i class="fa-solid fa-landmark"></i> Histoire des Présidents &amp; du Parti</button>
+        </div>
+    </aside>
 
-                <!-- Titres de même taille exacte -->
-                <div class="titre">
-                  <div class="fr" data-i18n="card_front_title_fr">CARTE DE MEMBRE</div>
-                  <div class="en" data-i18n="card_front_title_en">MEMBERSHIP CARD</div>
-                </div>
+    <!-- Simulateur Téléphone Android Matérial (Blanc & Vert Dominants) -->
+    <main class="device-wrapper">
+        <div class="android-phone">
+            <!-- Hardware Details -->
+            <div class="phone-speaker"></div>
+            <div class="phone-camera"></div>
 
-                <!-- Grille des champs -->
-                <div class="champs">
-                  <div class="ligne">
-                    <div class="k"><span data-i18n="field_branch">Structure</span><i>Branch</i></div>
-                    <div class="v" id="cStructure">FD COM SANGMELIMA OWONO MIMBO'O</div>
-                  </div>
-                  <div class="ligne">
-                    <div class="k"><span data-i18n="field_surname">Prénom</span><i>Surname</i></div>
-                    <div class="v" id="cPrenom">CYRILLE</div>
-                  </div>
-                  <div class="ligne">
-                    <div class="k"><span data-i18n="field_name">Nom</span><i>Name</i></div>
-                    <div class="v" id="cNom">EDOU</div>
-                  </div>
-                  <div class="ligne">
-                    <div class="k"><span data-i18n="field_phone">Tél.</span><i>Phone</i></div>
-                    <div class="v" id="cTel">659452898</div>
-                  </div>
-                  <div class="ligne">
-                    <div class="k"><span data-i18n="field_number">N°</span><i>No.</i></div>
-                    <div class="v" id="cNumero" style="color:var(--vert-fonce);">MRC-CEN-26-000001-4</div>
-                  </div>
-                  <div class="ligne">
-                    <div class="k"><span data-i18n="field_date">Date d'adhésion</span><i>Membership date</i></div>
-                    <div class="v" id="cDate">19/02/2024</div>
-                  </div>
-                </div>
-
-                <!-- Photo du membre personnalisée -->
-                <div class="photo-titulaire-recto" id="slotPhotoMembre">
-                  <i class="fa-solid fa-user photo-titulaire-placeholder" id="placeholderPhoto"></i>
-                </div>
-
-                <!-- Validation : Présidente Nationale Tiriane Balbine Noah -->
-                <div class="validation">
-                  <span class="pres-label" data-i18n="pres_label">La Présidente Nationale</span>
-                  <span class="pres-name">Tiriane Balbine NOAH</span>
-                  <div class="slots">
-                    <div class="slot cachet" id="slotCachet">
-                      <img src="assets/cachet_mrc_exact.png" alt="Cachet Officiel MRC">
+            <!-- Surface Écran -->
+            <div class="screen-surface">
+                <!-- Status Bar -->
+                <div class="status-bar">
+                    <span class="status-time" id="deviceClock">13:30</span>
+                    <div class="status-icons">
+                        <i class="fa-solid fa-signal"></i>
+                        <span class="status-carrier">CAMTEL 4G</span>
+                        <i class="fa-solid fa-wifi"></i>
+                        <i class="fa-solid fa-battery-full"></i>
                     </div>
-                    <div class="slot signature" id="slotSignature">
-                      <img src="assets/signature_kamto_exact.png" alt="Sceau & Signature">
+                </div>
+
+                <!-- Header de l'Application -->
+                <header class="app-header">
+                    <div class="header-logo-group">
+                        <img src="assets/logo_mrc_round.jpg" alt="Logo MRC" class="app-logo-circle">
+                        <div>
+                            <div class="app-title-main">MRC &bull; CRM</div>
+                            <div class="app-subtitle">Mouvement pour la Renaissance</div>
+                        </div>
                     </div>
-                  </div>
-                </div>
+                    <div class="header-actions">
+                        <button class="btn-lang-pill" id="btnLang" onclick="toggleLanguage()">FR</button>
+                        <button class="btn-header-icon" onclick="openRegistryModal()" title="Registre National des Adhérents">
+                            <i class="fa-solid fa-address-book"></i>
+                        </button>
+                        <button class="btn-header-icon" onclick="openSettingsModal()" title="Paramètres">
+                            <i class="fa-solid fa-gear"></i>
+                        </button>
+                        <button class="btn-sos-badge" onclick="triggerSosModal()" title="SOS Militant">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </button>
+                    </div>
+                </header>
 
-                <div class="pied">
-                  <span id="siteWeb">www.mrcparty.org</span>
-                  <span id="contact">Tél : (+237) 674 27 05 49</span>
-                </div>
-                <div class="reflet" data-reflet="recto"></div>
-              </div>
+                <!-- Corps Dynamique de l'Application -->
+                <div class="app-body" id="appBody">
 
-              <!-- ===== VERSO ===== -->
-              <div class="face verso" id="verso">
-                <div class="v-bandeau" data-i18n="verso_banner">
-                  CARTE PERSONNELLE ET INCESSIBLE &nbsp;·&nbsp; PERSONAL AND NON-TRANSFERABLE
-                </div>
-                <div class="filigrane">
-                  <img src="assets/logo_mrc_round.jpg" alt="Filigrane MRC">
-                </div>
+                    <!-- ========================================== -->
+                    <!-- ONGLET 1: ACCUEIL / HOME                   -->
+                    <!-- ========================================== -->
+                    <div class="tab-pane active" id="paneHome">
+                        <!-- Hero Banner Vert & Blanc avec Animation -->
+                        <div class="hero-banner-green animated-fade">
+                            <div class="banner-top-badge">MOUVEMENT POUR LA RENAISSANCE DU CAMEROUN</div>
+                            <h2>Changeons l'avenir dans la paix et par les urnes</h2>
+                            <p class="hero-subtext">« Justice &bull; Travail &bull; Prospérité &bull; Solidarité Républicaine »</p>
+                        </div>
 
-                <div class="v-gauche">
-                  <h3><span data-i18n="statutes_title">Droits et devoirs du membre</span> <i>/ Member rights and duties</i></h3>
-                  <ol id="articlesList">
-                    <li>Le titulaire adhère aux statuts et au règlement intérieur du parti et s'engage à les respecter dans la paix et par les urnes.</li>
-                    <li>Cette carte est strictement personnelle : elle ne peut être prêtée, cédée ni reproduite.</li>
-                    <li>Elle est valable douze mois à compter de la date d'adhésion et se renouvelle par le paiement de la cotisation officielle (1.000 F CFA).</li>
-                    <li>En cas de perte, d'intimidation ou de détention illégale, le titulaire saisit immédiatement le Collectif des Avocats du MRC.</li>
-                    <li>Le titulaire dispose d'un droit de vote délibératif lors des assemblées et conventions du Mouvement.</li>
-                  </ol>
-                  <div class="v-infos">
-                    <div><span data-i18n="meta_member_no">N° de membre</span><b id="vNumero">MRC-CEN-26-000001-4</b></div>
-                    <div><span data-i18n="meta_validity">Valable jusqu'au</span><b id="vFin">19/02/2027</b></div>
-                    <div><span data-i18n="meta_structure">Structure</span><b id="vStructure">FD COM SANGMELIMA</b></div>
-                    <div><span data-i18n="meta_date">Adhésion</span><b id="vDate">19/02/2024</b></div>
-                  </div>
-                </div>
-                <div class="v-sign" data-i18n="member_signature_label">Signature du titulaire</div>
+                        <!-- Bannière Directoire Actuel Clignotante -->
+                        <div class="leadership-banner interactive-hover" onclick="switchTab('directoire')">
+                            <img src="assets/presidente_tiriane_noah.png" alt="Tiriane Noah" class="banner-avatar">
+                            <div class="leadership-info">
+                                <span class="tag-pres">PRÉSIDENCE DU MRC</span>
+                                <h4>Tiriane Balbine Nadège NOAH</h4>
+                                <p>Ensemble pour la renaissance du Cameroun</p>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-green bounce-right"></i>
+                        </div>
 
-                <div class="v-droite">
-                  <!-- QR Code Complet contenant TOUTES les données du membre -->
-                  <div id="qrBox"></div>
-                  <div class="legende" data-i18n="qr_hint">Scannez pour afficher toutes les informations officielles du membre</div>
-                  <div class="num" id="vNumero2">MRC-CEN-26-000001-4</div>
-                </div>
+                        <!-- Chiffres Clés du Mouvement (mrcparty.net) -->
+                        <div class="stats-counter-strip">
+                            <div class="stat-col">
+                                <span class="stat-num text-green">2012</span>
+                                <span class="stat-lbl">Fondation</span>
+                            </div>
+                            <div class="stat-col">
+                                <span class="stat-num text-green">1 858+</span>
+                                <span class="stat-lbl">Meetings</span>
+                            </div>
+                            <div class="stat-col">
+                                <span class="stat-num text-green">23M+</span>
+                                <span class="stat-lbl">Sympathisants</span>
+                            </div>
+                            <div class="stat-col">
+                                <span class="stat-num text-green">135+</span>
+                                <span class="stat-lbl">Pays couverts</span>
+                            </div>
+                        </div>
 
-                <div class="v-pied">
-                  <span id="siege">Siège : Centre Médical d'Odza, Yaoundé</span>
-                  <span id="siteWeb2">www.mrcparty.org &nbsp;|&nbsp; (+237) 674 27 05 49</span>
-                </div>
-                <div class="reflet" data-reflet="verso"></div>
-              </div>
+                        <!-- Grille d'Accès Rapide -->
+                        <div class="section-title">
+                            <h3>Espaces &amp; Fonctionnalités</h3>
+                        </div>
+                        <div class="action-grid">
+                            <div class="grid-card interactive-hover" onclick="switchTab('card')">
+                                <i class="fa-solid fa-id-card text-green"></i>
+                                <h4>Ma Carte 3D</h4>
+                                <p>Réplique exacte &bull; Verso QR</p>
+                            </div>
+                            <div class="grid-card interactive-hover" onclick="switchTab('register')">
+                                <i class="fa-solid fa-file-signature text-green"></i>
+                                <h4>Adhérer en Ligne</h4>
+                                <p>Règles légales conformes</p>
+                            </div>
+                            <div class="grid-card interactive-hover" onclick="switchTab('directoire')">
+                                <i class="fa-solid fa-users-viewfinder text-green"></i>
+                                <h4>Le Directoire</h4>
+                                <p>Présidents, VP, SG &amp; Trésorier</p>
+                            </div>
+                            <div class="grid-card interactive-hover" onclick="switchTab('history')">
+                                <i class="fa-solid fa-timeline text-green"></i>
+                                <h4>Histoire &amp; Présidents</h4>
+                                <p>De 2012 à nos jours</p>
+                            </div>
+                        </div>
 
-            </div>
-          </div>
-          <div class="ombre"></div>
-        </div>
-      </div>
+                        <!-- Dernières Déclarations du Parti -->
+                        <div class="section-title flex-between">
+                            <h3>Dernières Déclarations</h3>
+                            <a href="#" onclick="switchTab('news'); return false;" class="link-green">Flux complet &gt;</a>
+                        </div>
+                        <div class="featured-news-card interactive-hover" onclick="openArticleModal(0)">
+                            <div class="news-tag">10 JUIN 2025 &bull; HAUT DIRECTOIRE DU MRC</div>
+                            <h4 class="news-title">Le Président Maurice KAMTO remercie chaleureusement les vaillantes populations de Douala</h4>
+                            <p class="news-excerpt">« Malgré la pression politique qui sera exercée sur les forces de l'ordre par les tenants du pouvoir, j'ai l'espoir qu'ils serviront la Constitution et le peuple camerounais. »</p>
+                        </div>
+                    </div>
 
-      <!-- Barre d'Actions de la Carte -->
-      <div class="card-actions-bar">
-        <button type="button" class="btn-card-action principal" id="btnFlipCard">
-          <i class="fa-solid fa-arrows-rotate"></i> <span data-i18n="btn_flip_card">Retourner la carte (3D)</span>
-        </button>
-        <button type="button" class="btn-card-action" id="btnDownloadRecto">
-          <i class="fa-solid fa-download"></i> <span>PNG Recto HD</span>
-        </button>
-        <button type="button" class="btn-card-action" id="btnDownloadVerso">
-          <i class="fa-solid fa-download"></i> <span>PNG Verso HD</span>
-        </button>
-        <button type="button" class="btn-card-action" id="btnVerifyCard">
-          <i class="fa-solid fa-shield-halved"></i> <span data-i18n="btn_verify">Contrôle QR</span>
-        </button>
-      </div>
+                    <!-- ========================================== -->
+                    <!-- ONGLET 2: CARTE DE MEMBRE EN 3D FLIP       -->
+                    <!-- ========================================== -->
+                    <div class="tab-pane" id="paneCard">
+                        <div class="card-screen-header">
+                            <div>
+                                <h2>Carte Officielle de Membre</h2>
+                                <p class="sub">Touchez la carte pour la retourner en 3D (Verso sécurisé)</p>
+                            </div>
+                            <div class="badge-status-green" id="cardStatusBadge">ACTIF / VALIDE</div>
+                        </div>
 
-    </section>
+                        <!-- 3D FLIP CONTAINER -->
+                        <div class="card-3d-wrapper">
+                            <div class="card-3d-inner" id="card3dElement" onclick="toggleCard3DFlip()">
+                                
+                                <!-- ================= RECTO DE LA CARTE ================= -->
+                                <!-- 100% IDENTIQUE À L'ÉCHANTILLON : SANS QR SUR LE RECTO, LOGO AU MILIEU -->
+                                <div class="card-3d-face card-3d-front" id="carteFrontRender">
+                                    <!-- Bande verte verticale gauche -->
+                                    <div class="bande">
+                                        <span id="bandeTexte">www.mrcparty.org &nbsp;&nbsp;|&nbsp;&nbsp; Tél : (+237) 674 27 05 49 / 671 08 14 44</span>
+                                    </div>
+                                    <!-- Filet vert vertical -->
+                                    <div class="filet"></div>
+                                    
+                                    <!-- Filigrane officiel central au milieu de la carte -->
+                                    <div class="filigrane-central" id="filigrane">
+                                        <img src="assets/logo_mrc_round.jpg" alt="Logo Filigrane MRC">
+                                    </div>
 
-    <!-- ============================================================== -->
-    <!-- ONGLET 2 : ADHÉSION, PROFIL & LISTE DES BRANCHES               -->
-    <!-- ============================================================== -->
-    <section class="tab-pane" id="pane-adhesion">
-      <div class="form-card">
-        <h3><i class="fa-solid fa-address-card text-green"></i> <span data-i18n="form_title">Formulaire d'Enregistrement Officiel & Attribution du Numéro</span></h3>
-        
-        <!-- Téléversement de Photo de Profil Individuelle -->
-        <div class="photo-uploader-box">
-          <div class="photo-preview-circle" id="formPhotoPreview">
-            <i class="fa-solid fa-user"></i>
-          </div>
-          <div class="photo-upload-meta">
-            <p data-i18n="photo_upload_title">Photo d'Identité du Membre</p>
-            <small data-i18n="photo_upload_hint">Visible sur votre carte d'adhérent numérique officielle (Format JPG/PNG)</small>
-            <input type="file" id="photoInput" accept="image/*" style="display:none;">
-            <button type="button" class="btn-file-select" onclick="document.getElementById('photoInput').click()">
-              <i class="fa-solid fa-camera"></i> <span data-i18n="btn_choose_photo">Choisir ma photo</span>
-            </button>
-          </div>
-        </div>
+                                    <!-- En-tête Bilingue et Sigle -->
+                                    <div class="entete">
+                                        <div class="bloc" id="nomFr">
+                                            MOUVEMENT POUR LA<br>RENAISSANCE DU CAMEROUN
+                                            <span class="sigle">MRC</span>
+                                        </div>
+                                        <div class="bloc droite" id="nomEn">
+                                            CAMEROON RENAISSANCE<br>MOVEMENT
+                                            <span class="sigle">CRM</span>
+                                        </div>
+                                    </div>
 
-        <form id="formMember" onsubmit="return false;">
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="inputPrenom" data-i18n="label_surname">Prénom</label>
-              <input type="text" id="inputPrenom" value="CYRILLE" required>
-            </div>
-            <div class="form-group">
-              <label for="inputNom" data-i18n="label_name">Nom</label>
-              <input type="text" id="inputNom" value="EDOU" required>
-            </div>
-            <div class="form-group">
-              <label for="inputTel" data-i18n="label_phone">Téléphone / WhatsApp (+237)</label>
-              <input type="tel" id="inputTel" value="659452898" required>
-            </div>
-            <div class="form-group">
-              <label for="inputCni" data-i18n="label_cni">N° CNI ou Passeport</label>
-              <input type="text" id="inputCni" value="108945210" placeholder="Numéro officiel CNI">
-            </div>
-            <div class="form-group">
-              <label for="inputDate" data-i18n="label_date">Date d'adhésion</label>
-              <input type="date" id="inputDate">
-            </div>
+                                    <!-- Zone du Logo Officiel Central Supérieur -->
+                                    <div class="logo-zone" id="logoZone">
+                                        <img src="assets/logo_mrc_round.jpg" alt="Logo Officiel MRC">
+                                    </div>
 
-            <!-- Liste des types de structures -->
-            <div class="form-group">
-              <label for="selectTypeStructure" data-i18n="label_type_structure">Type de Structure (Branche)</label>
-              <select id="selectTypeStructure"></select>
-            </div>
+                                    <!-- Ligne d'autorisation MINATD -->
+                                    <div class="autorisation" id="autorisation">
+                                        Autorisation MINATD N°000221 du 25 Juillet 2008 / Lettre MINATD N°0002249/LMINATD/DAP/SDE/STP du 02 Août 2012
+                                    </div>
 
-            <!-- Sélecteur de Région (10 Régions du Cameroun) -->
-            <div class="form-group" id="groupRegion">
-              <label for="selectRegion" data-i18n="label_region">Région</label>
-              <select id="selectRegion"></select>
-            </div>
+                                    <!-- Titre de la carte -->
+                                    <div class="titre">
+                                        <div class="fr">CARTE DE MEMBRE</div>
+                                        <div class="en">MEMBERSHIP CARD</div>
+                                    </div>
 
-            <!-- Sélecteur de Département (58 Départements) -->
-            <div class="form-group" id="groupDept">
-              <label for="selectDept" data-i18n="label_dept">Département</label>
-              <select id="selectDept"></select>
-            </div>
+                                    <!-- Grille des champs du titulaire -->
+                                    <div class="champs">
+                                        <div class="ligne">
+                                            <div class="k">Structure<i>Branch</i></div>
+                                            <div class="v" id="cStructure">FD COM SANGMELIMA OWONO MIMBO'O</div>
+                                        </div>
+                                        <div class="ligne">
+                                            <div class="k">Prénom<i>Surname</i></div>
+                                            <div class="v" id="cPrenom">CYRILLE</div>
+                                        </div>
+                                        <div class="ligne">
+                                            <div class="k">Nom<i>Name</i></div>
+                                            <div class="v" id="cNom">EDOU</div>
+                                        </div>
+                                        <div class="ligne">
+                                            <div class="k">Tél.<i>Phone</i></div>
+                                            <div class="v" id="cTel">659452898</div>
+                                        </div>
+                                        <div class="ligne">
+                                            <div class="k">N°<i>No.</i></div>
+                                            <div class="v highlight-number" id="cNumero">SU00062551</div>
+                                        </div>
+                                        <div class="ligne">
+                                            <div class="k">Date d'adhésion<i>Membership date</i></div>
+                                            <div class="v" id="cDate">19/02/2024</div>
+                                        </div>
+                                        <div class="ligne" style="border-bottom:none;">
+                                            <div class="k">Prix<i>Price</i></div>
+                                            <div class="v text-green" style="font-size:15px;" id="cPrix">1.000 F CFA</div>
+                                        </div>
+                                    </div>
 
-            <!-- Commune / Lieu -->
-            <div class="form-group" id="groupLieu">
-              <label for="inputLieu" id="labelLieu" data-i18n="label_commune">Commune / Arrondissement</label>
-              <input type="text" id="inputLieu" value="Sangmélima Owono Mimbo'o">
-            </div>
+                                    <!-- CACHET VERT OFFICIEL DU MRC & SIGNATURE PR MAURICE KAMTO -->
+                                    <div class="cachet-zone-realistic">
+                                        <!-- Vrai Cachet Vert Circulaire Extrait de la Carte -->
+                                        <div class="official-green-stamp-wrap">
+                                            <img src="assets/cachet_mrc_exact.png" alt="Cachet Officiel MRC" class="stamp-img-realistic">
+                                        </div>
+                                    </div>
 
-            <!-- Numéro Automatique Attribué -->
-            <div class="form-group">
-              <label for="inputNumeroAuto" data-i18n="label_number_auto">N° de membre (Généré Automatiquement)</label>
-              <input type="text" id="inputNumeroAuto" readonly>
-            </div>
-          </div>
+                                    <!-- Signature et Sceau Officiel Rouge du Président -->
+                                    <div class="signature">
+                                        <span class="sign-title">La Présidente Nationale<br><strong style="font-size:11px; color:#1d2a22; display:block;">Tiriane Balbine NOAH</strong></span>
+                                        <div class="zone" id="signatureZone">
+                                            <img src="assets/signature_kamto_exact.png" alt="Sceau & Signature" class="sig-seal-img-realistic">
+                                        </div>
+                                    </div>
 
-          <div class="form-submit-row">
-            <button type="button" class="btn-card-action principal" id="btnEnregistrerMembre">
-              <i class="fa-solid fa-floppy-disk"></i> <span data-i18n="btn_save_member">Enregistrer et Mettre à Jour la Carte</span>
-            </button>
-            <button type="button" class="btn-card-action" id="btnNouveauMembre">
-              <i class="fa-solid fa-user-plus"></i> <span data-i18n="btn_new_member">Nouveau Membre</span>
-            </button>
-          </div>
-        </form>
-      </div>
-    </section>
-
-    <!-- ============================================================== -->
-    <!-- ONGLET 3 : LE DIRECTOIRE NATIONAL (OCTOBRE 2026)                -->
-    <!-- ============================================================== -->
-    <section class="tab-pane" id="pane-directoire">
-      <div class="leadership-header">
-        <div>
-          <span class="leadership-header-badge" data-i18n="dir_badge">Convention Nationale du 17 Octobre 2026</span>
-          <h3 style="font-size:16px; font-weight:800; margin-top:4px;" data-i18n="dir_title">Direction Stratégique du Mouvement pour la Renaissance du Cameroun</h3>
-          <p style="font-size:12px; color:var(--gris); margin-top:2px;" data-i18n="dir_subtitle">
-            Élection triomphale de Tiriane Balbine Noah à la Présidence Nationale (96,89%) & Direction collégiale unie.
-          </p>
-        </div>
-      </div>
-
-      <div class="leaders-grid" id="leadersListGrid">
-        <!-- Rempli dynamiquement par app.js avec les 9 dirigeants -->
-      </div>
-    </section>
-
-    <!-- ============================================================== -->
-    <!-- ONGLET 4 : DÉPÊCHES & VEILLE RÉSEAUX "SENTINELLE" (BOTS)       -->
-    <!-- ============================================================== -->
-    <section class="tab-pane" id="pane-depeches">
-      
-      <!-- Module de veille des robots scrutateurs -->
-      <div class="sentinel-monitor-bar">
-        <div class="sentinel-stats">
-          <div class="pulse-dot"></div>
-          <div>
-            <strong style="font-size:13.5px;" data-i18n="sentinel_active">Veille Sentinelle Active</strong>
-            <div style="font-size:11px; opacity:0.85;" data-i18n="sentinel_bots_count">1 240 canaux scrutés en continu &bull; Filtre anti-fake news actif</div>
-          </div>
-        </div>
-        <button type="button" class="sentinel-btn-scan" id="btnRunSentinelScan">
-          <i class="fa-solid fa-radar"></i> <span data-i18n="btn_run_scan">Lancer la Sentinelle (Scan Réseaux)</span>
-        </button>
-      </div>
-
-      <div class="news-list" id="newsListContainer">
-        <!-- Rempli dynamiquement par app.js -->
-      </div>
-    </section>
-
-    <!-- ============================================================== -->
-    <!-- ONGLET 5 : GRANDE FRESQUE HISTORIQUE EXHAUSTIVE (2012-2026)     -->
-    <!-- ============================================================== -->
-    <section class="tab-pane" id="pane-histoire">
-      <div style="margin-bottom:14px;">
-        <h3 style="font-size:18px; font-weight:800; color:var(--vert-fonce);" data-i18n="hist_title">Histoire Complète & Épopée Républicaine du MRC</h3>
-        <p style="font-size:12.5px; color:var(--gris);" data-i18n="hist_subtitle">
-          De la fondation fondatrice le 13 août 2012 au passage de témoin historique du 17 octobre 2026. Tout est documenté.
-        </p>
-      </div>
-
-      <div class="history-timeline" id="historyTimeline">
-        <!-- Rempli chronologiquement par app.js avec les 10 grandes étapes -->
-      </div>
-    </section>
-
-    <!-- ============================================================== -->
-    <!-- ONGLET 6 : PARAMÈTRES PROFESSIONNELS                           -->
-    <!-- ============================================================== -->
-    <section class="tab-pane" id="pane-parametres">
-      
-      <div class="settings-section-card">
-        <h3><i class="fa-solid fa-palette"></i> <span data-i18n="set_appearance">Apparence & Interface</span></h3>
-        <div class="setting-row">
-          <div class="setting-info">
-            <h5 data-i18n="set_dark_mode">Thème Sombre (Dark Mode)</h5>
-            <p data-i18n="set_dark_mode_desc">Améliore le confort de lecture la nuit et réduit la consommation de batterie</p>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="switchDarkMode">
-            <span class="slider"></span>
-          </label>
-        </div>
-        <div class="setting-row">
-          <div class="setting-info">
-            <h5 data-i18n="set_lang">Langue de l'application (Bilingue)</h5>
-            <p data-i18n="set_lang_desc">Français ou English officiel du Cameroun</p>
-          </div>
-          <select id="selectAppLanguage" style="width:120px; padding:6px 10px; border-radius:6px;">
-            <option value="FR">Français</option>
-            <option value="EN">English</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="settings-section-card">
-        <h3><i class="fa-solid fa-shield-halved"></i> <span data-i18n="set_security">Protection & Ligne Juridique</span></h3>
-        <div class="setting-row">
-          <div class="setting-info">
-            <h5 data-i18n="set_sos_title">SOS Militant & Assistance Immédiate</h5>
-            <p data-i18n="set_sos_desc">Numéro officiel d'urgence du Collectif des Avocats du MRC en cas d'interpellation</p>
-          </div>
-          <a href="tel:+237674270549" class="btn-card-action" style="background:#d32f2f; color:#fff; border:none; text-decoration:none;">
-            <i class="fa-solid fa-phone"></i> (+237) 674 27 05 49
-          </a>
-        </div>
-      </div>
-
-      <!-- Section Mises à Jour Automatiques -->
-      <div class="settings-section-card">
-        <h3><i class="fa-solid fa-arrows-rotate text-green"></i> <span data-i18n="set_update_title">Mise à Jour de l'Application</span></h3>
-        <div class="setting-row">
-          <div class="setting-info">
-            <h5 data-i18n="set_version_title">Version installée : <span id="appVersionDisplay">2.0.0</span></h5>
-            <p data-i18n="set_version_desc">Mises à jour automatiques transparentes sans désinstallation</p>
-          </div>
-          <button type="button" class="btn-card-action principal" id="btnCheckUpdates" style="padding:7px 14px; font-size:12px;">
-            <i class="fa-solid fa-cloud-arrow-down"></i> <span data-i18n="btn_check_update">Vérifier</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="settings-section-card">
-        <h3><i class="fa-solid fa-circle-info"></i> <span data-i18n="set_legal">Mentions Officielles & Cadre Statutaire</span></h3>
-        <p style="font-size:12px; line-height:1.5; color:var(--gris);">
-          <strong>Statut Juridique :</strong> Mouvement pour la Renaissance du Cameroun (MRC) / Cameroon Renaissance Movement (CRM).<br>
-          <strong>Légalisation :</strong> Autorisation MINATD N°000221 du 25 Juillet 2008 & Lettre MINATD N°0002249/LMINATD/DAP/SDE/STP du 02 Août 2012.<br>
-          <strong>Siège National :</strong> Centre Médical d'Odza, Yaoundé, Cameroun.<br>
-          <strong>Cotisation Statutaire :</strong> 1.000 F CFA / an conformément aux résolutions du Conseil National.
-        </p>
-      </div>
-
-    </section>
-
-  </main>
+                                    <!-- Photo Titulaire Personnalisée -->
+<div class="card-member-photo-recto" id="slotPhotoTitulaire" style="display:none;">
+    <img src="" alt="Photo Titulaire" id="imgTitulaireRecto">
 </div>
 
-<!-- ============================================================== -->
-<!-- SYSTÈME DE DIALOGUES & MODALES MRC PROFESSIONNELLES (PAS D'ALERT)-->
-<!-- ============================================================== -->
-<div class="mrc-modal-backdrop" id="mrcDialogBackdrop">
-  <div class="mrc-modal-box" id="mrcDialogBox">
-    <div class="modal-icon-circle" id="mrcDialogIcon">
-      <i class="fa-solid fa-check"></i>
-    </div>
-    <h3 id="mrcDialogTitle">Titre de la modale</h3>
-    <p id="mrcDialogMessage">Message de la modale</p>
-    <div class="modal-btn-row">
-      <button type="button" class="btn-modal btn-modal-cancel" id="btnDialogCancel" style="display:none;">Annuler</button>
-      <button type="button" class="btn-modal btn-modal-primary" id="btnDialogConfirm">D'accord</button>
-    </div>
-  </div>
+<!-- Pied de carte -->
+                                    <div class="pied">
+                                        <span id="siteWeb">www.mrcparty.org</span>
+                                        <span id="contact">Tél : (+237) 674 27 05 49 / 671 08 14 44</span>
+                                    </div>
+                                </div>
+
+                                <!-- ================= VERSO DE LA CARTE ================= -->
+                                <!-- CONTIENT LE QR CODE DE SÉCURITÉ, LE CODE-BARRES ET LES MENTIONS STATUTAIRES -->
+                                <div class="card-3d-face card-3d-back" id="carteBackRender">
+                                    <div class="bande-back"></div>
+                                    
+                                    <div class="back-top-banner">
+                                        <span>RÉPUBLIQUE DU CAMEROUN &bull; PAIX - TRAVAIL - PATRIE</span>
+                                    </div>
+
+                                    <div class="back-statutes-text">
+                                        <p><strong>Articles 8 &amp; 9 des Statuts du MRC :</strong> La présente carte certifie l'appartenance de son titulaire au Mouvement pour la Renaissance du Cameroun. Elle confère le droit de vote aux conventions ordinaires et extraordinaires, la participation aux désignations électorales et la protection juridique du Collectif des Avocats du MRC.</p>
+                                    </div>
+
+                                    <div class="back-middle-grid">
+                                        <div class="qr-col">
+                                            <div id="qrBack"></div>
+                                            <span class="qr-tag">Scan d'Authenticité</span>
+                                        </div>
+                                        <div class="sec-meta-col">
+                                            <div class="meta-row">
+                                                <span class="meta-k">Immatriculation :</span>
+                                                <span class="meta-v" id="backNumDisplay">SU00062551</span>
+                                            </div>
+                                            <div class="meta-row">
+                                                <span class="meta-k">Signature Numérique :</span>
+                                                <span class="meta-v hash-code" id="backHashDisplay">MRC-9A74E82F10BC</span>
+                                            </div>
+                                            <div class="meta-row">
+                                                <span class="meta-k">Validation Directoire :</span>
+                                                <span class="meta-v text-green">Conforme 2024-2025</span>
+                                            </div>
+                                            <div class="meta-row">
+                                                <span class="meta-k">Assistance Urgence :</span>
+                                                <span class="meta-v text-red">(+237) 674 27 05 49</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Code 128 Barcode -->
+                                    <div class="barcode-box">
+                                        <div class="barcode-bars"></div>
+                                        <span class="barcode-label" id="barcodeLabel">SU00062551</span>
+                                    </div>
+
+                                    <div class="back-bottom-note">
+                                        <span>Délivrée sous l'autorité du Directoire National du MRC &bull; Yaoundé, Cameroun</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Astuce de Retournement 3D -->
+                        <div class="flip-hint" onclick="toggleCard3DFlip()">
+                            <i class="fa-solid fa-arrows-rotate fa-spin-hover"></i> Touchez la carte pour la faire pivoter (Recto / Verso)
+                        </div>
+
+                        <!-- Boutons d'Action sur la Carte -->
+                        <div class="card-btn-grid">
+                            <button class="btn btn-primary" onclick="telechargerCartePNG()">
+                                <i class="fa-solid fa-download"></i> Télécharger en PNG HD
+                            </button>
+                            <button class="btn btn-outline" onclick="showVerificationModal()">
+                                <i class="fa-solid fa-qrcode"></i> Vérifier Authenticité
+                            </button>
+                            <button class="btn btn-outline" onclick="partagerCarte()">
+                                <i class="fa-solid fa-share-nodes"></i> Partager
+                            </button>
+                        </div>
+
+                        <!-- Droits Statutaires du Titulaire -->
+                        <div class="card-rights-box">
+                            <h4><i class="fa-solid fa-circle-check text-green"></i> Droits &amp; Garanties du Membre</h4>
+                            <ul>
+                                <li>Droit de participation et de vote aux conventions et assemblées générales.</li>
+                                <li>Éligibilité et droit d'investiture aux élections pour les adhérents à jour de cotisation.</li>
+                                <li>Assistance et protection juridique assurées par le Collectif des Avocats du MRC.</li>
+                                <li>Accès aux comités de base, documents stratégiques et kits de mobilisation.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- ========================================== -->
+                    <!-- ONGLET 3: ADHÉSION EN LIGNE CONFORME       -->
+                    <!-- ========================================== -->
+                    <div class="tab-pane" id="paneRegister">
+                        <div class="screen-header">
+                            <h2>Adhésion en Ligne &bull; Espace Militant</h2>
+                            <p class="sub">Rejoignez la Renaissance dans le respect des règles légales et statutaires</p>
+                        </div>
+
+                        <form class="legal-reg-form" id="regForm" onsubmit="handleRegistrationSubmit(event)">
+                            
+                            <!-- Étape 1 : Identité & Rattachement -->
+                            <div class="form-card">
+                                <div class="form-card-title"><i class="fa-solid fa-user text-green"></i> 1. Identité &amp; Section Locale</div>
+                                <div class="input-row">
+                                    <div class="form-group">
+                                        <label for="regPrenom">Prénom(s) *</label>
+                                        <input type="text" id="regPrenom" placeholder="Ex: CYRILLE" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="regNom">Nom(s) *</label>
+                                        <input type="text" id="regNom" placeholder="Ex: EDOU" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="regStructure">Fédération / Section Locale de Rattachement *</label>
+                                    <select id="regStructure" required>
+                                        <option value="FD COM SANGMELIMA OWONO MIMBO'O">FD COM SANGMELIMA OWONO MIMBO'O (SUD)</option>
+                                        <option value="FÉDÉRATION DU CENTRE 1 - YAOUNDÉ 1 & 2">FÉDÉRATION DU CENTRE 1 - YAOUNDÉ 1 & 2</option>
+                                        <option value="FÉDÉRATION DU CENTRE 2 - YAOUNDÉ 3 & 6">FÉDÉRATION DU CENTRE 2 - YAOUNDÉ 3 & 6</option>
+                                        <option value="FÉDÉRATION DU LITTORAL 1 - WOURI EST (DOUALA)">FÉDÉRATION DU LITTORAL 1 - WOURI EST (DOUALA)</option>
+                                        <option value="FÉDÉRATION DU LITTORAL 2 - BONABÉRI">FÉDÉRATION DU LITTORAL 2 - BONABÉRI</option>
+                                        <option value="FÉDÉRATION DE L'OUEST 1 - BAFOUSSAM">FÉDÉRATION DE L'OUEST 1 - BAFOUSSAM</option>
+                                        <option value="FÉDÉRATION DU NORD - GAROUA">FÉDÉRATION DU NORD - GAROUA</option>
+                                        <option value="FÉDÉRATION DE L'EXTRÊME-NORD - MAROUA">FÉDÉRATION DE L'EXTRÊME-NORD - MAROUA</option>
+                                        <option value="FÉDÉRATION DIASPORA EUROPE (FRANCE &amp; UE)">FÉDÉRATION DIASPORA EUROPE (FRANCE &amp; UE)</option>
+                                        <option value="FÉDÉRATION DIASPORA AMÉRIQUE (USA &amp; CANADA)">FÉDÉRATION DIASPORA AMÉRIQUE (USA &amp; CANADA)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="regTel">Téléphone / WhatsApp *</label>
+                                    <input type="tel" id="regTel" placeholder="Ex: 659452898 ou +33 6..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="regEmail">Email pour l'envoi du reçu et de la carte *</label>
+                                    <input type="email" id="regEmail" placeholder="militant@exemple.com" required>
+                                </div>
+                            </div>
+
+                            <!-- Étape 2 : Choix du Montant de Cotisation (Grille Indicative & Prix Libre) -->
+                            <div class="form-card">
+                                <div class="form-card-title"><i class="fa-solid fa-coins text-green"></i> 2. Montant de la Cotisation Annuelle</div>
+                                <p class="help-text">Grille indicative selon vos revenus (prix libre dès 1 € / 1 000 F CFA. Plafond légal : 7 500 € par an).</p>
+                                
+                                <div class="cotisation-grid">
+                                    <label class="cotisation-pill active">
+                                        <input type="radio" name="cotisationAmt" value="1000" checked onchange="updateCotisation(this)">
+                                        <span>1 000 F CFA<br><small>(ou 1,50 € - Tarif Base)</small></span>
+                                    </label>
+                                    <label class="cotisation-pill">
+                                        <input type="radio" name="cotisationAmt" value="5000" onchange="updateCotisation(this)">
+                                        <span>5 000 F CFA<br><small>(ou 8 € - Soutien)</small></span>
+                                    </label>
+                                    <label class="cotisation-pill">
+                                        <input type="radio" name="cotisationAmt" value="25000" onchange="updateCotisation(this)">
+                                        <span>25 000 F CFA<br><small>(ou 38 € - Cadre)</small></span>
+                                    </label>
+                                    <label class="cotisation-pill">
+                                        <input type="radio" name="cotisationAmt" value="100000" onchange="updateCotisation(this)">
+                                        <span>100 000 F CFA<br><small>(ou 150 € - Bienfaiteur)</small></span>
+                                    </label>
+                                </div>
+
+                                <div class="payment-method-strip">
+                                    <label class="pay-method selected">
+                                        <input type="radio" name="payType" value="MTN MoMo / Orange Money" checked>
+                                        <span>MTN MoMo (*126#) / Orange Money (#150#)</span>
+                                    </label>
+                                    <label class="pay-method">
+                                        <input type="radio" name="payType" value="Carte Bancaire / Virement SEPA">
+                                        <span>Carte Bancaire / Virement SEPA</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Étape 3 : Déclarations Légales Obligatoires -->
+                            <div class="form-card legal-checks-card">
+                                <div class="form-card-title"><i class="fa-solid fa-gavel text-green"></i> 3. Certifications Légales Obligatoires</div>
+                                
+                                <label class="checkbox-row">
+                                    <input type="checkbox" id="checkNonAppartenance" required>
+                                    <span><strong>Non-appartenance :</strong> Je certifie sur l'honneur ne pas appartenir à un autre parti politique et adhérer librement aux statuts du MRC.</span>
+                                </label>
+                                
+                                <label class="checkbox-row">
+                                    <input type="checkbox" id="checkLegalResidance" required>
+                                    <span><strong>Règle légale :</strong> Je certifie être de nationalité camerounaise ou résidant en France et agir à titre personnel (plafond 7 500 €/an respecté).</span>
+                                </label>
+
+                                <label class="checkbox-row">
+                                    <input type="checkbox" id="checkRgpd" required>
+                                    <span><strong>Droit statutaire &amp; RGPD :</strong> J'accepte de recevoir les informations du parti et reconnais mes droits d'accès, de rectification et de désadhésion libre à tout moment.</span>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-large">
+                                <i class="fa-solid fa-id-card"></i> Valider l'Adhésion &amp; Générer la Carte
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- ========================================== -->
+                    <!-- ONGLET 4: DIRECTOIRE NATIONAL COMPLET      -->
+                    <!-- ========================================== -->
+                    <div class="tab-pane" id="paneDirectoire">
+                        <div class="screen-header">
+                            <h2>Le Directoire National du MRC</h2>
+                            <p class="sub">Direction élue à la Convention Nationale Extraordinaire du 17 Octobre 2026</p>
+                        </div>
+
+                        <div class="directoire-container">
+                            
+                            <!-- 1. PRÉSIDENT FONDATEUR : MAURICE KAMTO -->
+                            <div class="leader-row-card leader-founder interactive-hover" onclick="openLeaderModal('kamto')">
+                                <img src="assets/president_maurice_kamto.jpg" alt="Maurice Kamto" class="leader-avatar-lg">
+                                <div class="leader-row-body">
+                                    <span class="role-tag tag-founder">PRÉSIDENT FONDATEUR</span>
+                                    <h4>Pr Maurice KAMTO</h4>
+                                    <p class="leader-short">Artisan de la création du parti en 2012, guide moral et juridique de la Renaissance, membre fondateur du Directoire.</p>
+                                    <span class="view-profile-link">Voir la fiche &amp; historique &gt;</span>
+                                </div>
+                            </div>
+
+                            <!-- 2. PRÉSIDENTE NATIONALE DU MRC : TIRIANE BALBINE NOAH -->
+                            <div class="leader-row-card leader-president interactive-hover" onclick="openLeaderModal('tiriane')">
+                                <img src="assets/presidente_tiriane_noah.png" alt="Tiriane Noah" class="leader-avatar-lg">
+                                <div class="leader-row-body">
+                                    <span class="role-tag tag-president">PRÉSIDENTE NATIONALE &bull; 96,89 % DES VOIX</span>
+                                    <h4>Tiriane Balbine NOAH</h4>
+                                    <p class="leader-short">Élue le 17 octobre 2026 à la tête du MRC lors de la Convention Nationale Extraordinaire pour diriger le parti.</p>
+                                    <span class="view-profile-link">Voir la biographie et les déclarations &gt;</span>
+                                </div>
+                            </div>
+
+                            <div class="section-title" style="margin-top:16px;">
+                                <h3>Les 5 Vice-Présidents Nationaux (Octobre 2026)</h3>
+                            </div>
+
+                            <!-- VP 1: EMMANUEL SIMH -->
+                            <div class="leader-row-card interactive-hover" onclick="openLeaderModal('simh')">
+                                <div class="leader-avatar-placeholder"><i class="fa-solid fa-gavel"></i></div>
+                                <div class="leader-row-body">
+                                    <span class="role-tag">VICE-PRÉSIDENT NATIONAL</span>
+                                    <h4>Emmanuel SIMH</h4>
+                                    <p class="leader-short">Avocat au Barreau du Cameroun, Coordonnateur du Collectif des Avocats du MRC et garant des libertés républicaines.</p>
+                                    <span class="view-profile-link">Fiche détaillée &gt;</span>
+                                </div>
+                            </div>
+
+                            <!-- VP 2: ELIE NGOMPE -->
+                            <div class="leader-row-card interactive-hover" onclick="openLeaderModal('ngompe')">
+                                <div class="leader-avatar-placeholder"><i class="fa-solid fa-user-tie"></i></div>
+                                <div class="leader-row-body">
+                                    <span class="role-tag">VICE-PRÉSIDENT NATIONAL</span>
+                                    <h4>Elie NGOMPE</h4>
+                                    <p class="leader-short">Cadre politique stratégique, engagé dans la coordination territoriale et la consolidation de l'appareil partisan.</p>
+                                    <span class="view-profile-link">Fiche détaillée &gt;</span>
+                                </div>
+                            </div>
+
+                            <!-- VP 3: ISMAËL KAIGAMA -->
+                            <div class="leader-row-card interactive-hover" onclick="openLeaderModal('kaigama')">
+                                <div class="leader-avatar-placeholder"><i class="fa-solid fa-user-shield"></i></div>
+                                <div class="leader-row-body">
+                                    <span class="role-tag">VICE-PRÉSIDENT NATIONAL</span>
+                                    <h4>Ismaël KAIGAMA</h4>
+                                    <p class="leader-short">Figure politique majeure du Septentrion, acteur clé du dialogue républicain et de l'implantation dans le Grand-Nord.</p>
+                                    <span class="view-profile-link">Fiche détaillée &gt;</span>
+                                </div>
+                            </div>
+
+                            <!-- VP 4: SAMUEL SAME KOLLE -->
+                            <div class="leader-row-card interactive-hover" onclick="openLeaderModal('same_kolle')">
+                                <div class="leader-avatar-placeholder"><i class="fa-solid fa-graduation-cap"></i></div>
+                                <div class="leader-row-body">
+                                    <span class="role-tag">VICE-PRÉSIDENT NATIONAL</span>
+                                    <h4>Samuel SAME KOLLE</h4>
+                                    <p class="leader-short">Universitaire et intellectuel engagé, artisan de l'élaboration programmatique et de l'ingénierie républicaine.</p>
+                                    <span class="view-profile-link">Fiche détaillée &gt;</span>
+                                </div>
+                            </div>
+
+                            <!-- VP 5: AISSATOU SAADOU -->
+                            <div class="leader-row-card interactive-hover" onclick="openLeaderModal('saadou')">
+                                <div class="leader-avatar-placeholder"><i class="fa-solid fa-venus"></i></div>
+                                <div class="leader-row-body">
+                                    <span class="role-tag">VICE-PRÉSIDENTE NATIONALE</span>
+                                    <h4>Aissatou SAADOU</h4>
+                                    <p class="leader-short">Leader engagée pour la mobilisation citoyenne, la parité républicaine et la justice sociale pour les femmes et la jeunesse.</p>
+                                    <span class="view-profile-link">Fiche détaillée &gt;</span>
+                                </div>
+                            </div>
+
+                            <div class="section-title" style="margin-top:16px;">
+                                <h3>Secrétariat Général &amp; Trésorerie Nationale</h3>
+                            </div>
+
+                            <!-- SECRÉTAIRE GÉNÉRAL : CHRISTOPHER NVEH NDONG -->
+                            <div class="leader-row-card interactive-hover" onclick="openLeaderModal('ndong')">
+                                <div class="leader-avatar-placeholder"><i class="fa-solid fa-scale-balanced"></i></div>
+                                <div class="leader-row-body">
+                                    <span class="role-tag">SECRÉTAIRE GÉNÉRAL DU MRC</span>
+                                    <h4>Christopher Nveh NDONG</h4>
+                                    <p class="leader-short">Secrétaire Général, cheville ouvrière de l'administration du parti, du bilinguisme et de l'unité nationale.</p>
+                                    <span class="view-profile-link">Fiche détaillée &gt;</span>
+                                </div>
+                            </div>
+
+                            <!-- TRÉSORIER NATIONAL : OKO APPOLINAIRE LEGRAND -->
+                            <div class="leader-row-card interactive-hover" onclick="openLeaderModal('oko')">
+                                <div class="leader-avatar-placeholder"><i class="fa-solid fa-vault"></i></div>
+                                <div class="leader-row-body">
+                                    <span class="role-tag">TRÉSORIER NATIONAL DU MRC</span>
+                                    <h4>Oko Appolinaire LEGRAND</h4>
+                                    <p class="leader-short">Trésorier National, responsable de la rigueur financière, de la collecte transparente et de la reddition des comptes.</p>
+                                    <span class="view-profile-link">Fiche détaillée &gt;</span>
+                                </div>
+                            </div>
+
+                            <!-- COMPOSITION STATUTAIRE DU DIRECTOIRE (ORGANES NATIONAUX) -->
+                            <div class="statutory-directory-card">
+                                <h4><i class="fa-solid fa-landmark text-green"></i> Composition Statutaire du Directoire</h4>
+                                <p class="statutory-subtext">Selon les textes officiels du MRC (mrcparty.net/organes-nationaux), le Directoire est l'instance de décision stratégique qui réunit :</p>
+                                <ul class="statutory-list">
+                                    <li><i class="fa-solid fa-circle-check text-green"></i> Les membres fondateurs du parti</li>
+                                    <li><i class="fa-solid fa-circle-check text-green"></i> Le Président National et les 5 Vice-présidents</li>
+                                    <li><i class="fa-solid fa-circle-check text-green"></i> Les membres du Conseil National</li>
+                                    <li><i class="fa-solid fa-circle-check text-green"></i> Les membres du Comité des Sages</li>
+                                    <li><i class="fa-solid fa-circle-check text-green"></i> Les membres du Comité National d'Arbitrage</li>
+                                    <li><i class="fa-solid fa-circle-check text-green"></i> Le Secrétaire National et les secrétaires nationaux adjoints</li>
+                                    <li><i class="fa-solid fa-circle-check text-green"></i> Les secrétaires régionaux de la Fédération de l'OFMRC</li>
+                                    <li><i class="fa-solid fa-circle-check text-green"></i> Dix (10) membres désignés par le Président National</li>
+                                </ul>
+                                <div class="statutory-footer-note">
+                                    <i class="fa-solid fa-calendar-days text-green"></i> <strong>Périodicité :</strong> Le Directoire se réunit généralement une fois par trimestre sur convocation de son président ou à l'initiative des 2/3 de ses membres.
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ========================================== -->
+                    <!-- ONGLET 5: HISTOIRE & PARCOURS DES PRÉSIDENTS-->
+                    <!-- ========================================== -->
+                    <div class="tab-pane" id="paneHistory">
+                        <div class="screen-header">
+                            <h2>Histoire du MRC &amp; de ses Présidents</h2>
+                            <p class="sub">De la fondation en 2012 aux défis historiques contemporains</p>
+                        </div>
+
+                        <!-- Sous-navigation Histoire -->
+                        <div class="history-subnav">
+                            <button class="subnav-pill active" id="btnHistTimeline" onclick="switchHistorySubTab('timeline')">Chronologie 2012-2025</button>
+                            <button class="subnav-pill" id="btnHistPresidents" onclick="switchHistorySubTab('presidents')">Parcours des Présidents</button>
+                        </div>
+
+                        <!-- SECTION 1 : CHRONOLOGIE COMPLÈTE DU PARTI -->
+                        <div class="history-content-pane active" id="histTimelineContent">
+                            <div class="history-interactive-timeline">
+                                
+                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2012')">
+                                    <div class="epoch-badge">2012</div>
+                                    <div class="epoch-desc">
+                                        <h4>Congrès Constitutif &bull; Naissance du MRC</h4>
+                                        <p>Fusion de plusieurs partis démocratiques et élection de Maurice Kamto. Autorisation MINATD N°000221.</p>
+                                        <span class="read-more-tag">Lire le récit complet &gt;</span>
+                                    </div>
+                                </div>
+
+                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2013')">
+                                    <div class="epoch-badge">2013</div>
+                                    <div class="epoch-desc">
+                                        <h4>Entrée au Parlement &bull; Élections Législatives</h4>
+                                        <p>Première participation électorale, obtention de députés et mairies, affirmation de la force d'opposition.</p>
+                                        <span class="read-more-tag">Lire le récit complet &gt;</span>
+                                    </div>
+                                </div>
+
+                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2018')">
+                                    <div class="epoch-badge">2018</div>
+                                    <div class="epoch-desc">
+                                        <h4>Scrutin Présidentiel &bull; Triomphe Populaire</h4>
+                                        <p>Campagne historique des « 5 Piliers » de Maurice Kamto et revendication de la victoire dans les urnes.</p>
+                                        <span class="read-more-tag">Lire le récit complet &gt;</span>
+                                    </div>
+                                </div>
+
+                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2019')">
+                                    <div class="epoch-badge">2019</div>
+                                    <div class="epoch-desc">
+                                        <h4>Résistance Pacifique &bull; Prison de Kondengui</h4>
+                                        <p>Marches blanches pacifiques, arrestation arbitraire de Kamto et des leaders, puis libération sous pression populaire.</p>
+                                        <span class="read-more-tag">Lire le récit complet &gt;</span>
+                                    </div>
+                                </div>
+
+                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2020')">
+                                    <div class="epoch-badge">2020</div>
+                                    <div class="epoch-desc">
+                                        <h4>Paris République &bull; Lancement de l'Opération SCSI</h4>
+                                        <p>Meeting géant à Paris, boycott civique des législatives et secours sanitaire du peuple via Survie Cameroun.</p>
+                                        <span class="read-more-tag">Lire le récit complet &gt;</span>
+                                    </div>
+                                </div>
+
+                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2023')">
+                                    <div class="epoch-badge">2023</div>
+                                    <div class="epoch-desc">
+                                        <h4>3ème Convention Ordinaire à Yaoundé</h4>
+                                        <p>Palais des Congrès de Yaoundé : triomphe organisationnel et investiture formelle pour le scrutin de 2025.</p>
+                                        <span class="read-more-tag">Lire le récit complet &gt;</span>
+                                    </div>
+                                </div>
+
+                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2024')">
+                                    <div class="epoch-badge">2024-2025</div>
+                                    <div class="epoch-desc">
+                                        <h4>Organisation de Masse &bull; Sentinelle Citoyenne</h4>
+                                        <p>Déploiement des kits de surveillance électorale et structuration approfondie des fédérations à travers le territoire.</p>
+                                        <span class="read-more-tag">Lire le récit complet &gt;</span>
+                                    </div>
+                                </div>
+
+                                <div class="hist-epoch-card highlight-epoch interactive-hover" onclick="openHistoryDetailModal('2026')">
+                                    <div class="epoch-badge badge-green">17 OCT 2026</div>
+                                    <div class="epoch-desc">
+                                        <h4>Convention Extraordinaire &bull; Élection Tiriane Noah (96,89%)</h4>
+                                        <p>Passation historique suite à la démission de Maurice Kamto. Élection de la nouvelle direction nationale unifiée.</p>
+                                        <span class="read-more-tag">Lire le récit complet &gt;</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- SECTION 2 : PARCOURS DÉTAILLÉ DES PRÉSIDENTS -->
+                        <div class="history-content-pane" id="histPresidentsContent">
+                            
+                            <!-- PARCOURS MAURICE KAMTO -->
+                            <div class="bio-full-card interactive-hover" onclick="openLeaderModal('kamto')">
+                                <div class="bio-card-header">
+                                    <img src="assets/president_maurice_kamto.jpg" alt="Maurice Kamto" class="bio-avatar">
+                                    <div>
+                                        <h3>Pr Maurice KAMTO</h3>
+                                        <span class="bio-role">Président Fondateur du MRC (2012 - Présent)</span>
+                                    </div>
+                                </div>
+                                <div class="bio-card-body">
+                                    <p><strong>Origines &amp; Formation :</strong> Né à Bafoussam, docteur d'État en droit public (Université de Nice), agrégé des facultés de droit françaises, doyen de la faculté des sciences juridiques de Yaoundé II.</p>
+                                    <p><strong>Parcours International &amp; Affaire Bakassi :</strong> Président de la Commission du Droit International de l'ONU, chef de la délégation camerounaise ayant obtenu le rattachement de la péninsule de Bakassi devant la Cour Internationale de Justice de La Haye en 2002.</p>
+                                    <p><strong>Démission Morale &amp; Entrée en Politique :</strong> Ministre délégué à la Justice démissionnaire le 30 novembre 2011 par fidélité à ses convictions éthiques, fondant le MRC en 2012 pour offrir une alternance crédible, pacifique et républicaine.</p>
+                                    <span class="read-more-tag">Cliquez pour voir les citations et documents clés &gt;</span>
+                                </div>
+                            </div>
+
+                            <!-- PARCOURS TIRIANE NOAH -->
+                            <div class="bio-full-card interactive-hover" onclick="openLeaderModal('tiriane')">
+                                <div class="bio-card-header">
+                                    <img src="assets/presidente_tiriane_noah.png" alt="Tiriane Noah" class="bio-avatar">
+                                    <div>
+                                        <h3>Tiriane Balbine Nadège NOAH</h3>
+                                        <span class="bio-role">Présidente Nationale du MRC</span>
+                                    </div>
+                                </div>
+                                <div class="bio-card-body">
+                                    <p><strong>Engagement Républicain :</strong> Militante active dès la genèse du mouvement, Tiriane Noah incarne la nouvelle génération de femmes politiques camerounaises dévouées au bien public.</p>
+                                    <p><strong>Résistance &amp; Dévouement :</strong> Durant l'incarcération des dirigeants en 2019, elle a fait preuve d'un courage exemplaire en maintenant la flamme militante, organisant le soutien aux détenus politiques et la coordination internationale.</p>
+                                    <p><strong>Accession à la Présidence :</strong> Élue à la présidence du parti pour orchestrer la modernisation de l'appareil militant, consolider la délivrance des cartes de membre et mener le combat pour l'inclusivité électorale.</p>
+                                    <span class="read-more-tag">Cliquez pour voir les citations et documents clés &gt;</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ========================================== -->
+                    <!-- ONGLET 6: DÉPÊCHES & FLUX AUTOMATIQUE      -->
+                    <!-- ========================================== -->
+                    <div class="tab-pane" id="paneNews">
+                        <div class="screen-header">
+                            <h2>Dépêches &amp; Déclarations Officielles</h2>
+                            <p class="sub">Flux synchronisé en direct des réseaux officiels et du directoire</p>
+                        </div>
+
+                        <!-- Filtre des sources -->
+                        <div class="news-sources-filter">
+                            <button class="filter-pill active" onclick="filterNews('all', this)">Tout</button>
+                            <button class="filter-pill" onclick="filterNews('kamto', this)">Pr Kamto</button>
+                            <button class="filter-pill" onclick="filterNews('tiriane', this)">Présidente Noah</button>
+                            <button class="filter-pill" onclick="filterNews('directoire', this)">Directoire / SG</button>
+                            <button class="filter-pill" onclick="filterNews('facebook', this)">Facebook / X</button>
+                        </div>
+
+                        <!-- Bouton Synchronisation Auto -->
+                        <div class="sync-status-bar" onclick="simulerActualisationFlux()">
+                            <i class="fa-solid fa-arrows-rotate text-green" id="syncIcon"></i>
+                            <span id="syncText">Flux synchronisé avec @mrcpartycameroon &bull; Actualiser</span>
+                        </div>
+
+                        <!-- Liste dynamique des dépêches -->
+                        <div class="news-list" id="newsListContainer"></div>
+                    </div>
+
+                </div>
+
+                <!-- Navigation Inférieure (Blanc et Vert) -->
+                <nav class="bottom-nav">
+                    <button class="nav-item active" onclick="switchTab('home')">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Accueil</span>
+                    </button>
+                    <button class="nav-item" onclick="switchTab('card')">
+                        <i class="fa-solid fa-id-card"></i>
+                        <span>Ma Carte</span>
+                    </button>
+                    <button class="nav-item" onclick="switchTab('register')">
+                        <i class="fa-solid fa-file-pen"></i>
+                        <span>Adhésion</span>
+                    </button>
+                    <button class="nav-item" onclick="switchTab('directoire')">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Directoire</span>
+                    </button>
+                    <button class="nav-item" onclick="switchTab('history')">
+                        <i class="fa-solid fa-timeline"></i>
+                        <span>Histoire</span>
+                    </button>
+                    <button class="nav-item" onclick="switchTab('news')">
+                        <i class="fa-solid fa-newspaper"></i>
+                        <span>Dépêches</span>
+                    </button>
+                </nav>
+
+                <div class="android-nav-handle"></div>
+            </div>
+        </div>
+    </main>
 </div>
 
-<!-- Conteneur Toast -->
-<div class="mrc-toast-container" id="toastContainer"></div>
+<!-- ================= MODALS INTERACTIVES ================= -->
 
-<!-- Script Principal -->
+<!-- Modal 1 : Fiche Détaillée d'un Dirigeant du Directoire -->
+<div class="modal-backdrop" id="leaderModal">
+    <div class="modal-dialog modal-dialog-lg">
+        <div class="modal-header">
+            <h3 id="modalLeaderTitle">Fiche Dirigeant</h3>
+            <button class="btn-close-modal" onclick="closeLeaderModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalLeaderBody">
+            <!-- Rempli dynamiquement par JS -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" id="btnShareLeader" onclick="shareLeaderProfile()"><i class="fa-solid fa-share-nodes"></i> Partager</button>
+            <button class="btn btn-primary" onclick="closeLeaderModal()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 2 : Détail Historique d'une Époque -->
+<div class="modal-backdrop" id="historyModal">
+    <div class="modal-dialog modal-dialog-lg">
+        <div class="modal-header">
+            <h3 id="modalHistoryTitle">Événement Historique</h3>
+            <button class="btn-close-modal" onclick="closeHistoryModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalHistoryBody">
+            <!-- Rempli dynamiquement par JS -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="closeHistoryModal()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 3 : Paramètres de l'Application -->
+<div class="modal-backdrop" id="settingsModal">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <i class="fa-solid fa-gear text-green"></i>
+            <h3>Paramètres de l'Application MRC</h3>
+            <button class="btn-close-modal" onclick="closeSettingsModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="settings-group">
+                <label>Langue / Language :</label>
+                <select id="settingLang" onchange="changeSettingLang(this.value)">
+                    <option value="FR">Français (Cameroun)</option>
+                    <option value="EN">English (Cameroon)</option>
+                </select>
+            </div>
+            <div class="settings-group">
+                <label class="checkbox-row">
+                    <input type="checkbox" checked>
+                    <span>Alertes en temps réel des déclarations du Directoire</span>
+                </label>
+            </div>
+            <div class="settings-group">
+                <label class="checkbox-row">
+                    <input type="checkbox" checked>
+                    <span>Mode Sentinelle Électorale (Vigilance des bureaux)</span>
+                </label>
+            </div>
+            <div class="settings-group">
+                <label class="checkbox-row">
+                    <input type="checkbox" checked>
+                    <span>Mode Hors-Ligne (Stockage local sécurisé de la carte)</span>
+                </label>
+            </div>
+            <div class="settings-links">
+                <a href="https://mrcparty.net" target="_blank"><i class="fa-solid fa-globe"></i> Visiter le portail officiel mrcparty.net</a>
+                <a href="#" onclick="alert('Statuts officiels et règlement intérieur du MRC en cours de téléchargement...'); return false;"><i class="fa-solid fa-file-pdf"></i> Télécharger les Statuts du Parti (PDF)</a>
+                <a href="#" onclick="alert('Conformité RGPD : Vous pouvez demander l\'accès ou la suppression de vos données en écrivant à contact@mrcparty.org'); return false;"><i class="fa-solid fa-user-shield"></i> Confidentialité &amp; RGPD</a>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="closeSettingsModal()">Enregistrer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 4 : Authentification QR Code -->
+<div class="modal-backdrop" id="verifyModal">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <i class="fa-solid fa-shield-halved text-green"></i>
+            <h3>Contrôle d'Authenticité Carte de Membre</h3>
+            <button class="btn-close-modal" onclick="closeVerifyModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="verifyModalContent"></div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="closeVerifyModal()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 5 : Registre National des Adhérents (Persistant) -->
+<div class="modal-backdrop" id="registryModal">
+    <div class="modal-dialog modal-dialog-lg">
+        <div class="modal-header">
+            <i class="fa-solid fa-database text-green"></i>
+            <h3>Registre National des Adhérents</h3>
+            <button class="btn-close-modal" onclick="closeRegistryModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="registryModalBody">
+            <div style="font-size:10.5px; margin-bottom:10px; color:var(--gris); background:var(--vert-clair); padding:8px 10px; border-radius:8px;">
+                <i class="fa-solid fa-cloud-arrow-down text-green"></i> Base de données permanente (Anciens + Nouveaux inscrits). Touchez un adhérent pour afficher sa carte 3D.
+            </div>
+            <div id="registryListContainer" style="display:flex; flex-direction:column; gap:8px;">
+                <!-- Chargé dynamiquement depuis la base de données -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="loadRegistryFromBackend()"><i class="fa-solid fa-arrows-rotate"></i> Actualiser</button>
+            <button class="btn btn-primary" onclick="closeRegistryModal()">Fermer</button>
+        </div>
+    </div>
+</div>
+
 <script src="app.js"></script>
+<!-- MODALE OFFICIELLE MRC PROFESSIONNELLE (SANS THE PAGE SAYS) -->
+<div class="mrc-modal-overlay" id="mrcCustomModal">
+    <div class="mrc-modal-card">
+        <div class="mrc-modal-icon" id="mrcModalIcon">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h3 id="mrcModalTitle">Titre de la Notification</h3>
+        <p id="mrcModalMessage">Message officiel du parti.</p>
+        <button type="button" class="mrc-modal-btn" onclick="closeMrcModal()">D'accord</button>
+    </div>
+</div>
 </body>
 </html>

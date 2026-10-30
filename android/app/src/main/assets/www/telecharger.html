@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Télécharger l'Application Officielle MRC</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --vert: #0a8a4a;
+      --vert-fonce: #06602f;
+      --vert-clair: #e8f5ed;
+      --encre: #1d2a22;
+      --fond: #f2f5f3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", system-ui, sans-serif; }
+    body {
+      background: var(--fond);
+      color: var(--encre);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 14px;
+    }
+    .download-card {
+      background: #ffffff;
+      border-radius: 24px;
+      max-width: 440px;
+      width: 100%;
+      padding: 30px 24px;
+      text-align: center;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.08);
+      border: 1px solid #d3dad5;
+    }
+    .logo-wrap {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px solid var(--vert);
+      margin: 0 auto 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(10,138,74,0.25);
+    }
+    .logo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    h1 { font-size: 22px; font-weight: 800; color: var(--vert-fonce); margin-bottom: 4px; }
+    .subtitle { font-size: 13px; color: #5b6b61; margin-bottom: 20px; font-weight: 600; }
+    
+    .badge-pres {
+      background: var(--vert-clair);
+      color: var(--vert-fonce);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 800;
+      display: inline-block;
+      margin-bottom: 24px;
+      border: 1px solid #a3d9bc;
+    }
+    
+    .btn-download-main {
+      background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert) 100%);
+      color: #ffffff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 20px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      box-shadow: 0 6px 20px rgba(10,138,74,0.35);
+      transition: all 0.2s;
+      margin-bottom: 12px;
+    }
+    .btn-download-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(10,138,74,0.45);
+    }
+    .btn-download-main i { font-size: 22px; }
+    
+    .apk-meta { font-size: 11.5px; color: #5b6b61; margin-bottom: 24px; }
+    
+    .features-list {
+      text-align: left;
+      background: #f8faf9;
+      border: 1px solid #e1e7e3;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 22px;
+    }
+    .features-list h4 { font-size: 13px; font-weight: 800; color: var(--encre); margin-bottom: 10px; }
+    .features-list ul { list-style: none; }
+    .features-list li {
+      font-size: 12.5px;
+      color: #33443a;
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .features-list li i { color: var(--vert); font-size: 14px; }
+    
+    .install-steps {
+      text-align: left;
+      font-size: 12px;
+      color: #5b6b61;
+      line-height: 1.5;
+      border-top: 1px solid #e1e7e3;
+      padding-top: 16px;
+    }
+    .install-steps strong { color: var(--encre); }
+    
+    .footer-note {
+      margin-top: 20px;
+      font-size: 11px;
+      color: #7b8b81;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="download-card">
+  <div class="logo-wrap">
+    <img src="assets/logo_mrc_round.jpg" alt="Logo Officiel MRC">
+  </div>
+  
+  <h1>MRC Mobile Officiel</h1>
+  <p class="subtitle">Mouvement pour la Renaissance du Cameroun</p>
+  
+  <div class="badge-pres">
+    <i class="fa-solid fa-check-shield"></i> Direction Nationale 2026 • Tiriane Balbine NOAH
+  </div>
+  
+  <!-- Bouton Principal de Téléchargement -->
+  <a href="downloads/MRC-Renaissance-App.apk" class="btn-download-main" download>
+    <i class="fa-solid fa-download"></i>
+    <span>Télécharger l'APK (8.0 Mo)</span>
+  </a>
+  <div class="apk-meta">Version 2.0.0 • Android 8.0+ • Certifié Officiel</div>
+
+  <div class="features-list">
+    <h4>Fonctionnalités Incluses :</h4>
+    <ul>
+      <li><i class="fa-solid fa-id-card"></i> Carte d'adhérent 3D interactive (Recto / Verso)</li>
+      <li><i class="fa-solid fa-qrcode"></i> QR Code complet avec authentification numérique</li>
+      <li><i class="fa-solid fa-users-viewfinder"></i> Fiches officielles des 9 dirigeants du Directoire</li>
+      <li><i class="fa-solid fa-landmark"></i> Histoire intégrale du parti (2012 – 2026)</li>
+      <li><i class="fa-solid fa-radar"></i> Veille Sentinelle d'information & Revue de presse</li>
+      <li><i class="fa-solid fa-moon"></i> Thème Sombre & Bilinguisme Français / English</li>
+    </ul>
+  </div>
+
+  <div class="install-steps">
+    <strong>Comment installer ?</strong><br>
+    1. Cliquez sur <em>Télécharger l'APK</em> ci-dessus.<br>
+    2. Ouvrez le fichier téléchargé depuis vos notifications.<br>
+    3. Si demandé, autorisez l'installation depuis cette source.<br>
+    4. Profitez de votre espace officiel militant !
+  </div>
+</div>
+
+<div class="footer-note">
+  Mouvement pour la Renaissance du Cameroun (MRC) • Siège : Yaoundé<br>
+  Permanence : (+237) 674 27 05 49 • www.mrcparty.org
+</div>
+
+</body>
+</html>
