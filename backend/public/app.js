@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MRC - MOUVEMENT POUR LA RENAISSANCE DU CAMEROUN
  * Moteur Applicatif & Contrôleur Officiel :: Bilingue (FR/EN)
  * Gestion 3D ISO-7810, Numérotation Luhn, Veille Sentinelle & Directoire 2026
@@ -107,6 +107,10 @@ const I18N = {
     set_security: "Protection & Ligne Juridique",
     set_sos_title: "SOS Militant & Assistance Immédiate",
     set_sos_desc: "Numéro officiel d'urgence du Collectif des Avocats du MRC en cas d'interpellation",
+    set_update_title: "Mise à Jour de l'Application",
+    set_version_title: "Version installée : 2.0.0",
+    set_version_desc: "Mises à jour automatiques transparentes sans désinstallation",
+    btn_check_update: "Vérifier",
     set_legal: "Mentions Officielles & Cadre Statutaire"
   },
   EN: {
@@ -169,6 +173,10 @@ const I18N = {
     set_security: "Legal Defense & Protection",
     set_sos_title: "Activist SOS & Immediate Assistance",
     set_sos_desc: "Official emergency contact for MRC Defense Lawyers in case of arbitrary arrest",
+    set_update_title: "App Updates",
+    set_version_title: "Installed Version: 2.0.0",
+    set_version_desc: "Seamless in-app updates without uninstallation",
+    btn_check_update: "Check",
     set_legal: "Legal Notice & Party Statutes"
   }
 };
@@ -942,4 +950,45 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }, 1200);
   });
+
+  // Vérificateur de Mises à Jour Automatiques sans désinstallation
+  const verifierMisesAJour = async (manuel = false) => {
+    if (manuel) {
+      showMrcToast(appState.lang === "EN" ? "Checking for updates..." : "Vérification des mises à jour...", "fa-cloud-arrow-down");
+    }
+    try {
+      const res = await fetch("version.json?t=" + Date.now());
+      if (res.ok) {
+        const data = await res.json();
+        const CURRENT_CODE = 2; // Version 2.0.0
+        if (data.versionCode > CURRENT_CODE) {
+          showMrcDialog({
+            title: appState.lang === "EN" ? "🚀 New Version Available!" : "🚀 Nouvelle Version Disponible !",
+            message: ${appState.lang === "EN" ? "Version" : "Version"}  ()\n\n\n\n,
+            icon: "fa-rocket",
+            confirmText: appState.lang === "EN" ? "Update Now" : "Mettre à jour",
+            cancelText: appState.lang === "EN" ? "Later" : "Plus tard",
+            onConfirm: () => {
+              window.location.href = data.apkUrl;
+            }
+          });
+        } else if (manuel) {
+          showMrcDialog({
+            title: appState.lang === "EN" ? "App is Up to Date" : "Application à Jour",
+            message: ${appState.lang === "EN" ? "You are using the latest version of the official MRC app" : "Vous utilisez la dernière version officielle du MRC"} (v2.0.0).\n\n,
+            icon: "fa-circle-check",
+            confirmText: "Super"
+          });
+        }
+      }
+    } catch (e) {
+      if (manuel) {
+        showMrcToast("Connexion au serveur de mise à jour impossible.", "fa-circle-exclamation");
+      }
+    }
+  };
+
+  const btnUp = document.getElementById("btnCheckUpdates");
+  if (btnUp) btnUp.addEventListener("click", () => verifierMisesAJour(true));
+  setTimeout(() => verifierMisesAJour(false), 4000);
 });
