@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRC — Hors ligne</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #06602F 0%, #0A8A4A 60%, #1ab865 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+  }
+  .card {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px 30px;
+    max-width: 340px;
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .logo { font-size: 64px; margin-bottom: 16px; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .subtitle { font-size: 13px; opacity: 0.85; margin-bottom: 24px; }
+  .message {
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .retry-btn {
+    background: white;
+    color: #06602F;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 32px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: opacity 0.2s;
+  }
+  .retry-btn:active { opacity: 0.8; }
+  .emergency {
+    margin-top: 20px;
+    font-size: 13px;
+    opacity: 0.9;
+  }
+  .emergency a {
+    color: #FFD700;
+    font-weight: 700;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">🌿</div>
+  <h1>MRC Renaissance</h1>
+  <p class="subtitle">Mouvement pour la Renaissance du Cameroun</p>
+  
+  <div class="message">
+    <strong>📶 Connexion requise</strong><br><br>
+    L'application nécessite une connexion internet pour accéder au simulateur officiel et à la base de données des adhérents.<br><br>
+    Vérifiez votre WiFi ou données mobiles, puis réessayez.
+  </div>
+  
+  <button class="retry-btn" onclick="window.location.href='https://mrc-backend.onrender.com'">
+    🔄 Réessayer
+  </button>
+  
+  <div class="emergency">
+    <br>🆘 Urgence militant :<br>
+    <a href="tel:+237674270549">(+237) 674 27 05 49</a>
+  </div>
+</div>
+</body>
+</html>

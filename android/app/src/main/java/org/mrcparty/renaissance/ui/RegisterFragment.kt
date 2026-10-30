@@ -13,6 +13,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import org.mrcparty.renaissance.R
+import org.mrcparty.renaissance.model.Member
 import org.mrcparty.renaissance.model.MemberRole
 import org.mrcparty.renaissance.model.PaymentMethod
 
@@ -93,7 +94,7 @@ class RegisterFragment : Fragment() {
                         role = MemberRole.MILITANT
                     )
 
-                    result.onSuccess { newMember ->
+                    result.onSuccess { newMember: Member ->
                         AlertDialog.Builder(requireContext())
                             .setTitle("🎉 Bienvenue dans la Renaissance !")
                             .setMessage("Félicitations, militant ${newMember.fullName} !\n\nVotre carte de membre officielle N° ${newMember.memberNumber} a été générée et authentifiée avec succès sous l'égide du Président National, Pr Maurice Kamto.")

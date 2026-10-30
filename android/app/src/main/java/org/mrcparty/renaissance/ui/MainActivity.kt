@@ -1,97 +1,127 @@
 package org.mrcparty.renaissance.ui
 
-import android.app.AlertDialog
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
+import android.view.KeyEvent
+import android.view.View
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.mrcparty.renaissance.R
 import org.mrcparty.renaissance.data.MrcRepository
 
 class MainActivity : AppCompatActivity() {
 
+    // Repository pour compatibilité ascendante
     val repository = MrcRepository()
-    private var currentLanguage = "FR"
 
+    private lateinit var webView: WebView
+    private lateinit var progressBar: ProgressBar
+
+    // Interface officielle intégrée : identique à 100% au simulateur PC
+    private val LOCAL_URL = "file:///android_asset/www/index.html"
+
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        val btnLangToggle = findViewById<Button>(R.id.btn_lang_toggle)
-        val btnSosQuick = findViewById<ImageView>(R.id.btn_sos_quick)
+        webView = findViewById(R.id.webview)
+        progressBar = findViewById(R.id.progress_bar)
 
-        // Setup bottom navigation listener
-        bottomNav.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> {
-                    loadFragment(HomeFragment())
-                    true
+        // ─── Configuration WebView optimale ──────────────────────────────────
+        webView.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            databaseEnabled = true
+            cacheMode = WebSettings.LOAD_DEFAULT
+            allowFileAccess = true
+            allowContentAccess = true
+            allowFileAccessFromFileURLs = true
+            allowUniversalAccessFromFileURLs = true
+            useWideViewPort = true
+            loadWithOverviewMode = true
+            setSupportZoom(false)
+            builtInZoomControls = false
+            displayZoomControls = false
+            mediaPlaybackRequiresUserGesture = false
+        }
+
+        // ─── Client WebView : clics & appels téléphoniques ───────────────────
+        webView.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+                val url = request.url.toString()
+
+                // Numéros d'urgence / SOS militant
+                if (url.startsWith("tel:")) {
+                    startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(url)))
+                    return true
                 }
-                R.id.nav_card -> {
-                    loadFragment(CardFragment())
-                    true
+                // Liens emails
+                if (url.startsWith("mailto:")) {
+                    startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(url)))
+                    return true
                 }
-                R.id.nav_register -> {
-                    loadFragment(RegisterFragment())
-                    true
+                // Liens internes au simulateur
+                if (url.startsWith("file://") || url.contains("onrender.com") || url.contains("localhost")) {
+                    return false
                 }
-                R.id.nav_sentinel -> {
-                    loadFragment(SentinelFragment())
-                    true
+                // Liens web externes (articles de presse, Wikipedia, YouTube)
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                } catch (e: Exception) {
+                    Toast.makeText(this@MainActivity, "Ouverture impossible: $url", Toast.LENGTH_SHORT).show()
                 }
-                R.id.nav_donate -> {
-                    loadFragment(DonateFragment())
-                    true
-                }
-                else -> false
+                return true
+            }
+
+            override fun onPageFinished(view: WebView, url: String) {
+                progressBar.visibility = View.GONE
             }
         }
 
-        // Bilingual toggle (FR <-> EN)
-        btnLangToggle.setOnClickListener {
-            currentLanguage = if (currentLanguage == "FR") "EN" else "FR"
-            btnLangToggle.text = currentLanguage
-            Toast.makeText(
-                this,
-                if (currentLanguage == "FR") "Langue : Français" else "Language : English",
-                Toast.LENGTH_SHORT
-            ).show()
+        // ─── Progression du chargement ────────────────────────────────────────
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView, newProgress: Int) {
+                if (newProgress < 100) {
+                    progressBar.visibility = View.VISIBLE
+                    progressBar.progress = newProgress
+                } else {
+                    progressBar.visibility = View.GONE
+                }
+            }
         }
 
-        // SOS Militant quick alert
-        btnSosQuick.setOnClickListener {
-            showSosDialog()
-        }
-
-        // Default initial fragment: Home
-        if (savedInstanceState == null) {
-            loadFragment(HomeFragment())
+        // ─── Chargement de l'interface officielle ─────────────────────────────
+        if (savedInstanceState != null) {
+            webView.restoreState(savedInstanceState)
+        } else {
+            webView.loadUrl(LOCAL_URL)
         }
     }
 
     fun loadFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.nav_host_fragment, fragment)
-            .commit()
+        // Compatibilité ascendante si jamais appelée
     }
 
-    private fun showSosDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("🚨 SOS Militant en Danger")
-            .setMessage("Vous allez émettre une alerte d'urgence géolocalisée au Collectif des Avocats du MRC et au Secrétariat National.\n\nEn cas de garde à vue ou d'intimidation illégale, composez immédiatement le numéro d'urgence officiel :\n(+237) 674 27 05 49")
-            .setPositiveButton("Appeler l'Urgence") { _, _ ->
-                val intent = Intent(Intent.ACTION_DIAL).apply {
-                    data = Uri.parse("tel:+237674270549")
-                }
-                startActivity(intent)
-            }
-            .setNegativeButton("Annuler", null)
-            .show()
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        webView.saveState(outState)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+            webView.goBack()
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }

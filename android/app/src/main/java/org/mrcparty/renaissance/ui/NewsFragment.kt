@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import org.mrcparty.renaissance.R
+import org.mrcparty.renaissance.model.Article
 
 class NewsFragment : Fragment() {
 

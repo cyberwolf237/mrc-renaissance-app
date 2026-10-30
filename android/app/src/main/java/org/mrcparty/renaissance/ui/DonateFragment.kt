@@ -11,6 +11,7 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import org.mrcparty.renaissance.R
+import org.mrcparty.renaissance.model.Donation
 import org.mrcparty.renaissance.model.DonationType
 import org.mrcparty.renaissance.model.PaymentMethod
 
@@ -85,7 +86,7 @@ class DonateFragment : Fragment() {
                 type = donType
             )
 
-            result.onSuccess { donation ->
+            result.onSuccess { donation: Donation ->
                 AlertDialog.Builder(requireContext())
                     .setTitle("✅ Paiement Confirmé")
                     .setMessage(
