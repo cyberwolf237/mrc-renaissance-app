@@ -1,3 +1,4 @@
+const API_BASE = window.location.protocol === 'file:' ? 'https://mrc-backend-c11n.onrender.com' : '';
 ﻿// === SYSTÈME DE NOTIFICATIONS OFFICIELLES MRC (ZÉRO ALERT DU NAVIGATEUR) ===
 function openMrcModal(title, message, icon = 'fa-circle-check') {
     const modal = document.getElementById('mrcCustomModal');
@@ -7,7 +8,7 @@ function openMrcModal(title, message, icon = 'fa-circle-check') {
     const iEl = document.getElementById('mrcModalIcon');
     if (tEl) tEl.textContent = title;
     if (mEl) mEl.textContent = message;
-    if (iEl) iEl.innerHTML = <i class="fa-solid "></i>;
+    if (iEl) iEl.innerHTML = '<i class="fa-solid ' + icon + '"></i>';
     modal.style.display = 'grid';
 }
 
@@ -644,7 +645,7 @@ async function handleRegistrationSubmit(e) {
 
     try {
         // Envoi au Backend Persistant
-        const response = await fetch('/api/members', {
+        const response = await fetch(API_BASE + '/api/members', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -698,7 +699,7 @@ async function loadRegistryFromBackend() {
     container.innerHTML = '<div style="text-align:center; padding:15px; color:var(--gris);"><i class="fa-solid fa-spinner fa-spin text-green"></i> Chargement des adhérents enregistrés...</div>';
 
     try {
-        const res = await fetch('/api/members');
+        const res = await fetch(API_BASE + '/api/members');
         if (res.ok) {
             const data = await res.json();
             renderRegistryList(data.members || []);

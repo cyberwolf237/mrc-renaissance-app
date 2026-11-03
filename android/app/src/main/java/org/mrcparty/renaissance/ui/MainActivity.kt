@@ -20,14 +20,15 @@ import org.mrcparty.renaissance.data.MrcRepository
 
 class MainActivity : AppCompatActivity() {
 
-    // Repository pour compatibilité ascendante
     val repository = MrcRepository()
 
     private lateinit var webView: WebView
     private lateinit var progressBar: ProgressBar
 
-    // Interface officielle intégrée : identique à 100% au simulateur PC
-    private val LOCAL_URL = "file:///android_asset/www/index.html"
+    // URL Officielle en Ligne sur Render.com (Mises à jour automatiques transparentes)
+    private val ONLINE_URL = "https://mrc-backend-c11n.onrender.com"
+    // Fallback local hors-ligne en cas d'absence de connexion internet
+    private val OFFLINE_URL = "file:///android_asset/www/index.html"
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         webView = findViewById(R.id.webview)
         progressBar = findViewById(R.id.progress_bar)
 
-        // ─── Configuration WebView optimale ──────────────────────────────────
+        // ─── Configuration WebView Optimale ─────────────────────────────────
         webView.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             mediaPlaybackRequiresUserGesture = false
         }
 
-        // ─── Client WebView : clics & appels téléphoniques ───────────────────
+        // ─── Client WebView : Clés de navigation & liens externes ───────────
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 val url = request.url.toString()
@@ -70,11 +71,11 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse(url)))
                     return true
                 }
-                // Liens internes au simulateur
-                if (url.startsWith("file://") || url.contains("onrender.com") || url.contains("localhost")) {
+                // Navigation interne sur le domaine Render ou local
+                if (url.contains("mrc-backend-c11n.onrender.com") || url.startsWith("file://")) {
                     return false
                 }
-                // Liens web externes (articles de presse, Wikipedia, YouTube)
+                // Liens web externes (articles, Wikipedia, YouTube)
                 try {
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                 } catch (e: Exception) {
@@ -86,9 +87,16 @@ class MainActivity : AppCompatActivity() {
             override fun onPageFinished(view: WebView, url: String) {
                 progressBar.visibility = View.GONE
             }
+
+            override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
+                // En cas d'erreur réseau (ex: pas d'internet), charger la version locale intégrée
+                if (failingUrl.startsWith(ONLINE_URL)) {
+                    view.loadUrl(OFFLINE_URL)
+                }
+            }
         }
 
-        // ─── Progression du chargement ────────────────────────────────────────
+        // ─── Progression du chargement ───────────────────────────────────────
         webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, newProgress: Int) {
                 if (newProgress < 100) {
@@ -100,16 +108,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // ─── Chargement de l'interface officielle ─────────────────────────────
+        // Chargement initial instantané depuis les assets locaux
         if (savedInstanceState != null) {
             webView.restoreState(savedInstanceState)
         } else {
-            webView.loadUrl(LOCAL_URL)
+            webView.loadUrl(OFFLINE_URL)
         }
     }
 
     fun loadFragment(fragment: Fragment) {
-        // Compatibilité ascendante si jamais appelée
+        // Compatibilité ascendante
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
