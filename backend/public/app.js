@@ -90,7 +90,7 @@ const appState = {
             role: "Vice-Président National du MRC",
             tag: "VICE-PRÉSIDENT NATIONAL",
             tagClass: "tag-vp",
-            photo: null,
+            photo: 'assets/leader_emmanuel_simh.jpg',
             bio: "Avocat éminent au Barreau du Cameroun, Coordonnateur du Collectif des Avocats du MRC, figure de proue de la défense des droits fondamentaux.",
             parcours: "Élu au sein du collège des 5 Vice-Présidents le 17 octobre 2026, il veille sur l'armature juridique du parti, la conformité constitutionnelle et la protection des militants.",
             vision: "« Le droit et la justice sont les boucliers inviolables de notre engagement républicain. »",
@@ -101,7 +101,7 @@ const appState = {
             role: "Vice-Président National du MRC",
             tag: "VICE-PRÉSIDENT NATIONAL",
             tagClass: "tag-vp",
-            photo: null,
+            photo: 'assets/leader_mamadou_mota.jpg',
             bio: "Cadre politique stratège, fin connaisseur des dynamiques régionales et des fédérations de base.",
             parcours: "Élu Vice-Président National lors de la Convention Extraordinaire du 17 octobre 2026 pour dynamiser le maillage territorial et l'implantation militante.",
             vision: "« L'ancrage local dans chaque arrondissement est la condition sine qua non de la victoire par les urnes. »",
@@ -112,7 +112,7 @@ const appState = {
             role: "Vice-Président National du MRC",
             tag: "VICE-PRÉSIDENT NATIONAL",
             tagClass: "tag-vp",
-            photo: null,
+            photo: 'assets/leader_alain_fogue.jpg',
             bio: "Personnalité politique influente du Grand-Nord (Adamaoua, Nord, Extrême-Nord), défenseur des populations vulnérables et du développement équitable.",
             parcours: "Élu Vice-Président National le 17 octobre 2026, il incarne l'adhésion massive du Septentrion camerounais au projet de Renaissance républicaine.",
             vision: "« Le Septentrion réclame justice, eau, éducation et dignité au sein d'une République unie. »",
@@ -123,7 +123,7 @@ const appState = {
             role: "Vice-Président National du MRC",
             tag: "VICE-PRÉSIDENT NATIONAL",
             tagClass: "tag-vp",
-            photo: null,
+            photo: 'assets/leader_christopher_ndong.jpg',
             bio: "Universitaire, chercheur et penseur des politiques publiques républicaines.",
             parcours: "Élu Vice-Président National le 17 octobre 2026, il supervise la prospective programmatique et l'ingénierie socio-économique du MRC.",
             vision: "« Une politique sans vision intellectuelle est stérile. Le projet de société du MRC répond aux défis contemporains du Cameroun. »",
@@ -1143,3 +1143,97 @@ function adjustCardScale() {
 }
 window.addEventListener('resize', adjustCardScale);
 window.addEventListener('orientationchange', adjustCardScale);
+
+
+// ============================================================== //
+// PROJET DE SOCIÉTÉ DU MRC : LES 6 PILIERS DU PROGRAMME          //
+// ============================================================== //
+const MRC_PILLARS = [
+    {
+        num: 1,
+        title: "Santé Publique & Solidarité Nationale",
+        subtitle: "Couverture Maladie Universelle & Urgences Gratuites",
+        image: "assets/pillar_health.jpg",
+        content: "Mise en place d'une véritable Couverture Santé Universelle (CSU) financée par la solidarité républicaine. Rénovation intégrale des hôpitaux régionaux et de district, gratuité totale de la prise en charge des urgences vitales et de la maternité, valorisation statutaire des médecins et personnels de santé."
+    },
+    {
+        num: 2,
+        title: "Éducation d'Excellence & Jeunesse Numérique",
+        subtitle: "L'École de la Réussite & de l'Innovation",
+        image: "assets/pillar_education.jpg",
+        content: "Gratuité effective de l'école primaire, refonte bilingue approfondie (Français/Anglais), doublement des allocations de recherche universitaire. Création de Technopôles d'Intelligence Artificielle et de Numérique dans chaque région pour employer la jeunesse."
+    },
+    {
+        num: 3,
+        title: "Justice Indépendante & État de Droit",
+        subtitle: "L'Égalité de tous les citoyens devant la Loi",
+        image: "assets/pillar_justice.jpg",
+        content: "Séparation constitutionnelle stricte entre le pouvoir judiciaire et l'exécutif. Conseil Supérieur de la Magistrature autonome présidé par les pairs. Démantèlement des juridictions d'exception pour les civils et libération immédiate de tous les prisonniers d'opinion."
+    },
+    {
+        num: 4,
+        title: "Agriculture & Souveraineté Alimentaire",
+        subtitle: "Nourrir le Cameroun & Exporter l'Excellence",
+        image: "assets/pillar_agriculture.jpg",
+        content: "Sécurisation foncière des paysans, subvention massive des intrants bio, mise à disposition de tracteurs communaux et banques de crédit agricole à taux zéro pour faire du Cameroun le grenier agricole indiscutable de la sous-région CEMAC."
+    },
+    {
+        num: 5,
+        title: "Énergie, Routes & Souveraineté Industrielle",
+        subtitle: "Infrastructures Durables & Made in Cameroon",
+        image: "assets/pillar_industry.jpg",
+        content: "Mix énergétique 100% renouvelable (hydroélectricité, solaire sahélien), fin définitive des délestages. Bitumage durable des corridors inter-régionaux et création de zones franches agro-industrielles pour transformer notre cacao, coton et bois sur place."
+    },
+    {
+        num: 6,
+        title: "Diaspora & Diplomatie Panafricaine",
+        subtitle: "Reconnaissance de la 11ème Région & Double Nationalité",
+        image: "assets/pillar_diaspora.jpg",
+        content: "Reconnaissance constitutionnelle immédiate de la double nationalité. Représentation parlementaire dédiée pour la diaspora, facilitation des investissements productifs des Camerounais de l'étranger et diplomatie de paix au sein de l'Union Africaine."
+    }
+];
+
+function openPillarModal(idx) {
+    const p = MRC_PILLARS[idx];
+    if (!p) return;
+    const modal = document.getElementById('pillarModal');
+    const tEl = document.getElementById('pillarModalTitle');
+    const bEl = document.getElementById('pillarModalBody');
+
+    if (tEl) tEl.textContent = 'Pilier ' + p.num + ' : ' + p.title;
+    if (bEl) {
+        bEl.innerHTML = `
+            <div style="border-radius:12px; overflow:hidden; height:180px; margin-bottom:12px;">
+                <img src="${p.image}" alt="${p.title}" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+            <span class="badge-gold" style="margin-bottom:8px; display:inline-block;">ENGAGEMENT PROGRAMMATIQUE N°${p.num}</span>
+            <h4 style="color:var(--vert-fonce); font-size:14px; margin-bottom:6px;">${p.subtitle}</h4>
+            <p style="font-size:12px; color:var(--encre); line-height:1.5;">${p.content}</p>
+        `;
+    }
+    if (modal) modal.classList.add('active');
+}
+
+function closePillarModal() {
+    const modal = document.getElementById('pillarModal');
+    if (modal) modal.classList.remove('active');
+}
+
+// Lightbox Photo Plein Écran
+function openGalleryModal(src, title, desc) {
+    const modal = document.getElementById('galleryModal');
+    const tEl = document.getElementById('galleryModalTitle');
+    const iEl = document.getElementById('galleryModalImg');
+    const dEl = document.getElementById('galleryModalDesc');
+
+    if (tEl) tEl.textContent = title;
+    if (iEl) iEl.src = src;
+    if (dEl) dEl.textContent = desc;
+
+    if (modal) modal.classList.add('active');
+}
+
+function closeGalleryModal() {
+    const modal = document.getElementById('galleryModal');
+    if (modal) modal.classList.remove('active');
+}

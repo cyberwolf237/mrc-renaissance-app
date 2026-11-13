@@ -2369,3 +2369,319 @@ body {
         transform: scale(calc((100vw - 28px) / 856)) rotateY(180deg) !important;
     }
 }
+
+
+.hero-banner-green {
+    position: relative;
+    background: linear-gradient(180deg, rgba(7, 64, 35, 0.45) 0%, rgba(7, 64, 35, 0.94) 100%), url('assets/hero_rally_crowd.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 22px 18px 18px 18px;
+    border-radius: 18px;
+    box-shadow: 0 10px 28px rgba(7, 64, 35, 0.35);
+    margin-bottom: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.hero-banner-green h2 {
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.hero-subtext {
+    font-size: 10.5px;
+    color: #e2f2e8;
+    margin-bottom: 12px;
+}
+
+.hero-cta-strip {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.btn-outline-white {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(8px);
+}
+
+.btn-outline-white:hover {
+    background: rgba(255, 255, 255, 0.28) !important;
+}
+
+/* Flash Info Ticker Défilant */
+.news-ticker-strip {
+    background: #ffffff;
+    border: 1px solid var(--bordure);
+    border-radius: 10px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    overflow: hidden;
+}
+
+.ticker-beacon {
+    background: #e53935;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ticker-text {
+    font-size: 11px;
+    color: var(--encre);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Grille des Piliers du Projet de Société */
+.pillars-scroll-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.pillar-card {
+    background: #ffffff;
+    border: 1px solid var(--bordure);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.pillar-card:hover {
+    border-color: var(--vert);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(13, 92, 58, 0.12);
+}
+
+.pillar-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 95px;
+    overflow: hidden;
+}
+
+.pillar-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.pillar-card:hover .pillar-img-wrap img {
+    transform: scale(1.06);
+}
+
+.pillar-tag {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    background: rgba(7, 64, 35, 0.88);
+    color: #ffffff;
+    font-size: 8px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+    backdrop-filter: blur(4px);
+}
+
+.pillar-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.pillar-body h4 {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--vert-fonce);
+    margin-bottom: 3px;
+}
+
+.pillar-body p {
+    font-size: 9.5px;
+    color: var(--gris);
+    line-height: 1.35;
+    margin-bottom: 6px;
+    flex: 1;
+}
+
+.pillar-link {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--vert);
+}
+
+/* Grille Galerie Photo Médiathèque */
+.photo-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    height: 115px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border: 1px solid var(--bordure);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.08);
+}
+
+.gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(7,64,35,0.88) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 8px 10px;
+    color: white;
+}
+
+.gallery-badge {
+    font-size: 8px;
+    font-weight: 800;
+    background: rgba(255,255,255,0.25);
+    padding: 1px 5px;
+    border-radius: 4px;
+    align-self: flex-start;
+    margin-bottom: 2px;
+    backdrop-filter: blur(4px);
+}
+
+.gallery-overlay h5 {
+    font-size: 10.5px;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+/* Vignettes Photo dans la Frise Historique */
+.hist-epoch-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid var(--bordure);
+    background: #ffffff;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.hist-epoch-card:hover {
+    border-color: var(--vert);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 92, 58, 0.1);
+}
+
+.epoch-thumbnail {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* Carte Actualités avec Image de Couverture */
+.featured-news-card {
+    border-radius: 14px;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid var(--bordure);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.featured-news-card:hover {
+    border-color: var(--vert);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(13, 92, 58, 0.12);
+}
+
+.news-img-wrap {
+    width: 100%;
+    height: 125px;
+    overflow: hidden;
+    position: relative;
+}
+
+.news-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.featured-news-card:hover .news-img-wrap img {
+    transform: scale(1.05);
+}
+
+.news-card-inner {
+    padding: 12px;
+}
+
+/* Badges Subtils */
+.badge-gold {
+    background: var(--or-clair);
+    color: var(--or-fonce);
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 6px;
+    border: 1px solid var(--or-mrc);
+}
+
+.badge-green-subtle {
+    background: var(--vert-clair);
+    color: var(--vert-fonce);
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 6px;
+    border: 1px solid var(--vert);
+}

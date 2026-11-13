@@ -577,7 +577,7 @@
 
                             <!-- VP 1: EMMANUEL SIMH -->
                             <div class="leader-row-card interactive-hover" onclick="openLeaderModal('simh')">
-                                <div class="leader-avatar-placeholder"><i class="fa-solid fa-gavel"></i></div>
+                                <img src="assets/leader_emmanuel_simh.jpg" alt="Emmanuel Simh" class="leader-avatar-lg">
                                 <div class="leader-row-body">
                                     <span class="role-tag">VICE-PRÉSIDENT NATIONAL</span>
                                     <h4>Emmanuel SIMH</h4>
@@ -588,7 +588,7 @@
 
                             <!-- VP 2: ELIE NGOMPE -->
                             <div class="leader-row-card interactive-hover" onclick="openLeaderModal('ngompe')">
-                                <div class="leader-avatar-placeholder"><i class="fa-solid fa-user-tie"></i></div>
+                                <img src="assets/leader_mamadou_mota.jpg" alt="Elie Ngompe" class="leader-avatar-lg">
                                 <div class="leader-row-body">
                                     <span class="role-tag">VICE-PRÉSIDENT NATIONAL</span>
                                     <h4>Elie NGOMPE</h4>
@@ -599,7 +599,7 @@
 
                             <!-- VP 3: ISMAËL KAIGAMA -->
                             <div class="leader-row-card interactive-hover" onclick="openLeaderModal('kaigama')">
-                                <div class="leader-avatar-placeholder"><i class="fa-solid fa-user-shield"></i></div>
+                                <img src="assets/leader_alain_fogue.jpg" alt="Dr Alain Fogue" class="leader-avatar-lg">
                                 <div class="leader-row-body">
                                     <span class="role-tag">VICE-PRÉSIDENT NATIONAL</span>
                                     <h4>Ismaël KAIGAMA</h4>
@@ -610,7 +610,7 @@
 
                             <!-- VP 4: SAMUEL SAME KOLLE -->
                             <div class="leader-row-card interactive-hover" onclick="openLeaderModal('same_kolle')">
-                                <div class="leader-avatar-placeholder"><i class="fa-solid fa-graduation-cap"></i></div>
+                                <img src="assets/leader_christopher_ndong.jpg" alt="Christopher Ndong" class="leader-avatar-lg">
                                 <div class="leader-row-body">
                                     <span class="role-tag">VICE-PRÉSIDENT NATIONAL</span>
                                     <h4>Samuel SAME KOLLE</h4>
@@ -697,7 +697,7 @@
                         <div class="history-content-pane active" id="histTimelineContent">
                             <div class="history-interactive-timeline">
                                 
-                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2012')">
+                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2012')"><img src="assets/history_2012_foundation.jpg" alt="2012" class="epoch-thumbnail">
                                     <div class="epoch-badge">2012</div>
                                     <div class="epoch-desc">
                                         <h4>Congrès Constitutif &bull; Naissance du MRC</h4>
@@ -706,7 +706,7 @@
                                     </div>
                                 </div>
 
-                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2013')">
+                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2013')"><img src="assets/history_2018_election.jpg" alt="2013" class="epoch-thumbnail">
                                     <div class="epoch-badge">2013</div>
                                     <div class="epoch-desc">
                                         <h4>Entrée au Parlement &bull; Élections Législatives</h4>
@@ -715,7 +715,7 @@
                                     </div>
                                 </div>
 
-                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2018')">
+                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2018')"><img src="assets/history_2018_election.jpg" alt="2018" class="epoch-thumbnail">
                                     <div class="epoch-badge">2018</div>
                                     <div class="epoch-desc">
                                         <h4>Scrutin Présidentiel &bull; Triomphe Populaire</h4>
@@ -724,7 +724,7 @@
                                     </div>
                                 </div>
 
-                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2019')">
+                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2019')"><img src="assets/history_2020_resistance.jpg" alt="2019" class="epoch-thumbnail">
                                     <div class="epoch-badge">2019</div>
                                     <div class="epoch-desc">
                                         <h4>Résistance Pacifique &bull; Prison de Kondengui</h4>
@@ -733,7 +733,7 @@
                                     </div>
                                 </div>
 
-                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2020')">
+                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2020')"><img src="assets/history_2020_resistance.jpg" alt="2020" class="epoch-thumbnail">
                                     <div class="epoch-badge">2020</div>
                                     <div class="epoch-desc">
                                         <h4>Paris République &bull; Lancement de l'Opération SCSI</h4>
@@ -742,7 +742,7 @@
                                     </div>
                                 </div>
 
-                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2023')">
+                                <div class="hist-epoch-card interactive-hover" onclick="openHistoryDetailModal('2023')"><img src="assets/history_2023_convention.jpg" alt="2023" class="epoch-thumbnail">
                                     <div class="epoch-badge">2023</div>
                                     <div class="epoch-desc">
                                         <h4>3ème Convention Ordinaire à Yaoundé</h4>
@@ -1151,6 +1151,44 @@
             <button class="btn btn-primary" onclick="finishPaymentAndShowCard()" id="btnDonePay" style="display:none;">
                 <i class="fa-solid fa-id-card"></i> Voir ma Carte Validée
             </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal 7 : Visionneuse Photo Plein Écran (Lightbox) -->
+<div class="modal-backdrop" id="galleryModal">
+    <div class="modal-dialog modal-dialog-lg" style="max-width:540px;">
+        <div class="modal-header">
+            <i class="fa-solid fa-image text-green"></i>
+            <h3 id="galleryModalTitle">Photo Officielle MRC</h3>
+            <button class="btn-close-modal" onclick="closeGalleryModal()">&times;</button>
+        </div>
+        <div class="modal-body" style="padding:10px;">
+            <div style="border-radius:12px; overflow:hidden; max-height:360px; background:#000;">
+                <img src="" id="galleryModalImg" alt="Vue Agrandie" style="width:100%; height:100%; object-fit:contain; display:block;">
+            </div>
+            <p id="galleryModalDesc" style="font-size:12px; color:var(--encre); margin-top:10px; line-height:1.4;"></p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="closeGalleryModal()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 8 : Détail Pilier Projet de Société -->
+<div class="modal-backdrop" id="pillarModal">
+    <div class="modal-dialog modal-dialog-lg" style="max-width:540px;">
+        <div class="modal-header">
+            <i class="fa-solid fa-bullseye text-green"></i>
+            <h3 id="pillarModalTitle">Pilier de la Renaissance</h3>
+            <button class="btn-close-modal" onclick="closePillarModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="pillarModalBody" style="padding:14px;">
+            <!-- Rempli dynamiquement -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="closePillarModal()">Fermer</button>
         </div>
     </div>
 </div>
