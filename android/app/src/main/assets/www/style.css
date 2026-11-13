@@ -2685,3 +2685,626 @@ body {
     border-radius: 6px;
     border: 1px solid var(--vert);
 }
+
+
+/* ========================================================================= */
+/* REVAMP MODERNE : DIRECTOIRE, DÉPÊCHES & HISTOIRE DU MRC                  */
+/* ========================================================================= */
+
+/* --- BARRE DE FILTRES SEGMENTÉE HAUT DE GAMME --- */
+.segmented-filter-bar {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+.segmented-filter-bar::-webkit-scrollbar { display: none; }
+
+.seg-filter-pill {
+    padding: 7px 14px;
+    border-radius: 20px;
+    background: #ffffff;
+    border: 1px solid var(--bordure);
+    color: var(--gris);
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.seg-filter-pill:hover {
+    border-color: var(--vert);
+    color: var(--vert-fonce);
+    transform: translateY(-1px);
+}
+
+.seg-filter-pill.active {
+    background: var(--vert-fonce) !important;
+    color: #ffffff !important;
+    border-color: var(--vert-fonce) !important;
+    box-shadow: 0 4px 12px rgba(7, 64, 35, 0.25) !important;
+}
+
+/* --- DIRECTOIRE : CARTES PRÉSIDENTIELLES D'HONNEUR --- */
+.dual-presidential-spotlight {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.presidential-spotlight-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid var(--bordure);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.presidential-spotlight-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(13, 92, 58, 0.15);
+}
+
+.presidential-spotlight-card.card-founder {
+    border-top: 4px solid var(--or-mrc);
+}
+
+.presidential-spotlight-card.card-president {
+    border-top: 4px solid var(--vert);
+}
+
+.pres-card-banner {
+    height: 60px;
+    background: linear-gradient(135deg, var(--vert-fonce) 0%, var(--vert) 100%);
+    position: relative;
+}
+
+.card-founder .pres-card-banner {
+    background: linear-gradient(135deg, #074023 0%, #117349 60%, #C69C3A 100%);
+}
+
+.pres-card-content {
+    padding: 0 14px 14px 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.pres-avatar-wrap {
+    margin-top: -34px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.pres-avatar-lg {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.pres-badge-ribbon {
+    font-size: 9px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.03em;
+}
+
+.ribbon-founder {
+    background: var(--or-clair);
+    color: var(--or-fonce);
+    border: 1px solid var(--or-mrc);
+}
+
+.ribbon-president {
+    background: var(--vert-clair);
+    color: var(--vert-fonce);
+    border: 1px solid var(--vert);
+}
+
+.pres-name-title {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: var(--encre);
+    margin-bottom: 2px;
+}
+
+.pres-role-sub {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--vert);
+    margin-bottom: 8px;
+}
+
+.pres-quote-box {
+    background: var(--vert-subtil);
+    border-left: 3px solid var(--vert);
+    padding: 8px 10px;
+    border-radius: 0 8px 8px 0;
+    font-size: 11px;
+    color: var(--encre);
+    font-style: italic;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+.pres-footer-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--bordure);
+    padding-top: 8px;
+    margin-top: 4px;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--vert);
+}
+
+/* Grille des Vice-Présidents et Cadres */
+.leaders-executive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.executive-member-card {
+    background: #ffffff;
+    border: 1px solid var(--bordure);
+    border-radius: 12px;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.executive-member-card:hover {
+    border-color: var(--vert);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(13, 92, 58, 0.12);
+}
+
+.exec-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
+    border: 2px solid var(--vert-clair);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.exec-tag {
+    font-size: 7.5px;
+    font-weight: 800;
+    color: var(--vert-fonce);
+    background: var(--vert-clair);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.exec-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--encre);
+    margin-bottom: 2px;
+    line-height: 1.25;
+}
+
+.exec-dept {
+    font-size: 9px;
+    color: var(--gris);
+    line-height: 1.2;
+    margin-bottom: 6px;
+}
+
+.exec-view-btn {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--vert);
+    margin-top: auto;
+}
+
+/* Accordéon Organigramme */
+.organigramme-box {
+    background: #ffffff;
+    border: 1px solid var(--bordure);
+    border-radius: 12px;
+    padding: 14px;
+    margin-top: 14px;
+}
+
+.organigramme-tree {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.tree-node {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--vert-subtil);
+    border-left: 3px solid var(--vert);
+    font-size: 11px;
+    color: var(--encre);
+}
+
+.tree-node strong {
+    color: var(--vert-fonce);
+}
+
+/* --- DÉPÊCHES : SALLE DE PRESSE MODERNE --- */
+.newsroom-search-bar {
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.newsroom-search-bar input {
+    width: 100%;
+    padding: 10px 12px 10px 36px;
+    border-radius: 20px;
+    border: 1px solid var(--bordure);
+    background: #ffffff;
+    font-size: 12px;
+    color: var(--encre);
+    outline: none;
+    transition: border 0.2s;
+}
+
+.newsroom-search-bar input:focus {
+    border-color: var(--vert);
+    box-shadow: 0 0 0 3px rgba(13, 92, 58, 0.1);
+}
+
+.newsroom-search-bar i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gris);
+    font-size: 12px;
+}
+
+.breaking-news-hero-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid var(--bordure);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.breaking-news-hero-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(13, 92, 58, 0.15);
+}
+
+.breaking-hero-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 160px;
+}
+
+.breaking-hero-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.breaking-pill-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #e53935;
+    color: #ffffff;
+    font-size: 8.5px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.breaking-hero-body {
+    padding: 14px;
+}
+
+.breaking-meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9.5px;
+    color: var(--gris);
+    margin-bottom: 6px;
+}
+
+.breaking-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--vert-fonce);
+    line-height: 1.35;
+    margin-bottom: 6px;
+}
+
+.breaking-excerpt {
+    font-size: 11px;
+    color: var(--encre);
+    line-height: 1.45;
+    margin-bottom: 10px;
+}
+
+.news-share-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--bordure);
+    padding-top: 8px;
+    margin-top: 6px;
+}
+
+.share-action-group {
+    display: flex;
+    gap: 8px;
+}
+
+.share-icon-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--vert-clair);
+    color: var(--vert-fonce);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.share-icon-btn:hover {
+    background: var(--vert);
+    color: #ffffff;
+}
+
+/* --- HISTOIRE : MUSÉE DE LA RENAISSANCE & GRANDES ÉPOPÉES --- */
+.timeline-modern-container {
+    position: relative;
+    padding-left: 24px;
+    margin-top: 14px;
+    margin-bottom: 16px;
+}
+
+.timeline-modern-container::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--vert) 0%, var(--or-mrc) 100%);
+}
+
+.timeline-epoch-item {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.timeline-node-dot {
+    position: absolute;
+    left: -24px;
+    top: 12px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 3px solid var(--vert);
+    box-shadow: 0 0 0 3px rgba(13, 92, 58, 0.15);
+    z-index: 2;
+}
+
+.timeline-epoch-item.highlight-epoch .timeline-node-dot {
+    border-color: var(--or-mrc);
+    box-shadow: 0 0 0 3px rgba(198, 156, 58, 0.25);
+    background: var(--or-mrc);
+}
+
+.timeline-card-modern {
+    background: #ffffff;
+    border: 1px solid var(--bordure);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.timeline-card-modern:hover {
+    border-color: var(--vert);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(13, 92, 58, 0.12);
+}
+
+.timeline-card-img-wrap {
+    width: 100%;
+    height: 110px;
+    position: relative;
+    overflow: hidden;
+}
+
+.timeline-card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.timeline-card-modern:hover .timeline-card-img-wrap img {
+    transform: scale(1.05);
+}
+
+.timeline-year-tag {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(7, 64, 35, 0.9);
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    backdrop-filter: blur(4px);
+}
+
+.highlight-epoch .timeline-year-tag {
+    background: linear-gradient(135deg, #C69C3A 0%, #A27C24 100%);
+}
+
+.timeline-card-body {
+    padding: 12px;
+}
+
+.timeline-card-body h4 {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--vert-fonce);
+    margin-bottom: 4px;
+}
+
+.timeline-card-body p {
+    font-size: 10px;
+    color: var(--encre);
+    line-height: 1.4;
+    margin-bottom: 6px;
+}
+
+.timeline-card-action {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--vert);
+}
+
+/* Grille des Grandes Victoires Républicaines */
+.victories-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.victory-card {
+    background: #ffffff;
+    border: 1px solid var(--bordure);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.victory-icon-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--vert-clair);
+    color: var(--vert-fonce);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.victory-body h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--vert-fonce);
+    margin-bottom: 2px;
+}
+
+.victory-body p {
+    font-size: 10.5px;
+    color: var(--encre);
+    line-height: 1.4;
+}
+
+/* Bibliothèque Statuts et Textes Fondateurs */
+.statute-archive-card {
+    background: #ffffff;
+    border: 1px solid var(--bordure);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.statute-archive-card:hover {
+    border-color: var(--vert);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 92, 58, 0.1);
+}
+
+.statute-meta h4 {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--encre);
+    margin-bottom: 2px;
+}
+
+.statute-meta p {
+    font-size: 9.5px;
+    color: var(--gris);
+}
+
+.btn-download-statute {
+    background: var(--vert-clair);
+    color: var(--vert-fonce);
+    border: 1px solid var(--vert);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}

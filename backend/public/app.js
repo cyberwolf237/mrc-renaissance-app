@@ -916,6 +916,43 @@ setInterval(() => {
 
 // Chargement initial
 window.addEventListener('DOMContentLoaded', () => {
+
+    appState.leaders['mota'] = {
+        name: "Mamadou MOTA",
+        role: "1er Vice-Président Délégué du MRC",
+        tag: "1ER VICE-PRÉSIDENT DÉLÉGUÉ",
+        tagClass: "tag-vp",
+        photo: "assets/leader_mamadou_mota.jpg",
+        bio: "Ingénieur agronome de formation, leader charismatique et figure emblématique de la résistance démocratique dans le Grand-Nord camerounais.",
+        parcours: "Incarcéré arbitrairement durant 2 ans à Kondengui suite aux événements de 2019, il a incarné une fermeté morale inébranlable. Il coordonne l'action politique du parti avec rigueur.",
+        vision: "« Le MRC est un pont indestructible entre le Nord et le Sud du Cameroun. Rien n'arrêtera la marche du peuple vers sa liberté. »",
+        declarationRecente: "« Avec la Présidente Tiriane Noah, nous engageons la phase décisive de la conquête électorale pacifique. »"
+    };
+
+    appState.leaders['saadou'] = {
+        name: "Aissatou SAADOU",
+        role: "Vice-Présidente Nationale du MRC",
+        tag: "VICE-PRÉSIDENTE NATIONALE",
+        tagClass: "tag-vp",
+        photo: "assets/leader_aissatou_saadou.jpg",
+        bio: "Économiste et militante associative engagée pour l'émancipation économique des femmes et l'encadrement républicain de la jeunesse.",
+        parcours: "Élue au Directoire le 17 octobre 2026, elle supervise la mobilisation féminine et l'OFMRC dans les dix régions et dans la diaspora.",
+        vision: "« Les femmes camerounaises sont le pilier de la République. Elles seront le moteur de l'alternance. »",
+        declarationRecente: "« Chaque femme militante doit porter fièrement sa carte de membre et être une sentinelle de paix. »"
+    };
+
+    appState.leaders['oko'] = {
+        name: "Oko APPOLINAIRE LEGRAND",
+        role: "Trésorier National du MRC",
+        tag: "TRÉSORIER NATIONAL",
+        tagClass: "tag-vp",
+        photo: "assets/leader_alain_fogue.jpg",
+        bio: "Expert-comptable et gestionnaire émérite, garant de la transparence financière, de la collecte des cotisations et de la reddition des comptes.",
+        parcours: "Chargé par la Convention Nationale de garantir l'étanchéité financière, l'intégration des dons MoMo/OM et le respect des plafonds statutaires.",
+        vision: "« La transparence financière est le garant absolu de notre indépendance politique. »",
+        declarationRecente: "« Chaque franc versé en cotisation est audité et alloué directement à la victoire démocratique. »"
+    };
+
     adjustCardScale();
     genererCarte(appState.member);
     renderNews();
@@ -1236,4 +1273,127 @@ function openGalleryModal(src, title, desc) {
 function closeGalleryModal() {
     const modal = document.getElementById('galleryModal');
     if (modal) modal.classList.remove('active');
+}
+
+
+// ========================================================================= //
+// FONCTIONS DE MODERNISATION DES 3 PANS (DIRECTOIRE, DÉPÊCHES, HISTOIRE)   //
+// ========================================================================= //
+
+// 1. FILTRE DU DIRECTOIRE NATIONAL
+function filterDirectoire(cat, btn) {
+    document.querySelectorAll('#paneDirectoire .seg-filter-pill').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    const spotlight = document.getElementById('directoireSpotlightSection');
+    const execCards = document.querySelectorAll('#executiveLeadersGrid .executive-member-card');
+
+    if (cat === 'all') {
+        if (spotlight) spotlight.style.display = 'grid';
+        execCards.forEach(c => c.style.display = 'flex');
+    } else if (cat === 'presidence') {
+        if (spotlight) spotlight.style.display = 'grid';
+        execCards.forEach(c => c.style.display = 'none');
+    } else {
+        if (spotlight) spotlight.style.display = 'none';
+        execCards.forEach(c => {
+            if (c.getAttribute('data-cat') === cat) {
+                c.style.display = 'flex';
+            } else {
+                c.style.display = 'none';
+            }
+        });
+    }
+}
+
+// 2. RECHERCHE DANS LES DÉPÊCHES EN DIRECT
+function handleNewsSearch(val) {
+    const q = val.toLowerCase().trim();
+    const heroCard = document.getElementById('breakingHeroArticle');
+    if (heroCard) {
+        heroCard.style.display = q === '' ? 'block' : 'none';
+    }
+
+    if (!q) {
+        renderNews('all');
+        return;
+    }
+
+    const filtered = appState.articles.filter(a =>
+        a.title.toLowerCase().includes(q) ||
+        a.excerpt.toLowerCase().includes(q) ||
+        a.category.toLowerCase().includes(q)
+    );
+
+    const container = document.getElementById('newsListContainer');
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (filtered.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding:30px; color:var(--gris); font-size:12px;"><i class="fa-solid fa-newspaper text-green" style="font-size:24px; margin-bottom:8px;"></i><br>Aucune dépêche ne correspond à votre recherche.</div>';
+        return;
+    }
+
+    filtered.forEach((art, idx) => {
+        const card = document.createElement('div');
+        card.className = 'featured-news-card interactive-hover';
+        card.onclick = () => openArticleModal(idx, filtered);
+        card.innerHTML = `
+            ${art.image ? `<div class="news-img-wrap"><img src="${art.image}" alt="${art.title}"></div>` : ''}
+            <div class="news-card-inner">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <span class="news-tag">${art.category.toUpperCase()} &bull; ${art.date}</span>
+                    <span style="font-size:9px; color:var(--vert); font-weight:700;"><i class="fa-solid fa-bullhorn"></i> ${art.author || 'Directoire'}</span>
+                </div>
+                <h4 class="news-title">${art.title}</h4>
+                <p class="news-excerpt">${art.excerpt}</p>
+                <div class="news-share-bar">
+                    <span class="view-profile-link">Lire la suite &gt;</span>
+                    <div class="share-action-group" onclick="event.stopPropagation()">
+                        <button class="share-icon-btn" onclick="shareOnWhatsApp('${art.title.replace(/'/g, "\\'")}')"><i class="fa-brands fa-whatsapp"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// PARTAGE SUR LES RÉSEAUX SOCIAUX
+function shareOnWhatsApp(text) {
+    const url = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(text + ' - Source officielle MRC : https://mrc-backend-c11n.onrender.com');
+    window.open(url, '_blank');
+}
+
+function shareOnTwitter(text, link) {
+    const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(link);
+    window.open(url, '_blank');
+}
+
+// 3. NAVIGATION HISTOIRE (4 VUES MODERNES)
+function switchHistorySubTab(subTab) {
+    document.querySelectorAll('#paneHistory .seg-filter-pill').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#paneHistory .history-content-pane').forEach(p => p.classList.remove('active'));
+
+    if (subTab === 'timeline') {
+        const b = document.getElementById('btnHistTimeline');
+        const c = document.getElementById('histTimelineContent');
+        if (b) b.classList.add('active');
+        if (c) c.classList.add('active');
+    } else if (subTab === 'presidents') {
+        const b = document.getElementById('btnHistPresidents');
+        const c = document.getElementById('histPresidentsContent');
+        if (b) b.classList.add('active');
+        if (c) c.classList.add('active');
+    } else if (subTab === 'victories') {
+        const b = document.getElementById('btnHistVictories');
+        const c = document.getElementById('histVictoriesContent');
+        if (b) b.classList.add('active');
+        if (c) c.classList.add('active');
+    } else if (subTab === 'archives') {
+        const b = document.getElementById('btnHistArchives');
+        const c = document.getElementById('histArchivesContent');
+        if (b) b.classList.add('active');
+        if (c) c.classList.add('active');
+    }
 }
