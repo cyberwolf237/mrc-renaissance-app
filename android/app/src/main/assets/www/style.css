@@ -1,14 +1,20 @@
 ﻿:root {
-    --vert: #0a8a4a;
-    --vert-fonce: #06602f;
-    --vert-clair: #e8f5ed;
+    --vert: #0D5C3A; /* Vert Forêt Impérial - Institutionnel, calme et prestigieux */
+    --vert-fonce: #074023; /* Vert Émeraude Sombre */
+    --vert-moyen: #147A4D;
+    --vert-clair: #EAF3EE; /* Fond sauge doux et reposant */
+    --vert-subtil: #F2F7F4;
+    --or-mrc: #C69C3A; /* Or prestige chaud et sobre */
+    --or-clair: #FAF5E8;
+    --or-fonce: #A27C24;
     --papier: #ffffff;
-    --encre: #1d2a22;
-    --gris: #5b6b61;
-    --gris-clair: #f3f6f4;
-    --bordure: #cfd6d1;
-    --rouge-mrc: #d32f2f;
-    --bleu-mrc: #0033aa;
+    --encre: #152219; /* Encre anthracite profonde */
+    --gris: #526358; /* Gris-sauge reposant */
+    --gris-clair: #F3F6F4;
+    --bordure: #D4DDD7;
+    --bg-page: #EEF3F0; /* Toile de fond calme et élégante */
+    --rouge-mrc: #C23030;
+    --bleu-mrc: #17488B;
 }
 
 * {
@@ -841,17 +847,18 @@ body {
 }
 
 .card-3d-front .titre .fr {
-    font-size: 28px;
-    font-weight: 900;
-    letter-spacing: .03em;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: .02em;
     color: var(--vert-fonce);
 }
 
 .card-3d-front .titre .en {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 800;
+    letter-spacing: .02em;
     color: var(--vert-fonce);
-    margin-top: 1px;
+    margin-top: 2px;
 }
 
 .card-3d-front .champs {
@@ -2070,32 +2077,295 @@ body {
     border-color: #314a38 !important;
 }
 
-/* === FIX CARTE 3D MOBILE CENTRÉE SANS DÉPASSEMENT NI SAUT === */
+
+/* === SÉLECTEUR DE PAIEMENT MOBILE MONEY (MOMO & ORANGE MONEY & GENIUSPAY) === */
+.payment-method-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin: 12px 0 16px 0;
+}
+
+.pay-method-card {
+    position: relative;
+    border: 2px solid var(--bordure);
+    border-radius: 12px;
+    padding: 10px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+}
+
+.pay-method-card:hover {
+    border-color: var(--vert);
+    background: var(--vert-subtil);
+    transform: translateY(-1px);
+}
+
+.pay-method-card.active {
+    border-color: var(--vert) !important;
+    background: var(--vert-clair) !important;
+    box-shadow: 0 4px 12px rgba(13, 92, 58, 0.15);
+}
+
+.pay-method-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.pay-method-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.pay-method-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.pay-method-logo.logo-genius {
+    background: linear-gradient(135deg, #0D5C3A 0%, #C69C3A 100%);
+    color: #ffffff;
+    font-size: 22px;
+}
+
+.pay-method-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.pay-method-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--encre);
+}
+
+.pay-method-code {
+    font-size: 10px;
+    color: var(--gris);
+}
+
+.badge-code {
+    background: var(--vert-fonce);
+    color: #ffffff;
+    padding: 1px 4px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.pay-check {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    color: var(--vert);
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.pay-method-card.active .pay-check {
+    opacity: 1;
+}
+
+/* Bouton Or Prestige MRC */
+.btn-gold {
+    background: linear-gradient(135deg, #C69C3A 0%, #A27C24 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(198, 156, 58, 0.35) !important;
+}
+
+.btn-gold:hover {
+    background: linear-gradient(135deg, #D4AA45 0%, #B38B2D 100%) !important;
+    transform: translateY(-1px);
+}
+
+/* Encadré Récapitulatif Paiement */
+.payment-summary-box {
+    background: var(--vert-subtil);
+    border: 1px solid var(--bordure);
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 10px;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 6px;
+    color: var(--gris);
+}
+
+.summary-line.total-line {
+    border-top: 1px dashed var(--bordure);
+    padding-top: 8px;
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--vert-fonce);
+}
+
+/* Spinner USSD */
+.ussd-spinner-ring {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: var(--vert-clair);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.ussd-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--bordure);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+.ussd-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--vert) 0%, var(--or-mrc) 100%);
+    width: 0%;
+    transition: width 2s linear;
+}
+
+/* Reçu Officiel Validé */
+.official-receipt-card {
+    background: #ffffff;
+    border: 2px solid var(--vert);
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+    box-shadow: 0 6px 20px rgba(13, 92, 58, 0.12);
+}
+
+.receipt-stamp-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--vert-clair);
+    color: var(--vert-fonce);
+    font-weight: 800;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--vert);
+}
+
+.receipt-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.receipt-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+}
+
+.receipt-header h4 {
+    font-size: 12px;
+    color: var(--vert-fonce);
+    margin: 0;
+}
+
+.receipt-sub {
+    font-size: 9.5px;
+    color: var(--gris);
+    margin: 2px 0 0 0;
+    letter-spacing: 0.04em;
+}
+
+.receipt-divider {
+    height: 1px;
+    background: var(--bordure);
+    margin: 12px 0;
+}
+
+.receipt-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 11.5px;
+}
+
+.r-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.r-row span {
+    color: var(--gris);
+}
+
+.r-row strong {
+    color: var(--encre);
+}
+
+.receipt-ref {
+    color: var(--vert-fonce);
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.receipt-footer-tag {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--bordure);
+    font-size: 10px;
+    color: var(--gris);
+    text-align: center;
+}
+
+/* Form label helper */
+.form-label-sm {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--vert-fonce);
+    margin-bottom: 6px;
+}
+
+/* === STABILISATION DU FLIP 3D MOBILE SANS DÉCALAGE === */
 @media (max-width: 480px) {
     .card-3d-wrapper {
         width: 100% !important;
-        height: calc((100vw - 32px) * 540 / 856) !important;
+        height: calc((100vw - 28px) * 540 / 856) !important;
         max-height: 250px !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        position: relative !important;
-        overflow: visible !important;
-    }
-    .card-3d-inner {
-        transform-origin: center center !important;
+        margin: 0 auto 10px auto !important;
     }
     .card-3d-face {
-        transform-origin: center center !important;
-        left: 50% !important;
-        top: 50% !important;
-        margin-left: -428px !important;
-        margin-top: -270px !important;
+        transform-origin: 0 0 !important;
+        left: 0 !important;
+        top: 0 !important;
+        margin: 0 !important;
     }
     .card-3d-front {
-        transform: scale(calc((100vw - 32px) / 856)) rotateY(0deg) !important;
+        transform: scale(calc((100vw - 28px) / 856)) rotateY(0deg) !important;
     }
     .card-3d-back {
-        transform: scale(calc((100vw - 32px) / 856)) rotateY(180deg) !important;
+        transform: scale(calc((100vw - 28px) / 856)) rotateY(180deg) !important;
     }
 }

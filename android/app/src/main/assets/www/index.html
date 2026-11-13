@@ -375,6 +375,9 @@
 
                         <!-- Boutons d'Action sur la Carte -->
                         <div class="card-btn-grid">
+                            <button class="btn btn-gold" onclick="openPaymentModal()" style="grid-column: 1 / -1; font-size:13px; padding:12px;">
+                                <i class="fa-solid fa-coins"></i> Payer / Renouveler ma Cotisation (MTN MoMo &bull; Orange Money &bull; GeniusPay)
+                            </button>
                             <button class="btn btn-primary" onclick="telechargerCartePNG()">
                                 <i class="fa-solid fa-download"></i> Télécharger en PNG HD
                             </button>
@@ -471,15 +474,41 @@
                                     </label>
                                 </div>
 
-                                <div class="payment-method-strip">
-                                    <label class="pay-method selected">
-                                        <input type="radio" name="payType" value="MTN MoMo / Orange Money" checked>
-                                        <span>MTN MoMo (*126#) / Orange Money (#150#)</span>
-                                    </label>
-                                    <label class="pay-method">
-                                        <input type="radio" name="payType" value="Carte Bancaire / Virement SEPA">
-                                        <span>Carte Bancaire / Virement SEPA</span>
-                                    </label>
+                                <label class="form-label-sm" style="margin-top:12px;"><i class="fa-solid fa-wallet text-green"></i> Moyen de règlement de la cotisation :</label>
+                                <div class="payment-method-selector">
+                                    <div class="pay-method-card active" onclick="selectRegPaymentMethod('MTN Mobile Money', this)">
+                                        <input type="radio" name="payType" value="MTN Mobile Money" checked>
+                                        <div class="pay-method-logo">
+                                            <img src="assets/logo_mtn_momo.png" alt="MTN MoMo">
+                                        </div>
+                                        <div class="pay-method-info">
+                                            <div class="pay-method-name">MTN MoMo</div>
+                                            <div class="pay-method-code"><span class="badge-code">*126#</span> &bull; Cameroun</div>
+                                        </div>
+                                        <i class="fa-solid fa-circle-check pay-check"></i>
+                                    </div>
+                                    <div class="pay-method-card" onclick="selectRegPaymentMethod('Orange Money', this)">
+                                        <input type="radio" name="payType" value="Orange Money">
+                                        <div class="pay-method-logo">
+                                            <img src="assets/logo_orange_money.png" alt="Orange Money">
+                                        </div>
+                                        <div class="pay-method-info">
+                                            <div class="pay-method-name">Orange Money</div>
+                                            <div class="pay-method-code"><span class="badge-code">#150#</span> &bull; Cameroun</div>
+                                        </div>
+                                        <i class="fa-solid fa-circle-check pay-check"></i>
+                                    </div>
+                                    <div class="pay-method-card" onclick="selectRegPaymentMethod('GeniusPay / CB', this)">
+                                        <input type="radio" name="payType" value="GeniusPay / CB">
+                                        <div class="pay-method-logo logo-genius">
+                                            <i class="fa-solid fa-bolt"></i>
+                                        </div>
+                                        <div class="pay-method-info">
+                                            <div class="pay-method-name">GeniusPay &bull; CB</div>
+                                            <div class="pay-method-code"><span class="badge-code">Sans Frais</span> &bull; Visa &amp; Test</div>
+                                        </div>
+                                        <i class="fa-solid fa-circle-check pay-check"></i>
+                                    </div>
                                 </div>
                             </div>
 
@@ -978,5 +1007,153 @@
         <button type="button" class="mrc-modal-btn" onclick="closeMrcModal()">D'accord</button>
     </div>
 </div>
+
+<!-- ============================================================== -->
+<!-- MODAL PAIEMENT MOBILE MONEY & GENIUSPAY (TEST RÉALISTE)        -->
+<!-- ============================================================== -->
+<div class="modal-backdrop" id="paymentModal">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <i class="fa-solid fa-shield-halved text-green"></i>
+            <h3>Paiement Sécurisé de la Cotisation</h3>
+            <button class="btn-close-modal" onclick="closePaymentModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="paymentModalBody">
+            <!-- Étape 1 : Saisie et choix de l'opérateur -->
+            <div id="paymentFormStep">
+                <p style="font-size:12px; color:var(--gris); margin-bottom:12px;">
+                    Réglez votre cotisation officielle du MRC en toute sécurité via MTN MoMo, Orange Money ou GeniusPay avec délivrance instantanée du reçu numéroté.
+                </p>
+                
+                <label class="form-label-sm">1. Choisissez votre opérateur :</label>
+                <div class="payment-method-selector" style="margin-bottom:14px;">
+                    <div class="pay-method-card active" onclick="setModalPaymentMethod('MTN Mobile Money (*126#)', 'assets/logo_mtn_momo.png', this)">
+                        <input type="radio" name="modalPayType" value="MTN Mobile Money (*126#)" checked>
+                        <div class="pay-method-logo">
+                            <img src="assets/logo_mtn_momo.png" alt="MTN MoMo">
+                        </div>
+                        <div class="pay-method-info">
+                            <div class="pay-method-name">MTN MoMo</div>
+                            <div class="pay-method-code"><span class="badge-code">*126#</span></div>
+                        </div>
+                        <i class="fa-solid fa-circle-check pay-check"></i>
+                    </div>
+                    <div class="pay-method-card" onclick="setModalPaymentMethod('Orange Money (#150#)', 'assets/logo_orange_money.png', this)">
+                        <input type="radio" name="modalPayType" value="Orange Money (#150#)">
+                        <div class="pay-method-logo">
+                            <img src="assets/logo_orange_money.png" alt="Orange Money">
+                        </div>
+                        <div class="pay-method-info">
+                            <div class="pay-method-name">Orange Money</div>
+                            <div class="pay-method-code"><span class="badge-code">#150#</span></div>
+                        </div>
+                        <i class="fa-solid fa-circle-check pay-check"></i>
+                    </div>
+                    <div class="pay-method-card" onclick="setModalPaymentMethod('GeniusPay (Passerelle Test & Multi-devises)', 'genius', this)">
+                        <input type="radio" name="modalPayType" value="GeniusPay">
+                        <div class="pay-method-logo logo-genius">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <div class="pay-method-info">
+                            <div class="pay-method-name">GeniusPay</div>
+                            <div class="pay-method-code"><span class="badge-code">CB / Gratuit</span></div>
+                        </div>
+                        <i class="fa-solid fa-circle-check pay-check"></i>
+                    </div>
+                </div>
+
+                <label class="form-label-sm">2. Montant de la cotisation :</label>
+                <div class="cotisation-grid" style="margin-bottom:14px;">
+                    <label class="cotisation-pill active" onclick="setModalAmount(1000, this)">
+                        <span>1 000 F CFA<br><small>Base Adhérent</small></span>
+                    </label>
+                    <label class="cotisation-pill" onclick="setModalAmount(5000, this)">
+                        <span>5 000 F CFA<br><small>Soutien</small></span>
+                    </label>
+                    <label class="cotisation-pill" onclick="setModalAmount(25000, this)">
+                        <span>25 000 F CFA<br><small>Cadre</small></span>
+                    </label>
+                    <label class="cotisation-pill" onclick="setModalAmount(100000, this)">
+                        <span>100 000 F CFA<br><small>Bienfaiteur</small></span>
+                    </label>
+                </div>
+
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label for="payPhoneInput">Numéro de Téléphone pour la notification USSD :</label>
+                    <div style="display:flex; gap:8px;">
+                        <span style="background:var(--vert-clair); color:var(--vert-fonce); font-weight:700; padding:10px 12px; border-radius:8px; border:1px solid var(--bordure); font-size:13px; display:flex; align-items:center;">🇨🇲 +237</span>
+                        <input type="tel" id="payPhoneInput" placeholder="67X XX XX XX / 69X XX XX XX" style="flex:1;" value="659452898">
+                    </div>
+                </div>
+
+                <div class="payment-summary-box">
+                    <div class="summary-line">
+                        <span>Montant Cotisation :</span>
+                        <strong id="modalSummaryAmount">1 000 F CFA</strong>
+                    </div>
+                    <div class="summary-line">
+                        <span>Frais Opérateur :</span>
+                        <span class="text-green" style="font-weight:700;">GRATUIT (0 F CFA)</span>
+                    </div>
+                    <div class="summary-line total-line">
+                        <span>Total à débiter :</span>
+                        <span class="text-green" id="modalSummaryTotal">1 000 F CFA</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Étape 2 : Simulation USSD en cours -->
+            <div id="paymentUssdStep" style="display:none; text-align:center; padding:20px 10px;">
+                <div class="ussd-spinner-ring">
+                    <i class="fa-solid fa-mobile-screen-button text-green fa-beat" style="font-size:38px;"></i>
+                </div>
+                <h4 style="margin:16px 0 6px 0; color:var(--vert-fonce);" id="ussdOperatorTitle">Requête USSD envoyée...</h4>
+                <p style="font-size:12.5px; color:var(--gris); margin-bottom:16px;" id="ussdOperatorMsg">
+                    Veuillez consulter votre téléphone et entrer votre code secret pour autoriser le débit de <strong id="ussdAmountPrompt">1 000 F CFA</strong>.
+                </p>
+                <div class="ussd-progress-bar">
+                    <div class="ussd-progress-fill" id="ussdProgressFill"></div>
+                </div>
+            </div>
+
+            <!-- Étape 3 : Reçu officiel avec son de validation -->
+            <div id="paymentReceiptStep" style="display:none;">
+                <div class="official-receipt-card">
+                    <div class="receipt-stamp-badge"><i class="fa-solid fa-circle-check"></i> PAYÉ &amp; ENREGISTRÉ</div>
+                    <div class="receipt-header">
+                        <img src="assets/logo_mrc_round.jpg" alt="Logo MRC" class="receipt-logo">
+                        <div>
+                            <h4>MOUVEMENT POUR LA RENAISSANCE DU CAMEROUN</h4>
+                            <p class="receipt-sub">REÇU OFFICIEL DE COTISATION &bull; DIRECTOIRE NATIONAL</p>
+                        </div>
+                    </div>
+                    <div class="receipt-divider"></div>
+                    <div class="receipt-details">
+                        <div class="r-row"><span>Réf. Transaction :</span><strong class="receipt-ref" id="recTxRef">MRC-MOMO-202611-9481</strong></div>
+                        <div class="r-row"><span>Opérateur :</span><strong id="recOperator">MTN Mobile Money (*126#)</strong></div>
+                        <div class="r-row"><span>Titulaire de la carte :</span><strong id="recMemberName">CYRILLE EDOU</strong></div>
+                        <div class="r-row"><span>Numéro Adhérent :</span><strong id="recMemberNum">SU00062551</strong></div>
+                        <div class="r-row"><span>Montant Réglé :</span><strong class="text-green" id="recAmount">1 000 F CFA</strong></div>
+                        <div class="r-row"><span>Date &amp; Heure :</span><span id="recDate">13/11/2026 11:00</span></div>
+                        <div class="r-row"><span>Signature Numérique :</span><span class="hash-code" id="recHash">MRC-9A74E82F10BC</span></div>
+                    </div>
+                    <div class="receipt-footer-tag">
+                        <i class="fa-solid fa-shield-halved text-green"></i> Certifié authentique &bull; Statut Adhérent mis à jour
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" id="paymentModalFooter">
+            <button class="btn btn-outline" onclick="closePaymentModal()" id="btnCancelPay">Annuler</button>
+            <button class="btn btn-primary" onclick="executePaymentSimulation()" id="btnConfirmPay">
+                <i class="fa-solid fa-lock"></i> Valider le Paiement (Test)
+            </button>
+            <button class="btn btn-primary" onclick="finishPaymentAndShowCard()" id="btnDonePay" style="display:none;">
+                <i class="fa-solid fa-id-card"></i> Voir ma Carte Validée
+            </button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

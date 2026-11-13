@@ -655,6 +655,7 @@ async function handleRegistrationSubmit(e) {
             const result = await response.json();
             appState.member = result.member;
             localStorage.setItem('mrc_active_member', JSON.stringify(result.member));
+            playValidationSound();
             genererCarte(appState.member);
             switchTab('card');
 
@@ -685,6 +686,7 @@ async function handleRegistrationSubmit(e) {
 
     localStorage.setItem('mrc_active_member', JSON.stringify(appState.member));
     genererCarte(appState.member);
+    playValidationSound();
     switchTab('card');
     openMrcModal('Notification Officielle', `🎉 ADHÉSION ENREGISTRÉE & CARTE 3D ÉMISE !\n\nCamarade ${prenom} ${nom}, votre carte N° ${newNum} a été créée avec succès.`, 'fa-circle-info');
 }
@@ -914,6 +916,230 @@ setInterval(() => {
 
 // Chargement initial
 window.addEventListener('DOMContentLoaded', () => {
+    adjustCardScale();
     genererCarte(appState.member);
     renderNews();
 });
+
+
+// ============================================================== //
+// SON DE VALIDATION OFFICIEL DU MRC (WEB AUDIO API + WAV CHIME)   //
+// ============================================================== //
+function playValidationSound() {
+    try {
+        // 1. Synthèse Web Audio pure (100% hors-ligne, zéro délai, zéro erreur 404)
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+            const ctx = new AudioContext();
+            if (ctx.state === 'suspended') {
+                ctx.resume();
+            }
+
+            // Accord ascendant harmonieux (Do5 -> Mi5 -> Sol5 -> Do6)
+            const notes = [
+                { freq: 523.25, time: 0.00, dur: 0.15 }, // C5
+                { freq: 659.25, time: 0.11, dur: 0.15 }, // E5
+                { freq: 783.99, time: 0.22, dur: 0.18 }, // G5
+                { freq: 1046.50, time: 0.35, dur: 0.45 }  // C6 (carillon cristallin)
+            ];
+
+            notes.forEach(n => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'triangle'; // Sonnerie douce et agréable
+                osc.frequency.setValueAtTime(n.freq, ctx.currentTime + n.time);
+
+                gain.gain.setValueAtTime(0.0001, ctx.currentTime + n.time);
+                gain.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + n.time + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + n.time + n.dur);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start(ctx.currentTime + n.time);
+                osc.stop(ctx.currentTime + n.time + n.dur + 0.05);
+            });
+        }
+
+        // 2. Fallback via fichier audio statique local
+        try {
+            const audioFallback = new Audio('assets/validation_chime.wav');
+            audioFallback.volume = 0.7;
+            audioFallback.play().catch(() => {});
+        } catch (_) {}
+
+    } catch (e) {
+        console.warn("Validation audio playback:", e);
+    }
+}
+
+// ============================================================== //
+// GESTION DU PAIEMENT MOBILE MONEY, USSD & REÇU OFFICIEL        //
+// ============================================================== //
+let modalPaymentData = {
+    operator: 'MTN Mobile Money (*126#)',
+    amount: 1000,
+    logo: 'assets/logo_mtn_momo.png'
+};
+
+function selectRegPaymentMethod(val, el) {
+    document.querySelectorAll('#paneRegister .pay-method-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    const radio = el.querySelector('input[type="radio"]');
+    if (radio) radio.checked = true;
+}
+
+function openPaymentModal() {
+    const modal = document.getElementById('paymentModal');
+    if (!modal) return;
+
+    // Reset to step 1
+    const formStep = document.getElementById('paymentFormStep');
+    const ussdStep = document.getElementById('paymentUssdStep');
+    const receiptStep = document.getElementById('paymentReceiptStep');
+    const btnConfirm = document.getElementById('btnConfirmPay');
+    const btnDone = document.getElementById('btnDonePay');
+    const btnCancel = document.getElementById('btnCancelPay');
+
+    if (formStep) formStep.style.display = 'block';
+    if (ussdStep) ussdStep.style.display = 'none';
+    if (receiptStep) receiptStep.style.display = 'none';
+    if (btnConfirm) btnConfirm.style.display = 'inline-flex';
+    if (btnDone) btnDone.style.display = 'none';
+    if (btnCancel) btnCancel.style.display = 'inline-flex';
+
+    // Synchronize phone input
+    const phoneInput = document.getElementById('payPhoneInput');
+    if (phoneInput && appState.member && appState.member.tel) {
+        phoneInput.value = appState.member.tel;
+    }
+
+    modal.classList.add('active');
+}
+
+function closePaymentModal() {
+    const modal = document.getElementById('paymentModal');
+    if (modal) modal.classList.remove('active');
+}
+
+function setModalPaymentMethod(name, logo, el) {
+    modalPaymentData.operator = name;
+    modalPaymentData.logo = logo;
+
+    document.querySelectorAll('#paymentModal .pay-method-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    const radio = el.querySelector('input[type="radio"]');
+    if (radio) radio.checked = true;
+}
+
+function setModalAmount(amount, el) {
+    modalPaymentData.amount = amount;
+    document.querySelectorAll('#paymentModal .cotisation-pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+
+    const formatted = amount.toLocaleString('fr-FR') + ' F CFA';
+    const sumEl = document.getElementById('modalSummaryAmount');
+    const totEl = document.getElementById('modalSummaryTotal');
+    if (sumEl) sumEl.textContent = formatted;
+    if (totEl) totEl.textContent = formatted;
+}
+
+function executePaymentSimulation() {
+    const formStep = document.getElementById('paymentFormStep');
+    const ussdStep = document.getElementById('paymentUssdStep');
+    const receiptStep = document.getElementById('paymentReceiptStep');
+    const btnConfirm = document.getElementById('btnConfirmPay');
+    const btnCancel = document.getElementById('btnCancelPay');
+    const btnDone = document.getElementById('btnDonePay');
+
+    const phoneInput = document.getElementById('payPhoneInput');
+    const phoneNumber = (phoneInput && phoneInput.value.trim()) || "659452898";
+    const amountStr = modalPaymentData.amount.toLocaleString('fr-FR') + ' F CFA';
+
+    // Passer à l'étape 2 (Simulation USSD)
+    if (formStep) formStep.style.display = 'none';
+    if (btnConfirm) btnConfirm.style.display = 'none';
+    if (btnCancel) btnCancel.style.display = 'none';
+    if (ussdStep) ussdStep.style.display = 'block';
+
+    const opTitle = document.getElementById('ussdOperatorTitle');
+    const opMsg = document.getElementById('ussdOperatorMsg');
+    const promptAmt = document.getElementById('ussdAmountPrompt');
+    const progressFill = document.getElementById('ussdProgressFill');
+
+    if (opTitle) opTitle.textContent = 'Connexion à ' + modalPaymentData.operator + '...';
+    if (opMsg) opMsg.innerHTML = 'Requête USSD envoyée au <strong>+237 ' + phoneNumber + '</strong>.<br>Veuillez taper votre code secret pour autoriser le prélèvement de <strong>' + amountStr + '</strong>.';
+    if (promptAmt) promptAmt.textContent = amountStr;
+
+    if (progressFill) {
+        progressFill.style.width = '0%';
+        setTimeout(() => { progressFill.style.width = '100%'; }, 100);
+    }
+
+    // Après 1.8s : Validation et Reçu Officiel
+    setTimeout(() => {
+        // 1. Déclencher le son de validation officiel
+        playValidationSound();
+
+        // 2. Mettre à jour l'adhérent dans l'application
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('fr-FR') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+        const opCode = modalPaymentData.operator.includes('Orange') ? 'OM' : (modalPaymentData.operator.includes('Genius') ? 'GP' : 'MOMO');
+        const randomTx = Math.floor(1000 + Math.random() * 9000);
+        const txRef = 'MRC-' + opCode + '-' + now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + '-' + randomTx;
+
+        if (appState.member) {
+            appState.member.cotisation = amountStr;
+            appState.member.status = 'ACTIF / COTISATION PAYÉE';
+            localStorage.setItem('mrc_active_member', JSON.stringify(appState.member));
+            genererCarte(appState.member);
+        }
+
+        // 3. Remplir le reçu officiel
+        const rRef = document.getElementById('recTxRef');
+        const rOp = document.getElementById('recOperator');
+        const rName = document.getElementById('recMemberName');
+        const rNum = document.getElementById('recMemberNum');
+        const rAmt = document.getElementById('recAmount');
+        const rDate = document.getElementById('recDate');
+        const rHash = document.getElementById('recHash');
+
+        if (rRef) rRef.textContent = txRef;
+        if (rOp) rOp.textContent = modalPaymentData.operator;
+        if (rName) rName.textContent = (appState.member && (appState.member.prenom + ' ' + appState.member.nom)) || 'CYRILLE EDOU';
+        if (rNum) rNum.textContent = (appState.member && appState.member.numero) || 'SU00062551';
+        if (rAmt) rAmt.textContent = amountStr;
+        if (rDate) rDate.textContent = dateStr;
+        if (rHash) rHash.textContent = (appState.member && appState.member.signatureHash) || 'MRC-9A74E82F10BC';
+
+        // 4. Afficher l'étape Reçu
+        if (ussdStep) ussdStep.style.display = 'none';
+        if (receiptStep) receiptStep.style.display = 'block';
+        if (btnDone) btnDone.style.display = 'inline-flex';
+
+    }, 1800);
+}
+
+function finishPaymentAndShowCard() {
+    closePaymentModal();
+    switchTab('card');
+    openMrcModal(
+        'Paiement Validé !',
+        'Félicitations Camarade ! Votre cotisation officielle du MRC a été validée avec succès. Votre Carte de Membre 3D est désormais active et certifiée.',
+        'fa-circle-check'
+    );
+}
+
+// Adaptation automatique de la taille de la carte 3D sur tous les écrans
+function adjustCardScale() {
+    const wrapper = document.querySelector('.card-3d-wrapper');
+    if (!wrapper) return;
+    const w = wrapper.clientWidth;
+    if (w > 0) {
+        const scale = Math.min(0.52, w / 856);
+        document.documentElement.style.setProperty('--c-scale', scale);
+    }
+}
+window.addEventListener('resize', adjustCardScale);
+window.addEventListener('orientationchange', adjustCardScale);
