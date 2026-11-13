@@ -517,17 +517,17 @@
                                 <div class="form-card-title"><i class="fa-solid fa-gavel text-green"></i> 3. Certifications Légales Obligatoires</div>
                                 
                                 <label class="checkbox-row">
-                                    <input type="checkbox" id="checkNonAppartenance" required>
+                                    <input type="checkbox" id="checkNonAppartenance" checked>
                                     <span><strong>Non-appartenance :</strong> Je certifie sur l'honneur ne pas appartenir à un autre parti politique et adhérer librement aux statuts du MRC.</span>
                                 </label>
                                 
                                 <label class="checkbox-row">
-                                    <input type="checkbox" id="checkLegalResidance" required>
+                                    <input type="checkbox" id="checkLegalResidance" checked>
                                     <span><strong>Règle légale :</strong> Je certifie être de nationalité camerounaise ou résidant en France et agir à titre personnel (plafond 7 500 €/an respecté).</span>
                                 </label>
 
                                 <label class="checkbox-row">
-                                    <input type="checkbox" id="checkRgpd" required>
+                                    <input type="checkbox" id="checkRgpd" checked>
                                     <span><strong>Droit statutaire &amp; RGPD :</strong> J'accepte de recevoir les informations du parti et reconnais mes droits d'accès, de rectification et de désadhésion libre à tout moment.</span>
                                 </label>
                             </div>
@@ -1066,6 +1066,295 @@
                         <!-- Liste dynamique des dépêches filtrées -->
                         <div class="news-list" id="newsListContainer"></div>
                     </div>
+
+                </div> <!-- /appBody -->
+
+                <!-- Navigation Inférieure Officielle (Blanc & Vert Émeraude) -->
+                <nav class="bottom-nav">
+                    <button class="nav-item active" onclick="switchTab('home')">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Accueil</span>
+                    </button>
+                    <button class="nav-item" onclick="switchTab('card')">
+                        <i class="fa-solid fa-id-card"></i>
+                        <span>Ma Carte</span>
+                    </button>
+                    <button class="nav-item" onclick="switchTab('register')">
+                        <i class="fa-solid fa-file-pen"></i>
+                        <span>Adhésion</span>
+                    </button>
+                    <button class="nav-item" onclick="switchTab('directoire')">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Directoire</span>
+                    </button>
+                    <button class="nav-item" onclick="switchTab('history')">
+                        <i class="fa-solid fa-timeline"></i>
+                        <span>Histoire</span>
+                    </button>
+                    <button class="nav-item" onclick="switchTab('news')">
+                        <i class="fa-solid fa-newspaper"></i>
+                        <span>Dépêches</span>
+                    </button>
+                </nav>
+
+                <div class="android-nav-handle"></div>
+            </div> <!-- /screen-surface -->
+        </div> <!-- /android-phone -->
+    </main>
+</div> <!-- /app-container -->
+
+<!-- ================= MODALS INTERACTIVES ================= -->
+
+<!-- Modal 1 : Fiche Détaillée d'un Dirigeant du Directoire -->
+<div class="modal-backdrop" id="leaderModal">
+    <div class="modal-dialog modal-dialog-lg">
+        <div class="modal-header">
+            <h3 id="modalLeaderTitle">Fiche Dirigeant</h3>
+            <button class="btn-close-modal" onclick="closeLeaderModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalLeaderBody">
+            <!-- Rempli dynamiquement par JS -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" id="btnShareLeader" onclick="shareLeaderProfile()"><i class="fa-solid fa-share-nodes"></i> Partager</button>
+            <button class="btn btn-primary" onclick="closeLeaderModal()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 2 : Détail Historique d'une Époque -->
+<div class="modal-backdrop" id="historyModal">
+    <div class="modal-dialog modal-dialog-lg">
+        <div class="modal-header">
+            <h3 id="modalHistoryTitle">Événement Historique</h3>
+            <button class="btn-close-modal" onclick="closeHistoryModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalHistoryBody">
+            <!-- Rempli dynamiquement par JS -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="closeHistoryModal()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 3 : Paramètres de l'Application -->
+<div class="modal-backdrop" id="settingsModal">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <i class="fa-solid fa-gear text-green"></i>
+            <h3>Paramètres de l'Application MRC</h3>
+            <button class="btn-close-modal" onclick="closeSettingsModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="settings-group">
+                <label class="form-label">Langue Officielle / Official Language</label>
+                <select id="settingLangSelect" onchange="changeSettingLang(this.value)">
+                    <option value="FR">Français (Cameroun &amp; Francophonie)</option>
+                    <option value="EN">English (Cameroon &amp; Commonwealth)</option>
+                </select>
+            </div>
+            <div class="settings-group">
+                <label class="checkbox-row">
+                    <input type="checkbox" checked>
+                    <span>Alertes en temps réel des déclarations du Directoire</span>
+                </label>
+            </div>
+            <div class="settings-group">
+                <label class="checkbox-row">
+                    <input type="checkbox" checked>
+                    <span>Mode Sentinelle Électorale (Vigilance des bureaux)</span>
+                </label>
+            </div>
+            <div class="settings-group">
+                <label class="checkbox-row">
+                    <input type="checkbox" checked>
+                    <span>Mode Hors-Ligne (Stockage local sécurisé de la carte)</span>
+                </label>
+            </div>
+            <div class="settings-links">
+                <a href="https://mrcparty.net" target="_blank"><i class="fa-solid fa-globe"></i> Visiter le portail officiel mrcparty.net</a>
+                <a href="#" onclick="openMrcModal('Statuts Officiels', 'Statuts officiels et règlement intérieur du MRC en cours de consultation...', 'fa-file-pdf'); return false;"><i class="fa-solid fa-file-pdf"></i> Télécharger les Statuts du Parti (PDF)</a>
+                <a href="#" onclick="openMrcModal('Confidentialité & RGPD', 'Conformité RGPD : Vous pouvez demander l'accès ou la suppression de vos données en écrivant à contact@mrcparty.org', 'fa-user-shield'); return false;"><i class="fa-solid fa-user-shield"></i> Confidentialité &amp; RGPD</a>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="closeSettingsModal()">Enregistrer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 4 : Authentification QR Code -->
+<div class="modal-backdrop" id="verifyModal">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <i class="fa-solid fa-shield-halved text-green"></i>
+            <h3>Contrôle d'Authenticité Carte de Membre</h3>
+            <button class="btn-close-modal" onclick="closeVerifyModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="verifyModalContent"></div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="closeVerifyModal()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 5 : Registre National des Adhérents (Persistant) -->
+<div class="modal-backdrop" id="registryModal">
+    <div class="modal-dialog modal-dialog-lg">
+        <div class="modal-header">
+            <i class="fa-solid fa-database text-green"></i>
+            <h3>Registre National des Adhérents</h3>
+            <button class="btn-close-modal" onclick="closeRegistryModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="registryModalBody">
+            <div style="font-size:10.5px; margin-bottom:10px; color:var(--gris); background:var(--vert-clair); padding:8px 10px; border-radius:8px;">
+                <i class="fa-solid fa-cloud-arrow-down text-green"></i> Base de données permanente (Anciens + Nouveaux inscrits). Touchez un adhérent pour afficher sa carte 3D.
+            </div>
+            <div id="registryListContainer" style="display:flex; flex-direction:column; gap:8px;">
+                <!-- Chargé dynamiquement -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="loadRegistryFromBackend()"><i class="fa-solid fa-arrows-rotate"></i> Actualiser</button>
+            <button class="btn btn-primary" onclick="closeRegistryModal()">Fermer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 6 : Paiement Sécurisé Mobile Money (MoMo & Orange Money & GeniusPay) -->
+<div class="modal-backdrop" id="paymentModal">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <i class="fa-solid fa-shield-halved text-green"></i>
+            <h3>Paiement Sécurisé de la Cotisation</h3>
+            <button class="btn-close-modal" onclick="closePaymentModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="paymentModalBody">
+            <!-- Étape 1 : Saisie et choix de l'opérateur -->
+            <div id="paymentFormStep">
+                <p style="font-size:12px; color:var(--gris); margin-bottom:12px;">
+                    Réglez votre cotisation officielle du MRC en toute sécurité via MTN MoMo, Orange Money ou GeniusPay avec délivrance instantanée du reçu numéroté.
+                </p>
+                
+                <label class="form-label-sm">1. Choisissez votre opérateur :</label>
+                <div class="payment-method-selector" style="margin-bottom:14px;">
+                    <div class="pay-method-card active" onclick="setModalPaymentMethod('MTN Mobile Money (*126#)', 'assets/logo_mtn_momo.png', this)">
+                        <input type="radio" name="modalPayType" value="MTN Mobile Money (*126#)" checked>
+                        <div class="pay-method-logo">
+                            <img src="assets/logo_mtn_momo.png" alt="MTN MoMo">
+                        </div>
+                        <div class="pay-method-info">
+                            <div class="pay-method-name">MTN MoMo</div>
+                            <div class="pay-method-code"><span class="badge-code">*126#</span></div>
+                        </div>
+                        <i class="fa-solid fa-circle-check pay-check"></i>
+                    </div>
+                    <div class="pay-method-card" onclick="setModalPaymentMethod('Orange Money (#150#)', 'assets/logo_orange_money.png', this)">
+                        <input type="radio" name="modalPayType" value="Orange Money (#150#)">
+                        <div class="pay-method-logo">
+                            <img src="assets/logo_orange_money.png" alt="Orange Money">
+                        </div>
+                        <div class="pay-method-info">
+                            <div class="pay-method-name">Orange Money</div>
+                            <div class="pay-method-code"><span class="badge-code">#150#</span></div>
+                        </div>
+                        <i class="fa-solid fa-circle-check pay-check"></i>
+                    </div>
+                    <div class="pay-method-card" onclick="setModalPaymentMethod('GeniusPay (Passerelle Test & Multi-devises)', 'genius', this)">
+                        <input type="radio" name="modalPayType" value="GeniusPay">
+                        <div class="pay-method-logo logo-genius">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <div class="pay-method-info">
+                            <div class="pay-method-name">GeniusPay</div>
+                            <div class="pay-method-code"><span class="badge-code">CB / Gratuit</span></div>
+                        </div>
+                        <i class="fa-solid fa-circle-check pay-check"></i>
+                    </div>
+                </div>
+
+                <label class="form-label-sm">2. Montant de la cotisation :</label>
+                <div class="cotisation-grid" style="margin-bottom:14px;">
+                    <label class="cotisation-pill active" onclick="setModalAmount(1000, this)">
+                        <span>1 000 F CFA<br><small>Base Adhérent</small></span>
+                    </label>
+                    <label class="cotisation-pill" onclick="setModalAmount(5000, this)">
+                        <span>5 000 F CFA<br><small>Soutien</small></span>
+                    </label>
+                    <label class="cotisation-pill" onclick="setModalAmount(25000, this)">
+                        <span>25 000 F CFA<br><small>Cadre</small></span>
+                    </label>
+                    <label class="cotisation-pill" onclick="setModalAmount(100000, this)">
+                        <span>100 000 F CFA<br><small>Bienfaiteur</small></span>
+                    </label>
+                </div>
+
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label for="payPhoneInput">Numéro de Téléphone pour la notification USSD :</label>
+                    <div style="display:flex; gap:8px;">
+                        <span style="background:var(--vert-clair); color:var(--vert-fonce); font-weight:700; padding:10px 12px; border-radius:8px; border:1px solid var(--bordure); font-size:13px; display:flex; align-items:center;">🇨🇲 +237</span>
+                        <input type="tel" id="payPhoneInput" placeholder="67X XX XX XX / 69X XX XX XX" style="flex:1;" value="659452898">
+                    </div>
+                </div>
+
+                <div class="payment-summary-box">
+                    <div class="summary-line">
+                        <span>Montant Cotisation :</span>
+                        <strong id="modalSummaryAmount">1 000 F CFA</strong>
+                    </div>
+                    <div class="summary-line">
+                        <span>Frais Opérateur :</span>
+                        <span class="text-green" style="font-weight:700;">GRATUIT (0 F CFA)</span>
+                    </div>
+                    <div class="summary-line total-line">
+                        <span>Total à débiter :</span>
+                        <span class="text-green" id="modalSummaryTotal">1 000 F CFA</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Étape 2 : Simulation USSD en cours -->
+            <div id="paymentUssdStep" style="display:none; text-align:center; padding:20px 10px;">
+                <div class="ussd-spinner-ring">
+                    <i class="fa-solid fa-mobile-screen-button text-green fa-beat" style="font-size:38px;"></i>
+                </div>
+                <h4 style="margin:16px 0 6px 0; color:var(--vert-fonce);" id="ussdOperatorTitle">Requête USSD envoyée...</h4>
+                <p style="font-size:12.5px; color:var(--gris); margin-bottom:16px;" id="ussdOperatorMsg">
+                    Veuillez consulter votre téléphone et entrer votre code secret pour autoriser le débit de <strong id="ussdAmountPrompt">1 000 F CFA</strong>.
+                </p>
+                <div class="ussd-progress-bar">
+                    <div class="ussd-progress-fill" id="ussdProgressFill"></div>
+                </div>
+            </div>
+
+            <!-- Étape 3 : Reçu officiel avec son de validation -->
+            <div id="paymentReceiptStep" style="display:none;">
+                <div class="official-receipt-card">
+                    <div class="receipt-stamp-badge"><i class="fa-solid fa-circle-check"></i> PAYÉ &amp; ENREGISTRÉ</div>
+                    <div class="receipt-header">
+                        <img src="assets/logo_mrc_round.jpg" alt="Logo MRC" class="receipt-logo">
+                        <div>
+                            <h4>MOUVEMENT POUR LA RENAISSANCE DU CAMEROUN</h4>
+                            <p class="receipt-sub">REÇU OFFICIEL DE COTISATION &bull; DIRECTOIRE NATIONAL</p>
+                        </div>
+                    </div>
+                    <div class="receipt-divider"></div>
+                    <div class="receipt-details">
+                        <div class="r-row"><span>Réf. Transaction :</span><strong class="receipt-ref" id="recTxRef">MRC-MOMO-202611-9481</strong></div>
+                        <div class="r-row"><span>Opérateur :</span><strong id="recOperator">MTN Mobile Money (*126#)</strong></div>
+                        <div class="r-row"><span>Titulaire de la carte :</span><strong id="recMemberName">CYRILLE EDOU</strong></div>
+                        <div class="r-row"><span>Numéro Adhérent :</span><strong id="recMemberNum">SU00062551</strong></div>
+                        <div class="r-row"><span>Montant Réglé :</span><strong class="text-green" id="recAmount">1 000 F CFA</strong></div>
+                        <div class="r-row"><span>Date &amp; Heure :</span><span id="recDate">13/11/2026 11:00</span></div>
+                        <div class="r-row"><span>Signature Numérique :</span><span class="hash-code" id="recHash">MRC-9A74E82F10BC</span></div>
+                    </div>
+                    <div class="receipt-footer-tag">
+                        <i class="fa-solid fa-shield-halved text-green"></i> Certifié authentique &bull; Statut Adhérent mis à jour
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="modal-footer" id="paymentModalFooter">
             <button class="btn btn-outline" onclick="closePaymentModal()" id="btnCancelPay">Annuler</button>
             <button class="btn btn-primary" onclick="executePaymentSimulation()" id="btnConfirmPay">
@@ -1077,7 +1366,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- Modal 7 : Visionneuse Photo Plein Écran (Lightbox) -->
 <div class="modal-backdrop" id="galleryModal">
@@ -1115,6 +1403,21 @@
         </div>
     </div>
 </div>
+
+<!-- MODALE OFFICIELLE MRC PROFESSIONNELLE -->
+<div class="mrc-modal-overlay" id="mrcCustomModal">
+    <div class="mrc-modal-card">
+        <div class="mrc-modal-icon" id="mrcModalIcon">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h3 id="mrcModalTitle">Titre de la Notification</h3>
+        <p id="mrcModalMessage">Message officiel du parti.</p>
+        <button type="button" class="mrc-modal-btn" onclick="closeMrcModal()">D'accord</button>
+    </div>
+</div>
+
+<!-- JAVASCRIPT PRINCIPAL CHARGÉ DE FAÇON GARANTIE -->
+<script src="app.js"></script>
 
 </body>
 </html>
