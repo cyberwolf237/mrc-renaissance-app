@@ -446,22 +446,26 @@ function shareLeaderProfile() {
 // GESTION DE L'HISTOIRE & DU PARCOURS DES PRÉSIDENTS             //
 // ============================================================== //
 function switchHistorySubTab(subTab) {
-    const btnTimeline = document.getElementById('btnHistTimeline');
-    const btnPres = document.getElementById('btnHistPresidents');
-    const paneTimeline = document.getElementById('histTimelineContent');
-    const panePres = document.getElementById('histPresidentsContent');
+    const tabs = ['timeline', 'presidents', 'victories', 'archives'];
+    const map = {
+        timeline: { btn: 'btnHistTimeline', pane: 'histTimelineContent' },
+        presidents: { btn: 'btnHistPresidents', pane: 'histPresidentsContent' },
+        victories: { btn: 'btnHistVictories', pane: 'histVictoriesContent' },
+        archives: { btn: 'btnHistArchives', pane: 'histArchivesContent' }
+    };
 
-    if (subTab === 'timeline') {
-        btnTimeline.classList.add('active');
-        btnPres.classList.remove('active');
-        paneTimeline.classList.add('active');
-        panePres.classList.remove('active');
-    } else {
-        btnTimeline.classList.remove('active');
-        btnPres.classList.add('active');
-        paneTimeline.classList.remove('active');
-        panePres.classList.add('active');
-    }
+    tabs.forEach(t => {
+        const item = map[t];
+        const btn = document.getElementById(item.btn);
+        const pane = document.getElementById(item.pane);
+        if (t === subTab) {
+            if (btn) btn.classList.add('active');
+            if (pane) pane.classList.add('active');
+        } else {
+            if (btn) btn.classList.remove('active');
+            if (pane) pane.classList.remove('active');
+        }
+    });
 }
 
 function openHistoryDetailModal(year) {
